@@ -128,7 +128,62 @@ exports.Prisma.CustomerScalarFieldEnum = {
   Cus_CompanyName: 'Cus_CompanyName',
   Cus_Logo: 'Cus_Logo',
   Verify_State: 'Verify_State',
-  Purchase_Goods: 'Purchase_Goods'
+  Purchase_Goods: 'Purchase_Goods',
+  Cus_Password: 'Cus_Password'
+};
+
+exports.Prisma.AdminScalarFieldEnum = {
+  AdminId: 'AdminId',
+  Admin_Name: 'Admin_Name',
+  Admin_Email: 'Admin_Email',
+  Admin_Phone: 'Admin_Phone',
+  Admin_Profile: 'Admin_Profile',
+  Admin_Password: 'Admin_Password'
+};
+
+exports.Prisma.Feed_BackScalarFieldEnum = {
+  Feed_backId: 'Feed_backId',
+  Feed_back_comment: 'Feed_back_comment',
+  Feed_Back_Images: 'Feed_Back_Images',
+  Rating: 'Rating',
+  CustomerId: 'CustomerId',
+  DesignID: 'DesignID'
+};
+
+exports.Prisma.NotificationsScalarFieldEnum = {
+  NotificationsID: 'NotificationsID',
+  Date_Timestamp: 'Date_Timestamp',
+  SenderEmail: 'SenderEmail',
+  Recevied_Emails: 'Recevied_Emails',
+  View_List: 'View_List',
+  Notifications_Body: 'Notifications_Body',
+  Notifications_Title: 'Notifications_Title'
+};
+
+exports.Prisma.DesignScalarFieldEnum = {
+  DesignID: 'DesignID',
+  Design_Name: 'Design_Name',
+  Design_Image: 'Design_Image',
+  Design_Description: 'Design_Description',
+  Categories: 'Categories',
+  Design_Colors: 'Design_Colors',
+  Design_BlogPosts: 'Design_BlogPosts',
+  Design_Sizes: 'Design_Sizes',
+  Design_CreatedAt: 'Design_CreatedAt',
+  AdminId: 'AdminId'
+};
+
+exports.Prisma.OrderScalarFieldEnum = {
+  OrderID: 'OrderID',
+  CustomerId: 'CustomerId',
+  Order_Date: 'Order_Date',
+  Order_Status: 'Order_Status'
+};
+
+exports.Prisma.OrderDesignScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  designId: 'designId'
 };
 
 exports.Prisma.SortOrder = {
@@ -148,7 +203,13 @@ exports.Prisma.NullsOrder = {
 
 
 exports.Prisma.ModelName = {
-  Customer: 'Customer'
+  Customer: 'Customer',
+  Admin: 'Admin',
+  Feed_Back: 'Feed_Back',
+  Notifications: 'Notifications',
+  Design: 'Design',
+  Order: 'Order',
+  OrderDesign: 'OrderDesign'
 };
 
 /**

@@ -10,3 +10,4 @@ I used Node version :- 22.0.0
 4. Now we need to initialize Prisma: npx prisma init
 5. Now Create migration files: npx prisma migrate dev --name init
 6. Update the data base : npx prisma db pull
+7. reset command : npx prisma migrate reset
