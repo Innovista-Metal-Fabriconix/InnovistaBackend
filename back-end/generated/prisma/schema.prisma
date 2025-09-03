@@ -18,8 +18,8 @@ model Customer {
   Verify_State    Boolean     @default(false)
   Purchase_Goods  String?
   Cus_Password    String
-  Orders          Order[]
   FeedBacks       Feed_Back[]
+  Orders          Order[]
 }
 
 model Admin {
@@ -29,7 +29,7 @@ model Admin {
   Admin_Phone    String
   Admin_Profile  String?
   Admin_Password String
-  Designs        Design[] // Admin manages many designs
+  Designs        Design[]
 }
 
 model Feed_Back {
@@ -37,10 +37,10 @@ model Feed_Back {
   Feed_back_comment String
   Feed_Back_Images  String[]
   Rating            Int
-  Customer          Customer @relation(fields: [CustomerId], references: [CustomerId])
   CustomerId        Int
-  Design            Design   @relation(fields: [DesignID], references: [DesignID])
   DesignID          Int
+  Customer          Customer @relation(fields: [CustomerId], references: [CustomerId])
+  Design            Design   @relation(fields: [DesignID], references: [DesignID])
 }
 
 model Notifications {
@@ -63,26 +63,26 @@ model Design {
   Design_BlogPosts   String[]
   Design_Sizes       String[]
   Design_CreatedAt   DateTime      @default(now())
+  AdminId            Int
+  Admin              Admin         @relation(fields: [AdminId], references: [AdminId])
   FeedBacks          Feed_Back[]
   Orders             OrderDesign[]
-  Admin              Admin         @relation(fields: [AdminId], references: [AdminId])
-  AdminId            Int
 }
 
 model Order {
   OrderID      Int           @id @default(autoincrement())
-  Customer     Customer      @relation(fields: [CustomerId], references: [CustomerId])
   CustomerId   Int
-  Designs      OrderDesign[]
   Order_Date   DateTime      @default(now())
   Order_Status String
+  Customer     Customer      @relation(fields: [CustomerId], references: [CustomerId])
+  Designs      OrderDesign[]
 }
 
 /// Junction table for Many-to-Many relation between Orders and Designs
 model OrderDesign {
   id       Int    @id @default(autoincrement())
-  order    Order  @relation(fields: [orderId], references: [OrderID])
   orderId  Int
-  design   Design @relation(fields: [designId], references: [DesignID])
   designId Int
+  design   Design @relation(fields: [designId], references: [DesignID])
+  order    Order  @relation(fields: [orderId], references: [OrderID])
 }
