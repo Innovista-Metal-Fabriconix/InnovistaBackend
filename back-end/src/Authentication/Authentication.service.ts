@@ -2,10 +2,15 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { AuthDTO } from './DTO/Authentication.DTO';
 import * as bcrypt from 'bcrypt';
+import { EmailService } from '../Emails/Email.service';
+import { EmailTemplate } from '../Emails/Email.DTO'; 
 
 @Injectable()
 export class AuthenticationService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private emailService: EmailService
+  ) {}
 
   async register(authDto: AuthDTO) {
     try {
@@ -23,6 +28,13 @@ export class AuthenticationService {
         },
       });
 
+      await this.emailService.sendEmail({
+        to: authDto.Admin_Email,
+        template: EmailTemplate.WELCOME,
+        context: {
+          name: authDto.Admin_Name,
+        },
+      });
 
       return { message: 'Admin registered successfully', admin };
     } catch (error) {

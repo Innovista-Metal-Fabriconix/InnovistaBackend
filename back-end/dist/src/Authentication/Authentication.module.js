@@ -12,12 +12,13 @@ const prisma_module_1 = require("../../prisma/prisma.module");
 const config_1 = require("@nestjs/config");
 const Authentication_service_1 = require("./Authentication.service");
 const Authentication_controller_1 = require("./Authentication.controller");
+const Email_module_1 = require("../Emails/Email.module");
 let AuthenticationModule = class AuthenticationModule {
 };
 exports.AuthenticationModule = AuthenticationModule;
 exports.AuthenticationModule = AuthenticationModule = __decorate([
     (0, common_1.Module)({
-        imports: [prisma_module_1.PrismaModule, config_1.ConfigModule.forRoot()],
+        imports: [prisma_module_1.PrismaModule, config_1.ConfigModule.forRoot(), Email_module_1.EmailModule],
         controllers: [Authentication_controller_1.AuthenticationController],
         providers: [Authentication_service_1.AuthenticationService],
     })

@@ -9,12 +9,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const Authentication_module_1 = require("./Authentication/Authentication.module");
+const Email_module_1 = require("./Emails/Email.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [Authentication_module_1.AuthenticationModule],
+        imports: [Authentication_module_1.AuthenticationModule, Email_module_1.EmailModule],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

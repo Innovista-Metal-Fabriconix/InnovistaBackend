@@ -46,10 +46,14 @@ exports.AuthenticationService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../../prisma/prisma.service");
 const bcrypt = __importStar(require("bcrypt"));
+const Email_service_1 = require("../Emails/Email.service");
+const Email_DTO_1 = require("../Emails/Email.DTO");
 let AuthenticationService = class AuthenticationService {
     prisma;
-    constructor(prisma) {
+    emailService;
+    constructor(prisma, emailService) {
         this.prisma = prisma;
+        this.emailService = emailService;
     }
     async register(authDto) {
         try {
@@ -64,6 +68,13 @@ let AuthenticationService = class AuthenticationService {
                     Admin_Password: authDto.Admin_Password,
                 },
             });
+            await this.emailService.sendEmail({
+                to: authDto.Admin_Email,
+                template: Email_DTO_1.EmailTemplate.WELCOME,
+                context: {
+                    name: authDto.Admin_Name,
+                },
+            });
             return { message: 'Admin registered successfully', admin };
         }
         catch (error) {
@@ -74,6 +85,7 @@ let AuthenticationService = class AuthenticationService {
 exports.AuthenticationService = AuthenticationService;
 exports.AuthenticationService = AuthenticationService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService,
+        Email_service_1.EmailService])
 ], AuthenticationService);
 //# sourceMappingURL=Authentication.service.js.map
