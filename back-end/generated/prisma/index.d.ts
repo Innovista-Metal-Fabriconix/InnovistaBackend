@@ -294,8 +294,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.14.0
-   * Query Engine version: 717184b7b35ea05dfa71a3236b7af656013e1e49
+   * Prisma Client JS version: 6.15.0
+   * Query Engine version: 85179d7826409ee107a6ba334b5e305ae3fba9fb
    */
   export type PrismaVersion = {
     client: string
@@ -1402,13 +1402,13 @@ export namespace Prisma {
    */
 
   export type CustomerCountOutputType = {
-    Orders: number
     FeedBacks: number
+    Orders: number
   }
 
   export type CustomerCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    Orders?: boolean | CustomerCountOutputTypeCountOrdersArgs
     FeedBacks?: boolean | CustomerCountOutputTypeCountFeedBacksArgs
+    Orders?: boolean | CustomerCountOutputTypeCountOrdersArgs
   }
 
   // Custom InputTypes
@@ -1425,15 +1425,15 @@ export namespace Prisma {
   /**
    * CustomerCountOutputType without action
    */
-  export type CustomerCountOutputTypeCountOrdersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: OrderWhereInput
+  export type CustomerCountOutputTypeCountFeedBacksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: Feed_BackWhereInput
   }
 
   /**
    * CustomerCountOutputType without action
    */
-  export type CustomerCountOutputTypeCountFeedBacksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: Feed_BackWhereInput
+  export type CustomerCountOutputTypeCountOrdersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OrderWhereInput
   }
 
 
@@ -1773,8 +1773,8 @@ export namespace Prisma {
     Verify_State?: boolean
     Purchase_Goods?: boolean
     Cus_Password?: boolean
-    Orders?: boolean | Customer$OrdersArgs<ExtArgs>
     FeedBacks?: boolean | Customer$FeedBacksArgs<ExtArgs>
+    Orders?: boolean | Customer$OrdersArgs<ExtArgs>
     _count?: boolean | CustomerCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["customer"]>
 
@@ -1816,8 +1816,8 @@ export namespace Prisma {
 
   export type CustomerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"CustomerId" | "Cus_Name" | "Cus_Email" | "Cus_PhoneNumber" | "Cus_CompanyName" | "Cus_Logo" | "Verify_State" | "Purchase_Goods" | "Cus_Password", ExtArgs["result"]["customer"]>
   export type CustomerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    Orders?: boolean | Customer$OrdersArgs<ExtArgs>
     FeedBacks?: boolean | Customer$FeedBacksArgs<ExtArgs>
+    Orders?: boolean | Customer$OrdersArgs<ExtArgs>
     _count?: boolean | CustomerCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type CustomerIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1826,8 +1826,8 @@ export namespace Prisma {
   export type $CustomerPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Customer"
     objects: {
-      Orders: Prisma.$OrderPayload<ExtArgs>[]
       FeedBacks: Prisma.$Feed_BackPayload<ExtArgs>[]
+      Orders: Prisma.$OrderPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       CustomerId: number
@@ -2233,8 +2233,8 @@ export namespace Prisma {
    */
   export interface Prisma__CustomerClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    Orders<T extends Customer$OrdersArgs<ExtArgs> = {}>(args?: Subset<T, Customer$OrdersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     FeedBacks<T extends Customer$FeedBacksArgs<ExtArgs> = {}>(args?: Subset<T, Customer$FeedBacksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$Feed_BackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    Orders<T extends Customer$OrdersArgs<ExtArgs> = {}>(args?: Subset<T, Customer$OrdersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2661,30 +2661,6 @@ export namespace Prisma {
   }
 
   /**
-   * Customer.Orders
-   */
-  export type Customer$OrdersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Order
-     */
-    select?: OrderSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Order
-     */
-    omit?: OrderOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrderInclude<ExtArgs> | null
-    where?: OrderWhereInput
-    orderBy?: OrderOrderByWithRelationInput | OrderOrderByWithRelationInput[]
-    cursor?: OrderWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: OrderScalarFieldEnum | OrderScalarFieldEnum[]
-  }
-
-  /**
    * Customer.FeedBacks
    */
   export type Customer$FeedBacksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2706,6 +2682,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: Feed_BackScalarFieldEnum | Feed_BackScalarFieldEnum[]
+  }
+
+  /**
+   * Customer.Orders
+   */
+  export type Customer$OrdersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Order
+     */
+    select?: OrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Order
+     */
+    omit?: OrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderInclude<ExtArgs> | null
+    where?: OrderWhereInput
+    orderBy?: OrderOrderByWithRelationInput | OrderOrderByWithRelationInput[]
+    cursor?: OrderWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: OrderScalarFieldEnum | OrderScalarFieldEnum[]
   }
 
   /**
@@ -6234,9 +6234,9 @@ export namespace Prisma {
     Design_Sizes?: boolean
     Design_CreatedAt?: boolean
     AdminId?: boolean
+    Admin?: boolean | AdminDefaultArgs<ExtArgs>
     FeedBacks?: boolean | Design$FeedBacksArgs<ExtArgs>
     Orders?: boolean | Design$OrdersArgs<ExtArgs>
-    Admin?: boolean | AdminDefaultArgs<ExtArgs>
     _count?: boolean | DesignCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["design"]>
 
@@ -6283,9 +6283,9 @@ export namespace Prisma {
 
   export type DesignOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"DesignID" | "Design_Name" | "Design_Image" | "Design_Description" | "Categories" | "Design_Colors" | "Design_BlogPosts" | "Design_Sizes" | "Design_CreatedAt" | "AdminId", ExtArgs["result"]["design"]>
   export type DesignInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    Admin?: boolean | AdminDefaultArgs<ExtArgs>
     FeedBacks?: boolean | Design$FeedBacksArgs<ExtArgs>
     Orders?: boolean | Design$OrdersArgs<ExtArgs>
-    Admin?: boolean | AdminDefaultArgs<ExtArgs>
     _count?: boolean | DesignCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DesignIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6298,9 +6298,9 @@ export namespace Prisma {
   export type $DesignPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Design"
     objects: {
+      Admin: Prisma.$AdminPayload<ExtArgs>
       FeedBacks: Prisma.$Feed_BackPayload<ExtArgs>[]
       Orders: Prisma.$OrderDesignPayload<ExtArgs>[]
-      Admin: Prisma.$AdminPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       DesignID: number
@@ -6707,9 +6707,9 @@ export namespace Prisma {
    */
   export interface Prisma__DesignClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    Admin<T extends AdminDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AdminDefaultArgs<ExtArgs>>): Prisma__AdminClient<$Result.GetResult<Prisma.$AdminPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     FeedBacks<T extends Design$FeedBacksArgs<ExtArgs> = {}>(args?: Subset<T, Design$FeedBacksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$Feed_BackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Orders<T extends Design$OrdersArgs<ExtArgs> = {}>(args?: Subset<T, Design$OrdersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderDesignPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    Admin<T extends AdminDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AdminDefaultArgs<ExtArgs>>): Prisma__AdminClient<$Result.GetResult<Prisma.$AdminPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8514,24 +8514,24 @@ export namespace Prisma {
     id?: boolean
     orderId?: boolean
     designId?: boolean
-    order?: boolean | OrderDefaultArgs<ExtArgs>
     design?: boolean | DesignDefaultArgs<ExtArgs>
+    order?: boolean | OrderDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["orderDesign"]>
 
   export type OrderDesignSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     orderId?: boolean
     designId?: boolean
-    order?: boolean | OrderDefaultArgs<ExtArgs>
     design?: boolean | DesignDefaultArgs<ExtArgs>
+    order?: boolean | OrderDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["orderDesign"]>
 
   export type OrderDesignSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     orderId?: boolean
     designId?: boolean
-    order?: boolean | OrderDefaultArgs<ExtArgs>
     design?: boolean | DesignDefaultArgs<ExtArgs>
+    order?: boolean | OrderDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["orderDesign"]>
 
   export type OrderDesignSelectScalar = {
@@ -8542,23 +8542,23 @@ export namespace Prisma {
 
   export type OrderDesignOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderId" | "designId", ExtArgs["result"]["orderDesign"]>
   export type OrderDesignInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    order?: boolean | OrderDefaultArgs<ExtArgs>
     design?: boolean | DesignDefaultArgs<ExtArgs>
+    order?: boolean | OrderDefaultArgs<ExtArgs>
   }
   export type OrderDesignIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    order?: boolean | OrderDefaultArgs<ExtArgs>
     design?: boolean | DesignDefaultArgs<ExtArgs>
+    order?: boolean | OrderDefaultArgs<ExtArgs>
   }
   export type OrderDesignIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    order?: boolean | OrderDefaultArgs<ExtArgs>
     design?: boolean | DesignDefaultArgs<ExtArgs>
+    order?: boolean | OrderDefaultArgs<ExtArgs>
   }
 
   export type $OrderDesignPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "OrderDesign"
     objects: {
-      order: Prisma.$OrderPayload<ExtArgs>
       design: Prisma.$DesignPayload<ExtArgs>
+      order: Prisma.$OrderPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -8958,8 +8958,8 @@ export namespace Prisma {
    */
   export interface Prisma__OrderDesignClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    order<T extends OrderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrderDefaultArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     design<T extends DesignDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DesignDefaultArgs<ExtArgs>>): Prisma__DesignClient<$Result.GetResult<Prisma.$DesignPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    order<T extends OrderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrderDefaultArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9615,8 +9615,8 @@ export namespace Prisma {
     Verify_State?: BoolFilter<"Customer"> | boolean
     Purchase_Goods?: StringNullableFilter<"Customer"> | string | null
     Cus_Password?: StringFilter<"Customer"> | string
-    Orders?: OrderListRelationFilter
     FeedBacks?: Feed_BackListRelationFilter
+    Orders?: OrderListRelationFilter
   }
 
   export type CustomerOrderByWithRelationInput = {
@@ -9629,8 +9629,8 @@ export namespace Prisma {
     Verify_State?: SortOrder
     Purchase_Goods?: SortOrderInput | SortOrder
     Cus_Password?: SortOrder
-    Orders?: OrderOrderByRelationAggregateInput
     FeedBacks?: Feed_BackOrderByRelationAggregateInput
+    Orders?: OrderOrderByRelationAggregateInput
   }
 
   export type CustomerWhereUniqueInput = Prisma.AtLeast<{
@@ -9646,8 +9646,8 @@ export namespace Prisma {
     Verify_State?: BoolFilter<"Customer"> | boolean
     Purchase_Goods?: StringNullableFilter<"Customer"> | string | null
     Cus_Password?: StringFilter<"Customer"> | string
-    Orders?: OrderListRelationFilter
     FeedBacks?: Feed_BackListRelationFilter
+    Orders?: OrderListRelationFilter
   }, "CustomerId" | "Cus_Email">
 
   export type CustomerOrderByWithAggregationInput = {
@@ -9887,9 +9887,9 @@ export namespace Prisma {
     Design_Sizes?: StringNullableListFilter<"Design">
     Design_CreatedAt?: DateTimeFilter<"Design"> | Date | string
     AdminId?: IntFilter<"Design"> | number
+    Admin?: XOR<AdminScalarRelationFilter, AdminWhereInput>
     FeedBacks?: Feed_BackListRelationFilter
     Orders?: OrderDesignListRelationFilter
-    Admin?: XOR<AdminScalarRelationFilter, AdminWhereInput>
   }
 
   export type DesignOrderByWithRelationInput = {
@@ -9903,9 +9903,9 @@ export namespace Prisma {
     Design_Sizes?: SortOrder
     Design_CreatedAt?: SortOrder
     AdminId?: SortOrder
+    Admin?: AdminOrderByWithRelationInput
     FeedBacks?: Feed_BackOrderByRelationAggregateInput
     Orders?: OrderDesignOrderByRelationAggregateInput
-    Admin?: AdminOrderByWithRelationInput
   }
 
   export type DesignWhereUniqueInput = Prisma.AtLeast<{
@@ -9922,9 +9922,9 @@ export namespace Prisma {
     Design_Sizes?: StringNullableListFilter<"Design">
     Design_CreatedAt?: DateTimeFilter<"Design"> | Date | string
     AdminId?: IntFilter<"Design"> | number
+    Admin?: XOR<AdminScalarRelationFilter, AdminWhereInput>
     FeedBacks?: Feed_BackListRelationFilter
     Orders?: OrderDesignListRelationFilter
-    Admin?: XOR<AdminScalarRelationFilter, AdminWhereInput>
   }, "DesignID">
 
   export type DesignOrderByWithAggregationInput = {
@@ -10023,16 +10023,16 @@ export namespace Prisma {
     id?: IntFilter<"OrderDesign"> | number
     orderId?: IntFilter<"OrderDesign"> | number
     designId?: IntFilter<"OrderDesign"> | number
-    order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
     design?: XOR<DesignScalarRelationFilter, DesignWhereInput>
+    order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
   }
 
   export type OrderDesignOrderByWithRelationInput = {
     id?: SortOrder
     orderId?: SortOrder
     designId?: SortOrder
-    order?: OrderOrderByWithRelationInput
     design?: DesignOrderByWithRelationInput
+    order?: OrderOrderByWithRelationInput
   }
 
   export type OrderDesignWhereUniqueInput = Prisma.AtLeast<{
@@ -10042,8 +10042,8 @@ export namespace Prisma {
     NOT?: OrderDesignWhereInput | OrderDesignWhereInput[]
     orderId?: IntFilter<"OrderDesign"> | number
     designId?: IntFilter<"OrderDesign"> | number
-    order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
     design?: XOR<DesignScalarRelationFilter, DesignWhereInput>
+    order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
   }, "id">
 
   export type OrderDesignOrderByWithAggregationInput = {
@@ -10075,8 +10075,8 @@ export namespace Prisma {
     Verify_State?: boolean
     Purchase_Goods?: string | null
     Cus_Password: string
-    Orders?: OrderCreateNestedManyWithoutCustomerInput
     FeedBacks?: Feed_BackCreateNestedManyWithoutCustomerInput
+    Orders?: OrderCreateNestedManyWithoutCustomerInput
   }
 
   export type CustomerUncheckedCreateInput = {
@@ -10089,8 +10089,8 @@ export namespace Prisma {
     Verify_State?: boolean
     Purchase_Goods?: string | null
     Cus_Password: string
-    Orders?: OrderUncheckedCreateNestedManyWithoutCustomerInput
     FeedBacks?: Feed_BackUncheckedCreateNestedManyWithoutCustomerInput
+    Orders?: OrderUncheckedCreateNestedManyWithoutCustomerInput
   }
 
   export type CustomerUpdateInput = {
@@ -10102,8 +10102,8 @@ export namespace Prisma {
     Verify_State?: BoolFieldUpdateOperationsInput | boolean
     Purchase_Goods?: NullableStringFieldUpdateOperationsInput | string | null
     Cus_Password?: StringFieldUpdateOperationsInput | string
-    Orders?: OrderUpdateManyWithoutCustomerNestedInput
     FeedBacks?: Feed_BackUpdateManyWithoutCustomerNestedInput
+    Orders?: OrderUpdateManyWithoutCustomerNestedInput
   }
 
   export type CustomerUncheckedUpdateInput = {
@@ -10116,8 +10116,8 @@ export namespace Prisma {
     Verify_State?: BoolFieldUpdateOperationsInput | boolean
     Purchase_Goods?: NullableStringFieldUpdateOperationsInput | string | null
     Cus_Password?: StringFieldUpdateOperationsInput | string
-    Orders?: OrderUncheckedUpdateManyWithoutCustomerNestedInput
     FeedBacks?: Feed_BackUncheckedUpdateManyWithoutCustomerNestedInput
+    Orders?: OrderUncheckedUpdateManyWithoutCustomerNestedInput
   }
 
   export type CustomerCreateManyInput = {
@@ -10353,9 +10353,9 @@ export namespace Prisma {
     Design_BlogPosts?: DesignCreateDesign_BlogPostsInput | string[]
     Design_Sizes?: DesignCreateDesign_SizesInput | string[]
     Design_CreatedAt?: Date | string
+    Admin: AdminCreateNestedOneWithoutDesignsInput
     FeedBacks?: Feed_BackCreateNestedManyWithoutDesignInput
     Orders?: OrderDesignCreateNestedManyWithoutDesignInput
-    Admin: AdminCreateNestedOneWithoutDesignsInput
   }
 
   export type DesignUncheckedCreateInput = {
@@ -10382,9 +10382,9 @@ export namespace Prisma {
     Design_BlogPosts?: DesignUpdateDesign_BlogPostsInput | string[]
     Design_Sizes?: DesignUpdateDesign_SizesInput | string[]
     Design_CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Admin?: AdminUpdateOneRequiredWithoutDesignsNestedInput
     FeedBacks?: Feed_BackUpdateManyWithoutDesignNestedInput
     Orders?: OrderDesignUpdateManyWithoutDesignNestedInput
-    Admin?: AdminUpdateOneRequiredWithoutDesignsNestedInput
   }
 
   export type DesignUncheckedUpdateInput = {
@@ -10489,8 +10489,8 @@ export namespace Prisma {
   }
 
   export type OrderDesignCreateInput = {
-    order: OrderCreateNestedOneWithoutDesignsInput
     design: DesignCreateNestedOneWithoutOrdersInput
+    order: OrderCreateNestedOneWithoutDesignsInput
   }
 
   export type OrderDesignUncheckedCreateInput = {
@@ -10500,8 +10500,8 @@ export namespace Prisma {
   }
 
   export type OrderDesignUpdateInput = {
-    order?: OrderUpdateOneRequiredWithoutDesignsNestedInput
     design?: DesignUpdateOneRequiredWithoutOrdersNestedInput
+    order?: OrderUpdateOneRequiredWithoutDesignsNestedInput
   }
 
   export type OrderDesignUncheckedUpdateInput = {
@@ -10572,16 +10572,16 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
-  export type OrderListRelationFilter = {
-    every?: OrderWhereInput
-    some?: OrderWhereInput
-    none?: OrderWhereInput
-  }
-
   export type Feed_BackListRelationFilter = {
     every?: Feed_BackWhereInput
     some?: Feed_BackWhereInput
     none?: Feed_BackWhereInput
+  }
+
+  export type OrderListRelationFilter = {
+    every?: OrderWhereInput
+    some?: OrderWhereInput
+    none?: OrderWhereInput
   }
 
   export type SortOrderInput = {
@@ -10589,11 +10589,11 @@ export namespace Prisma {
     nulls?: NullsOrder
   }
 
-  export type OrderOrderByRelationAggregateInput = {
+  export type Feed_BackOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
-  export type Feed_BackOrderByRelationAggregateInput = {
+  export type OrderOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -10862,15 +10862,15 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type AdminScalarRelationFilter = {
+    is?: AdminWhereInput
+    isNot?: AdminWhereInput
+  }
+
   export type OrderDesignListRelationFilter = {
     every?: OrderDesignWhereInput
     some?: OrderDesignWhereInput
     none?: OrderDesignWhereInput
-  }
-
-  export type AdminScalarRelationFilter = {
-    is?: AdminWhereInput
-    isNot?: AdminWhereInput
   }
 
   export type OrderDesignOrderByRelationAggregateInput = {
@@ -10982,13 +10982,6 @@ export namespace Prisma {
     designId?: SortOrder
   }
 
-  export type OrderCreateNestedManyWithoutCustomerInput = {
-    create?: XOR<OrderCreateWithoutCustomerInput, OrderUncheckedCreateWithoutCustomerInput> | OrderCreateWithoutCustomerInput[] | OrderUncheckedCreateWithoutCustomerInput[]
-    connectOrCreate?: OrderCreateOrConnectWithoutCustomerInput | OrderCreateOrConnectWithoutCustomerInput[]
-    createMany?: OrderCreateManyCustomerInputEnvelope
-    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-  }
-
   export type Feed_BackCreateNestedManyWithoutCustomerInput = {
     create?: XOR<Feed_BackCreateWithoutCustomerInput, Feed_BackUncheckedCreateWithoutCustomerInput> | Feed_BackCreateWithoutCustomerInput[] | Feed_BackUncheckedCreateWithoutCustomerInput[]
     connectOrCreate?: Feed_BackCreateOrConnectWithoutCustomerInput | Feed_BackCreateOrConnectWithoutCustomerInput[]
@@ -10996,7 +10989,7 @@ export namespace Prisma {
     connect?: Feed_BackWhereUniqueInput | Feed_BackWhereUniqueInput[]
   }
 
-  export type OrderUncheckedCreateNestedManyWithoutCustomerInput = {
+  export type OrderCreateNestedManyWithoutCustomerInput = {
     create?: XOR<OrderCreateWithoutCustomerInput, OrderUncheckedCreateWithoutCustomerInput> | OrderCreateWithoutCustomerInput[] | OrderUncheckedCreateWithoutCustomerInput[]
     connectOrCreate?: OrderCreateOrConnectWithoutCustomerInput | OrderCreateOrConnectWithoutCustomerInput[]
     createMany?: OrderCreateManyCustomerInputEnvelope
@@ -11010,6 +11003,13 @@ export namespace Prisma {
     connect?: Feed_BackWhereUniqueInput | Feed_BackWhereUniqueInput[]
   }
 
+  export type OrderUncheckedCreateNestedManyWithoutCustomerInput = {
+    create?: XOR<OrderCreateWithoutCustomerInput, OrderUncheckedCreateWithoutCustomerInput> | OrderCreateWithoutCustomerInput[] | OrderUncheckedCreateWithoutCustomerInput[]
+    connectOrCreate?: OrderCreateOrConnectWithoutCustomerInput | OrderCreateOrConnectWithoutCustomerInput[]
+    createMany?: OrderCreateManyCustomerInputEnvelope
+    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -11020,20 +11020,6 @@ export namespace Prisma {
 
   export type BoolFieldUpdateOperationsInput = {
     set?: boolean
-  }
-
-  export type OrderUpdateManyWithoutCustomerNestedInput = {
-    create?: XOR<OrderCreateWithoutCustomerInput, OrderUncheckedCreateWithoutCustomerInput> | OrderCreateWithoutCustomerInput[] | OrderUncheckedCreateWithoutCustomerInput[]
-    connectOrCreate?: OrderCreateOrConnectWithoutCustomerInput | OrderCreateOrConnectWithoutCustomerInput[]
-    upsert?: OrderUpsertWithWhereUniqueWithoutCustomerInput | OrderUpsertWithWhereUniqueWithoutCustomerInput[]
-    createMany?: OrderCreateManyCustomerInputEnvelope
-    set?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    disconnect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    delete?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    update?: OrderUpdateWithWhereUniqueWithoutCustomerInput | OrderUpdateWithWhereUniqueWithoutCustomerInput[]
-    updateMany?: OrderUpdateManyWithWhereWithoutCustomerInput | OrderUpdateManyWithWhereWithoutCustomerInput[]
-    deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
   }
 
   export type Feed_BackUpdateManyWithoutCustomerNestedInput = {
@@ -11050,15 +11036,7 @@ export namespace Prisma {
     deleteMany?: Feed_BackScalarWhereInput | Feed_BackScalarWhereInput[]
   }
 
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
-  export type OrderUncheckedUpdateManyWithoutCustomerNestedInput = {
+  export type OrderUpdateManyWithoutCustomerNestedInput = {
     create?: XOR<OrderCreateWithoutCustomerInput, OrderUncheckedCreateWithoutCustomerInput> | OrderCreateWithoutCustomerInput[] | OrderUncheckedCreateWithoutCustomerInput[]
     connectOrCreate?: OrderCreateOrConnectWithoutCustomerInput | OrderCreateOrConnectWithoutCustomerInput[]
     upsert?: OrderUpsertWithWhereUniqueWithoutCustomerInput | OrderUpsertWithWhereUniqueWithoutCustomerInput[]
@@ -11070,6 +11048,14 @@ export namespace Prisma {
     update?: OrderUpdateWithWhereUniqueWithoutCustomerInput | OrderUpdateWithWhereUniqueWithoutCustomerInput[]
     updateMany?: OrderUpdateManyWithWhereWithoutCustomerInput | OrderUpdateManyWithWhereWithoutCustomerInput[]
     deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type Feed_BackUncheckedUpdateManyWithoutCustomerNestedInput = {
@@ -11084,6 +11070,20 @@ export namespace Prisma {
     update?: Feed_BackUpdateWithWhereUniqueWithoutCustomerInput | Feed_BackUpdateWithWhereUniqueWithoutCustomerInput[]
     updateMany?: Feed_BackUpdateManyWithWhereWithoutCustomerInput | Feed_BackUpdateManyWithWhereWithoutCustomerInput[]
     deleteMany?: Feed_BackScalarWhereInput | Feed_BackScalarWhereInput[]
+  }
+
+  export type OrderUncheckedUpdateManyWithoutCustomerNestedInput = {
+    create?: XOR<OrderCreateWithoutCustomerInput, OrderUncheckedCreateWithoutCustomerInput> | OrderCreateWithoutCustomerInput[] | OrderUncheckedCreateWithoutCustomerInput[]
+    connectOrCreate?: OrderCreateOrConnectWithoutCustomerInput | OrderCreateOrConnectWithoutCustomerInput[]
+    upsert?: OrderUpsertWithWhereUniqueWithoutCustomerInput | OrderUpsertWithWhereUniqueWithoutCustomerInput[]
+    createMany?: OrderCreateManyCustomerInputEnvelope
+    set?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    disconnect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    delete?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    update?: OrderUpdateWithWhereUniqueWithoutCustomerInput | OrderUpdateWithWhereUniqueWithoutCustomerInput[]
+    updateMany?: OrderUpdateManyWithWhereWithoutCustomerInput | OrderUpdateManyWithWhereWithoutCustomerInput[]
+    deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
   }
 
   export type DesignCreateNestedManyWithoutAdminInput = {
@@ -11207,6 +11207,12 @@ export namespace Prisma {
     set: string[]
   }
 
+  export type AdminCreateNestedOneWithoutDesignsInput = {
+    create?: XOR<AdminCreateWithoutDesignsInput, AdminUncheckedCreateWithoutDesignsInput>
+    connectOrCreate?: AdminCreateOrConnectWithoutDesignsInput
+    connect?: AdminWhereUniqueInput
+  }
+
   export type Feed_BackCreateNestedManyWithoutDesignInput = {
     create?: XOR<Feed_BackCreateWithoutDesignInput, Feed_BackUncheckedCreateWithoutDesignInput> | Feed_BackCreateWithoutDesignInput[] | Feed_BackUncheckedCreateWithoutDesignInput[]
     connectOrCreate?: Feed_BackCreateOrConnectWithoutDesignInput | Feed_BackCreateOrConnectWithoutDesignInput[]
@@ -11219,12 +11225,6 @@ export namespace Prisma {
     connectOrCreate?: OrderDesignCreateOrConnectWithoutDesignInput | OrderDesignCreateOrConnectWithoutDesignInput[]
     createMany?: OrderDesignCreateManyDesignInputEnvelope
     connect?: OrderDesignWhereUniqueInput | OrderDesignWhereUniqueInput[]
-  }
-
-  export type AdminCreateNestedOneWithoutDesignsInput = {
-    create?: XOR<AdminCreateWithoutDesignsInput, AdminUncheckedCreateWithoutDesignsInput>
-    connectOrCreate?: AdminCreateOrConnectWithoutDesignsInput
-    connect?: AdminWhereUniqueInput
   }
 
   export type Feed_BackUncheckedCreateNestedManyWithoutDesignInput = {
@@ -11266,6 +11266,14 @@ export namespace Prisma {
     push?: string | string[]
   }
 
+  export type AdminUpdateOneRequiredWithoutDesignsNestedInput = {
+    create?: XOR<AdminCreateWithoutDesignsInput, AdminUncheckedCreateWithoutDesignsInput>
+    connectOrCreate?: AdminCreateOrConnectWithoutDesignsInput
+    upsert?: AdminUpsertWithoutDesignsInput
+    connect?: AdminWhereUniqueInput
+    update?: XOR<XOR<AdminUpdateToOneWithWhereWithoutDesignsInput, AdminUpdateWithoutDesignsInput>, AdminUncheckedUpdateWithoutDesignsInput>
+  }
+
   export type Feed_BackUpdateManyWithoutDesignNestedInput = {
     create?: XOR<Feed_BackCreateWithoutDesignInput, Feed_BackUncheckedCreateWithoutDesignInput> | Feed_BackCreateWithoutDesignInput[] | Feed_BackUncheckedCreateWithoutDesignInput[]
     connectOrCreate?: Feed_BackCreateOrConnectWithoutDesignInput | Feed_BackCreateOrConnectWithoutDesignInput[]
@@ -11292,14 +11300,6 @@ export namespace Prisma {
     update?: OrderDesignUpdateWithWhereUniqueWithoutDesignInput | OrderDesignUpdateWithWhereUniqueWithoutDesignInput[]
     updateMany?: OrderDesignUpdateManyWithWhereWithoutDesignInput | OrderDesignUpdateManyWithWhereWithoutDesignInput[]
     deleteMany?: OrderDesignScalarWhereInput | OrderDesignScalarWhereInput[]
-  }
-
-  export type AdminUpdateOneRequiredWithoutDesignsNestedInput = {
-    create?: XOR<AdminCreateWithoutDesignsInput, AdminUncheckedCreateWithoutDesignsInput>
-    connectOrCreate?: AdminCreateOrConnectWithoutDesignsInput
-    upsert?: AdminUpsertWithoutDesignsInput
-    connect?: AdminWhereUniqueInput
-    update?: XOR<XOR<AdminUpdateToOneWithWhereWithoutDesignsInput, AdminUpdateWithoutDesignsInput>, AdminUncheckedUpdateWithoutDesignsInput>
   }
 
   export type Feed_BackUncheckedUpdateManyWithoutDesignNestedInput = {
@@ -11386,24 +11386,16 @@ export namespace Prisma {
     deleteMany?: OrderDesignScalarWhereInput | OrderDesignScalarWhereInput[]
   }
 
-  export type OrderCreateNestedOneWithoutDesignsInput = {
-    create?: XOR<OrderCreateWithoutDesignsInput, OrderUncheckedCreateWithoutDesignsInput>
-    connectOrCreate?: OrderCreateOrConnectWithoutDesignsInput
-    connect?: OrderWhereUniqueInput
-  }
-
   export type DesignCreateNestedOneWithoutOrdersInput = {
     create?: XOR<DesignCreateWithoutOrdersInput, DesignUncheckedCreateWithoutOrdersInput>
     connectOrCreate?: DesignCreateOrConnectWithoutOrdersInput
     connect?: DesignWhereUniqueInput
   }
 
-  export type OrderUpdateOneRequiredWithoutDesignsNestedInput = {
+  export type OrderCreateNestedOneWithoutDesignsInput = {
     create?: XOR<OrderCreateWithoutDesignsInput, OrderUncheckedCreateWithoutDesignsInput>
     connectOrCreate?: OrderCreateOrConnectWithoutDesignsInput
-    upsert?: OrderUpsertWithoutDesignsInput
     connect?: OrderWhereUniqueInput
-    update?: XOR<XOR<OrderUpdateToOneWithWhereWithoutDesignsInput, OrderUpdateWithoutDesignsInput>, OrderUncheckedUpdateWithoutDesignsInput>
   }
 
   export type DesignUpdateOneRequiredWithoutOrdersNestedInput = {
@@ -11412,6 +11404,14 @@ export namespace Prisma {
     upsert?: DesignUpsertWithoutOrdersInput
     connect?: DesignWhereUniqueInput
     update?: XOR<XOR<DesignUpdateToOneWithWhereWithoutOrdersInput, DesignUpdateWithoutOrdersInput>, DesignUncheckedUpdateWithoutOrdersInput>
+  }
+
+  export type OrderUpdateOneRequiredWithoutDesignsNestedInput = {
+    create?: XOR<OrderCreateWithoutDesignsInput, OrderUncheckedCreateWithoutDesignsInput>
+    connectOrCreate?: OrderCreateOrConnectWithoutDesignsInput
+    upsert?: OrderUpsertWithoutDesignsInput
+    connect?: OrderWhereUniqueInput
+    update?: XOR<XOR<OrderUpdateToOneWithWhereWithoutDesignsInput, OrderUpdateWithoutDesignsInput>, OrderUncheckedUpdateWithoutDesignsInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -11563,29 +11563,6 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type OrderCreateWithoutCustomerInput = {
-    Order_Date?: Date | string
-    Order_Status: string
-    Designs?: OrderDesignCreateNestedManyWithoutOrderInput
-  }
-
-  export type OrderUncheckedCreateWithoutCustomerInput = {
-    OrderID?: number
-    Order_Date?: Date | string
-    Order_Status: string
-    Designs?: OrderDesignUncheckedCreateNestedManyWithoutOrderInput
-  }
-
-  export type OrderCreateOrConnectWithoutCustomerInput = {
-    where: OrderWhereUniqueInput
-    create: XOR<OrderCreateWithoutCustomerInput, OrderUncheckedCreateWithoutCustomerInput>
-  }
-
-  export type OrderCreateManyCustomerInputEnvelope = {
-    data: OrderCreateManyCustomerInput | OrderCreateManyCustomerInput[]
-    skipDuplicates?: boolean
-  }
-
   export type Feed_BackCreateWithoutCustomerInput = {
     Feed_back_comment: string
     Feed_Back_Images?: Feed_BackCreateFeed_Back_ImagesInput | string[]
@@ -11611,30 +11588,27 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type OrderUpsertWithWhereUniqueWithoutCustomerInput = {
+  export type OrderCreateWithoutCustomerInput = {
+    Order_Date?: Date | string
+    Order_Status: string
+    Designs?: OrderDesignCreateNestedManyWithoutOrderInput
+  }
+
+  export type OrderUncheckedCreateWithoutCustomerInput = {
+    OrderID?: number
+    Order_Date?: Date | string
+    Order_Status: string
+    Designs?: OrderDesignUncheckedCreateNestedManyWithoutOrderInput
+  }
+
+  export type OrderCreateOrConnectWithoutCustomerInput = {
     where: OrderWhereUniqueInput
-    update: XOR<OrderUpdateWithoutCustomerInput, OrderUncheckedUpdateWithoutCustomerInput>
     create: XOR<OrderCreateWithoutCustomerInput, OrderUncheckedCreateWithoutCustomerInput>
   }
 
-  export type OrderUpdateWithWhereUniqueWithoutCustomerInput = {
-    where: OrderWhereUniqueInput
-    data: XOR<OrderUpdateWithoutCustomerInput, OrderUncheckedUpdateWithoutCustomerInput>
-  }
-
-  export type OrderUpdateManyWithWhereWithoutCustomerInput = {
-    where: OrderScalarWhereInput
-    data: XOR<OrderUpdateManyMutationInput, OrderUncheckedUpdateManyWithoutCustomerInput>
-  }
-
-  export type OrderScalarWhereInput = {
-    AND?: OrderScalarWhereInput | OrderScalarWhereInput[]
-    OR?: OrderScalarWhereInput[]
-    NOT?: OrderScalarWhereInput | OrderScalarWhereInput[]
-    OrderID?: IntFilter<"Order"> | number
-    CustomerId?: IntFilter<"Order"> | number
-    Order_Date?: DateTimeFilter<"Order"> | Date | string
-    Order_Status?: StringFilter<"Order"> | string
+  export type OrderCreateManyCustomerInputEnvelope = {
+    data: OrderCreateManyCustomerInput | OrderCreateManyCustomerInput[]
+    skipDuplicates?: boolean
   }
 
   export type Feed_BackUpsertWithWhereUniqueWithoutCustomerInput = {
@@ -11663,6 +11637,32 @@ export namespace Prisma {
     Rating?: IntFilter<"Feed_Back"> | number
     CustomerId?: IntFilter<"Feed_Back"> | number
     DesignID?: IntFilter<"Feed_Back"> | number
+  }
+
+  export type OrderUpsertWithWhereUniqueWithoutCustomerInput = {
+    where: OrderWhereUniqueInput
+    update: XOR<OrderUpdateWithoutCustomerInput, OrderUncheckedUpdateWithoutCustomerInput>
+    create: XOR<OrderCreateWithoutCustomerInput, OrderUncheckedCreateWithoutCustomerInput>
+  }
+
+  export type OrderUpdateWithWhereUniqueWithoutCustomerInput = {
+    where: OrderWhereUniqueInput
+    data: XOR<OrderUpdateWithoutCustomerInput, OrderUncheckedUpdateWithoutCustomerInput>
+  }
+
+  export type OrderUpdateManyWithWhereWithoutCustomerInput = {
+    where: OrderScalarWhereInput
+    data: XOR<OrderUpdateManyMutationInput, OrderUncheckedUpdateManyWithoutCustomerInput>
+  }
+
+  export type OrderScalarWhereInput = {
+    AND?: OrderScalarWhereInput | OrderScalarWhereInput[]
+    OR?: OrderScalarWhereInput[]
+    NOT?: OrderScalarWhereInput | OrderScalarWhereInput[]
+    OrderID?: IntFilter<"Order"> | number
+    CustomerId?: IntFilter<"Order"> | number
+    Order_Date?: DateTimeFilter<"Order"> | Date | string
+    Order_Status?: StringFilter<"Order"> | string
   }
 
   export type DesignCreateWithoutAdminInput = {
@@ -11773,8 +11773,8 @@ export namespace Prisma {
     Design_BlogPosts?: DesignCreateDesign_BlogPostsInput | string[]
     Design_Sizes?: DesignCreateDesign_SizesInput | string[]
     Design_CreatedAt?: Date | string
-    Orders?: OrderDesignCreateNestedManyWithoutDesignInput
     Admin: AdminCreateNestedOneWithoutDesignsInput
+    Orders?: OrderDesignCreateNestedManyWithoutDesignInput
   }
 
   export type DesignUncheckedCreateWithoutFeedBacksInput = {
@@ -11852,8 +11852,8 @@ export namespace Prisma {
     Design_BlogPosts?: DesignUpdateDesign_BlogPostsInput | string[]
     Design_Sizes?: DesignUpdateDesign_SizesInput | string[]
     Design_CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Orders?: OrderDesignUpdateManyWithoutDesignNestedInput
     Admin?: AdminUpdateOneRequiredWithoutDesignsNestedInput
+    Orders?: OrderDesignUpdateManyWithoutDesignNestedInput
   }
 
   export type DesignUncheckedUpdateWithoutFeedBacksInput = {
@@ -11868,6 +11868,28 @@ export namespace Prisma {
     Design_CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     AdminId?: IntFieldUpdateOperationsInput | number
     Orders?: OrderDesignUncheckedUpdateManyWithoutDesignNestedInput
+  }
+
+  export type AdminCreateWithoutDesignsInput = {
+    Admin_Name: string
+    Admin_Email: string
+    Admin_Phone: string
+    Admin_Profile?: string | null
+    Admin_Password: string
+  }
+
+  export type AdminUncheckedCreateWithoutDesignsInput = {
+    AdminId?: number
+    Admin_Name: string
+    Admin_Email: string
+    Admin_Phone: string
+    Admin_Profile?: string | null
+    Admin_Password: string
+  }
+
+  export type AdminCreateOrConnectWithoutDesignsInput = {
+    where: AdminWhereUniqueInput
+    create: XOR<AdminCreateWithoutDesignsInput, AdminUncheckedCreateWithoutDesignsInput>
   }
 
   export type Feed_BackCreateWithoutDesignInput = {
@@ -11914,26 +11936,32 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type AdminCreateWithoutDesignsInput = {
-    Admin_Name: string
-    Admin_Email: string
-    Admin_Phone: string
-    Admin_Profile?: string | null
-    Admin_Password: string
-  }
-
-  export type AdminUncheckedCreateWithoutDesignsInput = {
-    AdminId?: number
-    Admin_Name: string
-    Admin_Email: string
-    Admin_Phone: string
-    Admin_Profile?: string | null
-    Admin_Password: string
-  }
-
-  export type AdminCreateOrConnectWithoutDesignsInput = {
-    where: AdminWhereUniqueInput
+  export type AdminUpsertWithoutDesignsInput = {
+    update: XOR<AdminUpdateWithoutDesignsInput, AdminUncheckedUpdateWithoutDesignsInput>
     create: XOR<AdminCreateWithoutDesignsInput, AdminUncheckedCreateWithoutDesignsInput>
+    where?: AdminWhereInput
+  }
+
+  export type AdminUpdateToOneWithWhereWithoutDesignsInput = {
+    where?: AdminWhereInput
+    data: XOR<AdminUpdateWithoutDesignsInput, AdminUncheckedUpdateWithoutDesignsInput>
+  }
+
+  export type AdminUpdateWithoutDesignsInput = {
+    Admin_Name?: StringFieldUpdateOperationsInput | string
+    Admin_Email?: StringFieldUpdateOperationsInput | string
+    Admin_Phone?: StringFieldUpdateOperationsInput | string
+    Admin_Profile?: NullableStringFieldUpdateOperationsInput | string | null
+    Admin_Password?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AdminUncheckedUpdateWithoutDesignsInput = {
+    AdminId?: IntFieldUpdateOperationsInput | number
+    Admin_Name?: StringFieldUpdateOperationsInput | string
+    Admin_Email?: StringFieldUpdateOperationsInput | string
+    Admin_Phone?: StringFieldUpdateOperationsInput | string
+    Admin_Profile?: NullableStringFieldUpdateOperationsInput | string | null
+    Admin_Password?: StringFieldUpdateOperationsInput | string
   }
 
   export type Feed_BackUpsertWithWhereUniqueWithoutDesignInput = {
@@ -11975,34 +12003,6 @@ export namespace Prisma {
     id?: IntFilter<"OrderDesign"> | number
     orderId?: IntFilter<"OrderDesign"> | number
     designId?: IntFilter<"OrderDesign"> | number
-  }
-
-  export type AdminUpsertWithoutDesignsInput = {
-    update: XOR<AdminUpdateWithoutDesignsInput, AdminUncheckedUpdateWithoutDesignsInput>
-    create: XOR<AdminCreateWithoutDesignsInput, AdminUncheckedCreateWithoutDesignsInput>
-    where?: AdminWhereInput
-  }
-
-  export type AdminUpdateToOneWithWhereWithoutDesignsInput = {
-    where?: AdminWhereInput
-    data: XOR<AdminUpdateWithoutDesignsInput, AdminUncheckedUpdateWithoutDesignsInput>
-  }
-
-  export type AdminUpdateWithoutDesignsInput = {
-    Admin_Name?: StringFieldUpdateOperationsInput | string
-    Admin_Email?: StringFieldUpdateOperationsInput | string
-    Admin_Phone?: StringFieldUpdateOperationsInput | string
-    Admin_Profile?: NullableStringFieldUpdateOperationsInput | string | null
-    Admin_Password?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type AdminUncheckedUpdateWithoutDesignsInput = {
-    AdminId?: IntFieldUpdateOperationsInput | number
-    Admin_Name?: StringFieldUpdateOperationsInput | string
-    Admin_Email?: StringFieldUpdateOperationsInput | string
-    Admin_Phone?: StringFieldUpdateOperationsInput | string
-    Admin_Profile?: NullableStringFieldUpdateOperationsInput | string | null
-    Admin_Password?: StringFieldUpdateOperationsInput | string
   }
 
   export type CustomerCreateWithoutOrdersInput = {
@@ -12106,24 +12106,6 @@ export namespace Prisma {
     data: XOR<OrderDesignUpdateManyMutationInput, OrderDesignUncheckedUpdateManyWithoutOrderInput>
   }
 
-  export type OrderCreateWithoutDesignsInput = {
-    Order_Date?: Date | string
-    Order_Status: string
-    Customer: CustomerCreateNestedOneWithoutOrdersInput
-  }
-
-  export type OrderUncheckedCreateWithoutDesignsInput = {
-    OrderID?: number
-    CustomerId: number
-    Order_Date?: Date | string
-    Order_Status: string
-  }
-
-  export type OrderCreateOrConnectWithoutDesignsInput = {
-    where: OrderWhereUniqueInput
-    create: XOR<OrderCreateWithoutDesignsInput, OrderUncheckedCreateWithoutDesignsInput>
-  }
-
   export type DesignCreateWithoutOrdersInput = {
     Design_Name: string
     Design_Image?: DesignCreateDesign_ImageInput | string[]
@@ -12133,8 +12115,8 @@ export namespace Prisma {
     Design_BlogPosts?: DesignCreateDesign_BlogPostsInput | string[]
     Design_Sizes?: DesignCreateDesign_SizesInput | string[]
     Design_CreatedAt?: Date | string
-    FeedBacks?: Feed_BackCreateNestedManyWithoutDesignInput
     Admin: AdminCreateNestedOneWithoutDesignsInput
+    FeedBacks?: Feed_BackCreateNestedManyWithoutDesignInput
   }
 
   export type DesignUncheckedCreateWithoutOrdersInput = {
@@ -12154,6 +12136,62 @@ export namespace Prisma {
   export type DesignCreateOrConnectWithoutOrdersInput = {
     where: DesignWhereUniqueInput
     create: XOR<DesignCreateWithoutOrdersInput, DesignUncheckedCreateWithoutOrdersInput>
+  }
+
+  export type OrderCreateWithoutDesignsInput = {
+    Order_Date?: Date | string
+    Order_Status: string
+    Customer: CustomerCreateNestedOneWithoutOrdersInput
+  }
+
+  export type OrderUncheckedCreateWithoutDesignsInput = {
+    OrderID?: number
+    CustomerId: number
+    Order_Date?: Date | string
+    Order_Status: string
+  }
+
+  export type OrderCreateOrConnectWithoutDesignsInput = {
+    where: OrderWhereUniqueInput
+    create: XOR<OrderCreateWithoutDesignsInput, OrderUncheckedCreateWithoutDesignsInput>
+  }
+
+  export type DesignUpsertWithoutOrdersInput = {
+    update: XOR<DesignUpdateWithoutOrdersInput, DesignUncheckedUpdateWithoutOrdersInput>
+    create: XOR<DesignCreateWithoutOrdersInput, DesignUncheckedCreateWithoutOrdersInput>
+    where?: DesignWhereInput
+  }
+
+  export type DesignUpdateToOneWithWhereWithoutOrdersInput = {
+    where?: DesignWhereInput
+    data: XOR<DesignUpdateWithoutOrdersInput, DesignUncheckedUpdateWithoutOrdersInput>
+  }
+
+  export type DesignUpdateWithoutOrdersInput = {
+    Design_Name?: StringFieldUpdateOperationsInput | string
+    Design_Image?: DesignUpdateDesign_ImageInput | string[]
+    Design_Description?: StringFieldUpdateOperationsInput | string
+    Categories?: DesignUpdateCategoriesInput | string[]
+    Design_Colors?: DesignUpdateDesign_ColorsInput | string[]
+    Design_BlogPosts?: DesignUpdateDesign_BlogPostsInput | string[]
+    Design_Sizes?: DesignUpdateDesign_SizesInput | string[]
+    Design_CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Admin?: AdminUpdateOneRequiredWithoutDesignsNestedInput
+    FeedBacks?: Feed_BackUpdateManyWithoutDesignNestedInput
+  }
+
+  export type DesignUncheckedUpdateWithoutOrdersInput = {
+    DesignID?: IntFieldUpdateOperationsInput | number
+    Design_Name?: StringFieldUpdateOperationsInput | string
+    Design_Image?: DesignUpdateDesign_ImageInput | string[]
+    Design_Description?: StringFieldUpdateOperationsInput | string
+    Categories?: DesignUpdateCategoriesInput | string[]
+    Design_Colors?: DesignUpdateDesign_ColorsInput | string[]
+    Design_BlogPosts?: DesignUpdateDesign_BlogPostsInput | string[]
+    Design_Sizes?: DesignUpdateDesign_SizesInput | string[]
+    Design_CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    AdminId?: IntFieldUpdateOperationsInput | number
+    FeedBacks?: Feed_BackUncheckedUpdateManyWithoutDesignNestedInput
   }
 
   export type OrderUpsertWithoutDesignsInput = {
@@ -12180,50 +12218,6 @@ export namespace Prisma {
     Order_Status?: StringFieldUpdateOperationsInput | string
   }
 
-  export type DesignUpsertWithoutOrdersInput = {
-    update: XOR<DesignUpdateWithoutOrdersInput, DesignUncheckedUpdateWithoutOrdersInput>
-    create: XOR<DesignCreateWithoutOrdersInput, DesignUncheckedCreateWithoutOrdersInput>
-    where?: DesignWhereInput
-  }
-
-  export type DesignUpdateToOneWithWhereWithoutOrdersInput = {
-    where?: DesignWhereInput
-    data: XOR<DesignUpdateWithoutOrdersInput, DesignUncheckedUpdateWithoutOrdersInput>
-  }
-
-  export type DesignUpdateWithoutOrdersInput = {
-    Design_Name?: StringFieldUpdateOperationsInput | string
-    Design_Image?: DesignUpdateDesign_ImageInput | string[]
-    Design_Description?: StringFieldUpdateOperationsInput | string
-    Categories?: DesignUpdateCategoriesInput | string[]
-    Design_Colors?: DesignUpdateDesign_ColorsInput | string[]
-    Design_BlogPosts?: DesignUpdateDesign_BlogPostsInput | string[]
-    Design_Sizes?: DesignUpdateDesign_SizesInput | string[]
-    Design_CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    FeedBacks?: Feed_BackUpdateManyWithoutDesignNestedInput
-    Admin?: AdminUpdateOneRequiredWithoutDesignsNestedInput
-  }
-
-  export type DesignUncheckedUpdateWithoutOrdersInput = {
-    DesignID?: IntFieldUpdateOperationsInput | number
-    Design_Name?: StringFieldUpdateOperationsInput | string
-    Design_Image?: DesignUpdateDesign_ImageInput | string[]
-    Design_Description?: StringFieldUpdateOperationsInput | string
-    Categories?: DesignUpdateCategoriesInput | string[]
-    Design_Colors?: DesignUpdateDesign_ColorsInput | string[]
-    Design_BlogPosts?: DesignUpdateDesign_BlogPostsInput | string[]
-    Design_Sizes?: DesignUpdateDesign_SizesInput | string[]
-    Design_CreatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    AdminId?: IntFieldUpdateOperationsInput | number
-    FeedBacks?: Feed_BackUncheckedUpdateManyWithoutDesignNestedInput
-  }
-
-  export type OrderCreateManyCustomerInput = {
-    OrderID?: number
-    Order_Date?: Date | string
-    Order_Status: string
-  }
-
   export type Feed_BackCreateManyCustomerInput = {
     Feed_backId?: number
     Feed_back_comment: string
@@ -12232,23 +12226,10 @@ export namespace Prisma {
     DesignID: number
   }
 
-  export type OrderUpdateWithoutCustomerInput = {
-    Order_Date?: DateTimeFieldUpdateOperationsInput | Date | string
-    Order_Status?: StringFieldUpdateOperationsInput | string
-    Designs?: OrderDesignUpdateManyWithoutOrderNestedInput
-  }
-
-  export type OrderUncheckedUpdateWithoutCustomerInput = {
-    OrderID?: IntFieldUpdateOperationsInput | number
-    Order_Date?: DateTimeFieldUpdateOperationsInput | Date | string
-    Order_Status?: StringFieldUpdateOperationsInput | string
-    Designs?: OrderDesignUncheckedUpdateManyWithoutOrderNestedInput
-  }
-
-  export type OrderUncheckedUpdateManyWithoutCustomerInput = {
-    OrderID?: IntFieldUpdateOperationsInput | number
-    Order_Date?: DateTimeFieldUpdateOperationsInput | Date | string
-    Order_Status?: StringFieldUpdateOperationsInput | string
+  export type OrderCreateManyCustomerInput = {
+    OrderID?: number
+    Order_Date?: Date | string
+    Order_Status: string
   }
 
   export type Feed_BackUpdateWithoutCustomerInput = {
@@ -12272,6 +12253,25 @@ export namespace Prisma {
     Feed_Back_Images?: Feed_BackUpdateFeed_Back_ImagesInput | string[]
     Rating?: IntFieldUpdateOperationsInput | number
     DesignID?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type OrderUpdateWithoutCustomerInput = {
+    Order_Date?: DateTimeFieldUpdateOperationsInput | Date | string
+    Order_Status?: StringFieldUpdateOperationsInput | string
+    Designs?: OrderDesignUpdateManyWithoutOrderNestedInput
+  }
+
+  export type OrderUncheckedUpdateWithoutCustomerInput = {
+    OrderID?: IntFieldUpdateOperationsInput | number
+    Order_Date?: DateTimeFieldUpdateOperationsInput | Date | string
+    Order_Status?: StringFieldUpdateOperationsInput | string
+    Designs?: OrderDesignUncheckedUpdateManyWithoutOrderNestedInput
+  }
+
+  export type OrderUncheckedUpdateManyWithoutCustomerInput = {
+    OrderID?: IntFieldUpdateOperationsInput | number
+    Order_Date?: DateTimeFieldUpdateOperationsInput | Date | string
+    Order_Status?: StringFieldUpdateOperationsInput | string
   }
 
   export type DesignCreateManyAdminInput = {
