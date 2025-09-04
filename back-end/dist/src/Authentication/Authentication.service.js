@@ -48,34 +48,38 @@ const prisma_service_1 = require("../../prisma/prisma.service");
 const bcrypt = __importStar(require("bcrypt"));
 const Email_service_1 = require("../Emails/Email.service");
 const Email_DTO_1 = require("../Emails/Email.DTO");
+const Authentication_TokenCreate_1 = require("./Authentication.TokenCreate");
 let AuthenticationService = class AuthenticationService {
     prisma;
     emailService;
-    constructor(prisma, emailService) {
+    tokenCreate;
+    constructor(prisma, emailService, tokenCreate) {
         this.prisma = prisma;
         this.emailService = emailService;
+        this.tokenCreate = tokenCreate;
     }
     async register(authDto) {
         try {
             const hashedPassword = await bcrypt.hash(authDto.Admin_Password, 10);
-            authDto.Admin_Password = hashedPassword;
             const admin = await this.prisma.admin.create({
                 data: {
                     Admin_Name: authDto.Admin_Name,
                     Admin_Email: authDto.Admin_Email,
                     Admin_Phone: authDto.Admin_Phone,
                     Admin_Profile: authDto.Admin_Profile,
-                    Admin_Password: authDto.Admin_Password,
+                    Admin_Password: hashedPassword,
                 },
             });
             await this.emailService.sendEmail({
-                to: authDto.Admin_Email,
+                to: admin.Admin_Email,
                 template: Email_DTO_1.EmailTemplate.WELCOME,
-                context: {
-                    name: authDto.Admin_Name,
-                },
+                context: { name: admin.Admin_Name },
             });
-            return { message: 'Admin registered successfully', admin };
+            if (!this.tokenCreate) {
+                throw new common_1.BadRequestException('Token creation service is not available');
+            }
+            const token = this.tokenCreate.createToken(admin);
+            return { message: 'Admin registered successfully', admin, token };
         }
         catch (error) {
             throw new common_1.BadRequestException('Error registering admin');
@@ -86,6 +90,7 @@ exports.AuthenticationService = AuthenticationService;
 exports.AuthenticationService = AuthenticationService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService,
-        Email_service_1.EmailService])
+        Email_service_1.EmailService,
+        Authentication_TokenCreate_1.TokenCreate])
 ], AuthenticationService);
 //# sourceMappingURL=Authentication.service.js.map

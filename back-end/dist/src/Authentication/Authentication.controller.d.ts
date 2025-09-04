@@ -13,5 +13,6 @@ export declare class AuthenticationController {
             Admin_Password: string;
             AdminId: number;
         };
+        token: string;
     }>;
 }

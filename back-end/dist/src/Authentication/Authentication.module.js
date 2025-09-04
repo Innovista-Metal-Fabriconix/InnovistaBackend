@@ -13,6 +13,7 @@ const config_1 = require("@nestjs/config");
 const Authentication_service_1 = require("./Authentication.service");
 const Authentication_controller_1 = require("./Authentication.controller");
 const Email_module_1 = require("../Emails/Email.module");
+const Authentication_TokenCreate_1 = require("./Authentication.TokenCreate");
 let AuthenticationModule = class AuthenticationModule {
 };
 exports.AuthenticationModule = AuthenticationModule;
@@ -20,7 +21,8 @@ exports.AuthenticationModule = AuthenticationModule = __decorate([
     (0, common_1.Module)({
         imports: [prisma_module_1.PrismaModule, config_1.ConfigModule.forRoot(), Email_module_1.EmailModule],
         controllers: [Authentication_controller_1.AuthenticationController],
-        providers: [Authentication_service_1.AuthenticationService],
+        providers: [Authentication_service_1.AuthenticationService, Authentication_TokenCreate_1.TokenCreate],
+        exports: [Authentication_TokenCreate_1.TokenCreate],
     })
 ], AuthenticationModule);
 //# sourceMappingURL=Authentication.module.js.map
