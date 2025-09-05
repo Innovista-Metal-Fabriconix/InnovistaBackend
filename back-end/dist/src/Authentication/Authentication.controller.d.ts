@@ -6,12 +6,12 @@ export declare class AuthenticationController {
     register(authDto: AuthDTO): Promise<{
         message: string;
         admin: {
+            AdminId: number;
             Admin_Name: string;
             Admin_Email: string;
             Admin_Phone: string;
             Admin_Profile: string | null;
             Admin_Password: string;
-            AdminId: number;
         };
         token: string;
     }>;
