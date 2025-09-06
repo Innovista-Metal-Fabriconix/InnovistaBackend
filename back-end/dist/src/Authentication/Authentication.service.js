@@ -198,6 +198,15 @@ let AuthenticationService = class AuthenticationService {
             throw new common_1.BadRequestException('Error during password reset');
         }
     }
+    async GetallAdmins() {
+        try {
+            const admins = await this.prisma.admin.findMany();
+            return admins;
+        }
+        catch (error) {
+            throw new common_1.BadRequestException('Error while fetching admins');
+        }
+    }
 };
 exports.AuthenticationService = AuthenticationService;
 exports.AuthenticationService = AuthenticationService = __decorate([

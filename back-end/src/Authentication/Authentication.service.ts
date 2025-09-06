@@ -179,4 +179,14 @@ export class AuthenticationService {
       throw new BadRequestException('Error during password reset');
     }
   }
+
+  async GetallAdmins(){
+    try{
+      const admins = await this.prisma.admin.findMany();
+      return admins;
+    }catch(error){
+      throw new BadRequestException('Error while fetching admins');
+    }
+  }
+
 }

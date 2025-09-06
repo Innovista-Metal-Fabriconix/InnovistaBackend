@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards, Query, Req } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, Query, Req, Get } from '@nestjs/common';
 import { AuthenticationService } from './Authentication.service';
 import { AuthDTO } from './DTO/Authentication.DTO';
 import { AdminAuthGuard } from './Authentication.AdminAuthgurd';
@@ -36,4 +36,11 @@ export class AuthenticationController {
   async forgotPassword(@Req() req, @Query('newPassword') newPassword: string) {
     return this.authService.passwordReset(req.user.email, newPassword);
   }
+  
+  @UseGuards(AdminAuthGuard)
+  @Get("getAllAdmins")
+  async getAllAdmins(){
+    return this.authService.GetallAdmins();
+  }
+
 }
