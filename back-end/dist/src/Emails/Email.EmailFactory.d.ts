@@ -4,5 +4,6 @@ export declare class EmailTemplateFactory {
         subject: string;
         template: string;
         context: any;
+        body: string;
     };
 }

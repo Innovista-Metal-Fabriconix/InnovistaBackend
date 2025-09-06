@@ -21,6 +21,7 @@ class EmailDTO {
     to;
     template;
     context;
+    body;
 }
 exports.EmailDTO = EmailDTO;
 __decorate([
@@ -37,4 +38,8 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Object)
 ], EmailDTO.prototype, "context", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], EmailDTO.prototype, "body", void 0);
 //# sourceMappingURL=Email.DTO.js.map

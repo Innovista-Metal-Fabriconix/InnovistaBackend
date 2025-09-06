@@ -10,13 +10,41 @@ export declare class AuthenticationService {
     register(authDto: AuthDTO): Promise<{
         message: string;
         admin: {
-            AdminId: number;
             Admin_Name: string;
             Admin_Email: string;
             Admin_Phone: string;
             Admin_Profile: string | null;
             Admin_Password: string;
+            AdminId: number;
         };
-        token: string;
+        tokens: {
+            accessToken: string;
+            refreshToken: string;
+        };
+    }>;
+    login(email: string, password: string): Promise<{
+        message: string;
+        admin: {
+            Admin_Name: string;
+            Admin_Email: string;
+            Admin_Phone: string;
+            Admin_Profile: string | null;
+            Admin_Password: string;
+            AdminId: number;
+        };
+        tokens: {
+            accessToken: string;
+            refreshToken: string;
+        };
+    }>;
+    refreshAccessToken(refreshToken: string): Promise<{
+        accessToken: string;
+        refreshToken: string;
+    }>;
+    logout(adminId: number): Promise<{
+        message: string;
+    }>;
+    passwordReset(email: string, newPassword: string): Promise<{
+        message: string;
     }>;
 }

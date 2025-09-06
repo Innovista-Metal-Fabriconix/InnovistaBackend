@@ -21,21 +21,29 @@ let TokenCreate = class TokenCreate {
         if (!process.env.JWT_PRIVATE_KEY) {
             throw new common_1.InternalServerErrorException('JWT_PRIVATE_KEY environment variable is not set');
         }
-        this.privateKey = process.env.JWT_PRIVATE_KEY.replace(/\\n/g, '\n');
+        this.privateKey = process.env.JWT_PRIVATE_KEY;
     }
-    createToken(admin) {
+    createTokens(admin) {
         const payload = {
-            AdminId: admin.AdminId,
-            Admin_Name: admin.Admin_Name,
-            Admin_Email: admin.Admin_Email,
-            Admin_Phone: admin.Admin_Phone,
-            Admin_Profile: admin.Admin_Profile,
+            sub: admin.AdminId,
+            email: admin.Admin_Email,
+            name: admin.Admin_Name,
+            phone: admin.Admin_Phone,
+            profile: admin.Admin_Profile,
             role: 'Admin',
         };
-        return jsonwebtoken_1.default.sign(payload, this.privateKey, {
+        const accessToken = jsonwebtoken_1.default.sign(payload, this.privateKey, {
             algorithm: 'HS256',
             expiresIn: '1h',
         });
+        const refreshToken = jsonwebtoken_1.default.sign({ sub: admin.AdminId }, this.privateKey, {
+            algorithm: 'HS256',
+            expiresIn: '7d',
+        });
+        return { accessToken, refreshToken };
+    }
+    verifyToken(token) {
+        return jsonwebtoken_1.default.verify(token, this.privateKey);
     }
 };
 exports.TokenCreate = TokenCreate;

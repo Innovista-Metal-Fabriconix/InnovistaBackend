@@ -18,7 +18,7 @@ let TokenValidationStrategy = class TokenValidationStrategy extends (0, passport
         super({
             jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreExpiration: false,
-            secretOrKey: process.env.JWT_SECRET || 'supersecret',
+            secretOrKey: process.env.JWT_PRIVATE_KEY,
         });
     }
     async validate(payload) {

@@ -12,30 +12,33 @@ export class TokenCreate {
       );
     }
 
-    // Replace escaped newlines if needed
-    this.privateKey = process.env.JWT_PRIVATE_KEY.replace(/\\n/g, '\n');
+    this.privateKey = process.env.JWT_PRIVATE_KEY;
   }
 
-  createToken(admin: any): string {
+  createTokens(admin: any) {
     const payload = {
-      AdminId: admin.AdminId,
-      Admin_Name: admin.Admin_Name,
-      Admin_Email: admin.Admin_Email,
-      Admin_Phone: admin.Admin_Phone,
-      Admin_Profile: admin.Admin_Profile,
+      sub: admin.AdminId,
+      email: admin.Admin_Email,
+      name: admin.Admin_Name,
+      phone: admin.Admin_Phone,
+      profile: admin.Admin_Profile,
       role: 'Admin',
     };
 
-
-     // Uncomment the following line to use RS256 algorithm with an RSA private key
-    //    return jwt.sign(payload, this.privateKey, {
-    //     algorithm: 'RS256',
-    //     expiresIn: '1h',
-    //   });
-
-    return jwt.sign(payload, this.privateKey, {
+    const accessToken = jwt.sign(payload, this.privateKey, {
       algorithm: 'HS256',
       expiresIn: '1h',
     });
+
+    const refreshToken = jwt.sign({ sub: admin.AdminId }, this.privateKey, {
+      algorithm: 'HS256',
+      expiresIn: '7d',
+    });
+
+    return { accessToken, refreshToken };
+  }
+
+  verifyToken(token: string) {
+    return jwt.verify(token, this.privateKey);
   }
 }

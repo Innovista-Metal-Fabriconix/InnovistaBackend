@@ -7,4 +7,5 @@ export declare class EmailDTO {
     to: string;
     template: EmailTemplate;
     context?: any;
+    body?: string;
 }

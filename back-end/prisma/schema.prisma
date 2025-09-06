@@ -22,13 +22,23 @@ model Customer {
 }
 
 model Admin {
-  AdminId        Int      @id @default(autoincrement())
+  AdminId        Int           @id @default(autoincrement())
   Admin_Name     String
-  Admin_Email    String   @unique
+  Admin_Email    String        @unique
   Admin_Phone    String
   Admin_Profile  String?
   Admin_Password String
   Designs        Design[]
+  RefreshToken   RefreshToken?
+}
+
+model RefreshToken {
+  id       Int      @id @default(autoincrement())
+  adminId  Int      @unique
+  token    String
+  issuedAt DateTime
+  expiryAt DateTime
+  Admin    Admin    @relation(fields: [adminId], references: [AdminId])
 }
 
 model Feed_Back {

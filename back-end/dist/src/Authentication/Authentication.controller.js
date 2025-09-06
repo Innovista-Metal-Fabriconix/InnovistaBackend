@@ -16,6 +16,7 @@ exports.AuthenticationController = void 0;
 const common_1 = require("@nestjs/common");
 const Authentication_service_1 = require("./Authentication.service");
 const Authentication_DTO_1 = require("./DTO/Authentication.DTO");
+const Authentication_AdminAuthgurd_1 = require("./Authentication.AdminAuthgurd");
 let AuthenticationController = class AuthenticationController {
     authService;
     constructor(authService) {
@@ -24,17 +25,61 @@ let AuthenticationController = class AuthenticationController {
     async register(authDto) {
         return this.authService.register(authDto);
     }
+    async login(email, password) {
+        return this.authService.login(email, password);
+    }
+    async refresh(refreshToken) {
+        return this.authService.refreshAccessToken(refreshToken);
+    }
+    async logout(adminId) {
+        return this.authService.logout(Number(adminId));
+    }
+    async forgotPassword(req, newPassword) {
+        return this.authService.passwordReset(req.user.email, newPassword);
+    }
 };
 exports.AuthenticationController = AuthenticationController;
 __decorate([
-    (0, common_1.Post)("register"),
+    (0, common_1.UseGuards)(Authentication_AdminAuthgurd_1.AdminAuthGuard),
+    (0, common_1.Post)('register'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Authentication_DTO_1.AuthDTO]),
     __metadata("design:returntype", Promise)
 ], AuthenticationController.prototype, "register", null);
+__decorate([
+    (0, common_1.Post)('login'),
+    __param(0, (0, common_1.Query)('email')),
+    __param(1, (0, common_1.Query)('password')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", Promise)
+], AuthenticationController.prototype, "login", null);
+__decorate([
+    (0, common_1.Post)('refresh'),
+    __param(0, (0, common_1.Query)('refreshToken')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], AuthenticationController.prototype, "refresh", null);
+__decorate([
+    (0, common_1.Post)('logout'),
+    __param(0, (0, common_1.Query)('adminId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], AuthenticationController.prototype, "logout", null);
+__decorate([
+    (0, common_1.UseGuards)(Authentication_AdminAuthgurd_1.AdminAuthGuard),
+    (0, common_1.Post)('forgot-password'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Query)('newPassword')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", Promise)
+], AuthenticationController.prototype, "forgotPassword", null);
 exports.AuthenticationController = AuthenticationController = __decorate([
-    (0, common_1.Controller)("auth"),
+    (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [Authentication_service_1.AuthenticationService])
 ], AuthenticationController);
 //# sourceMappingURL=Authentication.controller.js.map
