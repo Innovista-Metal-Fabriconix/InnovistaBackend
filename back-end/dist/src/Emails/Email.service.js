@@ -19,12 +19,13 @@ let EmailService = class EmailService {
         this.mailerService = mailerService;
     }
     async sendEmail(emailDto) {
-        const { subject, template, context } = Email_EmailFactory_1.EmailTemplateFactory.create(emailDto.template, emailDto.context);
+        const { subject, template, context, body } = Email_EmailFactory_1.EmailTemplateFactory.create(emailDto.template, emailDto.context);
         await this.mailerService.sendMail({
             to: emailDto.to,
             subject,
             template,
             context,
+            text: body,
         });
     }
 };

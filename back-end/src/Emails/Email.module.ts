@@ -15,11 +15,11 @@ import { EmailService } from './Email.service';
         },
       },
       defaults: {
-        from: '"No Reply" <no-reply@example.com>',
+        from: `"Your App" <${process.env.MAIL_FROM}>`,
       },
     }),
   ],
   providers: [EmailService],
-  exports: [EmailService], 
+  exports: [EmailService],
 })
 export class EmailModule {}

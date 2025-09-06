@@ -23,4 +23,7 @@ export class EmailDTO {
 
   @IsOptional()
   context?: any;
+
+  @IsOptional()
+  body?: string;
 }

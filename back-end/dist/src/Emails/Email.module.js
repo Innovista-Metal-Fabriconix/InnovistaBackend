@@ -26,7 +26,7 @@ exports.EmailModule = EmailModule = __decorate([
                     },
                 },
                 defaults: {
-                    from: '"No Reply" <no-reply@example.com>',
+                    from: `"Your App" <${process.env.MAIL_FROM}>`,
                 },
             }),
         ],

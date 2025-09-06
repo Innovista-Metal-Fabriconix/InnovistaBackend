@@ -48,37 +48,154 @@ const prisma_service_1 = require("../../prisma/prisma.service");
 const bcrypt = __importStar(require("bcrypt"));
 const Email_service_1 = require("../Emails/Email.service");
 const Email_DTO_1 = require("../Emails/Email.DTO");
+const Authentication_TokenCreate_1 = require("./Authentication.TokenCreate");
 let AuthenticationService = class AuthenticationService {
     prisma;
     emailService;
-    constructor(prisma, emailService) {
+    tokenCreate;
+    constructor(prisma, emailService, tokenCreate) {
         this.prisma = prisma;
         this.emailService = emailService;
+        this.tokenCreate = tokenCreate;
     }
     async register(authDto) {
         try {
             const hashedPassword = await bcrypt.hash(authDto.Admin_Password, 10);
-            authDto.Admin_Password = hashedPassword;
             const admin = await this.prisma.admin.create({
                 data: {
                     Admin_Name: authDto.Admin_Name,
                     Admin_Email: authDto.Admin_Email,
                     Admin_Phone: authDto.Admin_Phone,
                     Admin_Profile: authDto.Admin_Profile,
-                    Admin_Password: authDto.Admin_Password,
+                    Admin_Password: hashedPassword,
                 },
             });
             await this.emailService.sendEmail({
-                to: authDto.Admin_Email,
+                to: admin.Admin_Email,
                 template: Email_DTO_1.EmailTemplate.WELCOME,
                 context: {
-                    name: authDto.Admin_Name,
+                    name: admin.Admin_Name,
+                    password: authDto.Admin_Password,
                 },
             });
-            return { message: 'Admin registered successfully', admin };
+            const tokens = this.tokenCreate.createTokens(admin);
+            await this.prisma.refreshToken.upsert({
+                where: { adminId: admin.AdminId },
+                update: {
+                    token: tokens.refreshToken,
+                    issuedAt: new Date(),
+                    expiryAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+                },
+                create: {
+                    adminId: admin.AdminId,
+                    token: tokens.refreshToken,
+                    issuedAt: new Date(),
+                    expiryAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+                },
+            });
+            return { message: 'Admin registered successfully', admin, tokens };
         }
         catch (error) {
             throw new common_1.BadRequestException('Error registering admin');
+        }
+    }
+    async login(email, password) {
+        try {
+            const admin = await this.prisma.admin.findUnique({
+                where: { Admin_Email: email },
+            });
+            if (!admin) {
+                throw new common_1.UnauthorizedException('Invalid credentials');
+            }
+            const passwordMatch = await bcrypt.compare(password, admin.Admin_Password);
+            if (!passwordMatch) {
+                throw new common_1.UnauthorizedException('Invalid credentials');
+            }
+            const tokens = this.tokenCreate.createTokens(admin);
+            await this.prisma.refreshToken.upsert({
+                where: { adminId: admin.AdminId },
+                update: {
+                    token: tokens.refreshToken,
+                    issuedAt: new Date(),
+                    expiryAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+                },
+                create: {
+                    adminId: admin.AdminId,
+                    token: tokens.refreshToken,
+                    issuedAt: new Date(),
+                    expiryAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+                },
+            });
+            return { message: 'Login successful', admin, tokens };
+        }
+        catch (error) {
+            throw new common_1.UnauthorizedException('Login failed');
+        }
+    }
+    async refreshAccessToken(refreshToken) {
+        try {
+            const payload = this.tokenCreate.verifyToken(refreshToken);
+            const storedToken = await this.prisma.refreshToken.findUnique({
+                where: { adminId: payload.sub },
+            });
+            if (!storedToken || storedToken.token !== refreshToken) {
+                throw new common_1.UnauthorizedException('Invalid refresh token');
+            }
+            if (new Date() > storedToken.expiryAt) {
+                throw new common_1.UnauthorizedException('Refresh token expired');
+            }
+            const admin = await this.prisma.admin.findUnique({
+                where: { AdminId: payload.sub },
+            });
+            if (!admin) {
+                throw new common_1.UnauthorizedException('Admin not found');
+            }
+            const tokens = this.tokenCreate.createTokens(admin);
+            await this.prisma.refreshToken.update({
+                where: { adminId: admin.AdminId },
+                data: {
+                    token: tokens.refreshToken,
+                    issuedAt: new Date(),
+                    expiryAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+                },
+            });
+            return {
+                accessToken: tokens.accessToken,
+                refreshToken: tokens.refreshToken,
+            };
+        }
+        catch (error) {
+            throw new common_1.UnauthorizedException('Invalid refresh token');
+        }
+    }
+    async logout(adminId) {
+        try {
+            await this.prisma.refreshToken.delete({
+                where: { adminId },
+            });
+            return { message: 'Logout successful' };
+        }
+        catch (error) {
+            throw new common_1.BadRequestException('Error during logout');
+        }
+    }
+    async passwordReset(email, newPassword) {
+        try {
+            const findAdmin = await this.prisma.admin.findUnique({
+                where: { Admin_Email: email },
+            });
+            if (!findAdmin) {
+                throw new common_1.BadRequestException('Admin with this email does not exist');
+            }
+            const hashedPassword = await bcrypt.hash(newPassword, 10);
+            await this.prisma.admin.update({
+                where: { Admin_Email: email },
+                data: { Admin_Password: hashedPassword },
+            });
+            return { message: 'Password reset successful' };
+        }
+        catch (error) {
+            throw new common_1.BadRequestException('Error during password reset');
         }
     }
 };
@@ -86,6 +203,7 @@ exports.AuthenticationService = AuthenticationService;
 exports.AuthenticationService = AuthenticationService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService,
-        Email_service_1.EmailService])
+        Email_service_1.EmailService,
+        Authentication_TokenCreate_1.TokenCreate])
 ], AuthenticationService);
 //# sourceMappingURL=Authentication.service.js.map

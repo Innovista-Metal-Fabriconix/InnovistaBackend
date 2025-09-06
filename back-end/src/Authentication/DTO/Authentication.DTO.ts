@@ -33,3 +33,14 @@ export class AuthDTO {
     public Admin_Password: string;
 
 }
+
+export class ChangepasswordDTO{
+
+    @IsNotEmpty()
+    @IsString()
+    public Admin_Password: string;
+
+    @IsNotEmpty()
+    @IsEmail()
+    public Admin_Email: string;
+}
