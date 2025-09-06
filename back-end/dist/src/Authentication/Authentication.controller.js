@@ -37,6 +37,9 @@ let AuthenticationController = class AuthenticationController {
     async forgotPassword(req, newPassword) {
         return this.authService.passwordReset(req.user.email, newPassword);
     }
+    async getAllAdmins() {
+        return this.authService.GetallAdmins();
+    }
 };
 exports.AuthenticationController = AuthenticationController;
 __decorate([
@@ -78,6 +81,13 @@ __decorate([
     __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
 ], AuthenticationController.prototype, "forgotPassword", null);
+__decorate([
+    (0, common_1.UseGuards)(Authentication_AdminAuthgurd_1.AdminAuthGuard),
+    (0, common_1.Get)("getAllAdmins"),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], AuthenticationController.prototype, "getAllAdmins", null);
 exports.AuthenticationController = AuthenticationController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [Authentication_service_1.AuthenticationService])

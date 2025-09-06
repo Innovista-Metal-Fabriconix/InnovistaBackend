@@ -10,12 +10,12 @@ export declare class AuthenticationService {
     register(authDto: AuthDTO): Promise<{
         message: string;
         admin: {
+            AdminId: number;
             Admin_Name: string;
             Admin_Email: string;
             Admin_Phone: string;
             Admin_Profile: string | null;
             Admin_Password: string;
-            AdminId: number;
         };
         tokens: {
             accessToken: string;
@@ -25,12 +25,12 @@ export declare class AuthenticationService {
     login(email: string, password: string): Promise<{
         message: string;
         admin: {
+            AdminId: number;
             Admin_Name: string;
             Admin_Email: string;
             Admin_Phone: string;
             Admin_Profile: string | null;
             Admin_Password: string;
-            AdminId: number;
         };
         tokens: {
             accessToken: string;
@@ -47,4 +47,12 @@ export declare class AuthenticationService {
     passwordReset(email: string, newPassword: string): Promise<{
         message: string;
     }>;
+    GetallAdmins(): Promise<{
+        AdminId: number;
+        Admin_Name: string;
+        Admin_Email: string;
+        Admin_Phone: string;
+        Admin_Profile: string | null;
+        Admin_Password: string;
+    }[]>;
 }
