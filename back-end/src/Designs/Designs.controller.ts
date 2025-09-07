@@ -1,4 +1,4 @@
-import { Body,Controller, Post, UseGuards, Query, Req, Get, Delete} from "@nestjs/common";
+import { Body,Controller, Post, UseGuards, Query, Req, Get, Delete, Put} from "@nestjs/common";
 import { DesignsService } from "./Designs.service";
 import { DesignDTO } from "./Designs.DTO";
 import { AdminAuthGuard } from "../Authentication/Authentication.AdminAuthgurd";
@@ -25,6 +25,13 @@ export class DesignsController {
   async deleteDesigns(@Query('designId') designId: string, @Req() req) {
     const AdminId = req.user.userId;
     return this.designsService.deleteDesign(parseInt(designId, 10), AdminId);
+  }
+
+  @UseGuards(AdminAuthGuard)
+  @Put("updateDesign")
+  async updateDesigns( @Body() designDto: DesignDTO, @Req() req) {
+    const AdminId = req.user.userId;
+    return this.designsService.updateDesign(designDto, AdminId);
   }
 
 }

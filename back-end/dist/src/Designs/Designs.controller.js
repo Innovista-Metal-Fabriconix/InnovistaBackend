@@ -33,6 +33,10 @@ let DesignsController = class DesignsController {
         const AdminId = req.user.userId;
         return this.designsService.deleteDesign(parseInt(designId, 10), AdminId);
     }
+    async updateDesigns(designDto, req) {
+        const AdminId = req.user.userId;
+        return this.designsService.updateDesign(designDto, AdminId);
+    }
 };
 exports.DesignsController = DesignsController;
 __decorate([
@@ -59,6 +63,15 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], DesignsController.prototype, "deleteDesigns", null);
+__decorate([
+    (0, common_1.UseGuards)(Authentication_AdminAuthgurd_1.AdminAuthGuard),
+    (0, common_1.Put)("updateDesign"),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Designs_DTO_1.DesignDTO, Object]),
+    __metadata("design:returntype", Promise)
+], DesignsController.prototype, "updateDesigns", null);
 exports.DesignsController = DesignsController = __decorate([
     (0, common_1.Controller)("designs"),
     __metadata("design:paramtypes", [Designs_service_1.DesignsService])

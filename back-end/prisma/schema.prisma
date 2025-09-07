@@ -15,8 +15,8 @@ model Customer {
   Cus_CompanyName String?
   Cus_Logo        String?
   Verify_State    Boolean     @default(false)
-  Purchase_Goods  String?
   Cus_Password    String
+  Purchase_Goods  String[]
   FeedBacks       Feed_Back[]
   Orders          Order[]
 }
@@ -79,19 +79,24 @@ model Design {
 }
 
 model Order {
-  OrderID      Int           @id @default(autoincrement())
-  CustomerId   Int
-  Order_Date   DateTime      @default(now())
-  Order_Status String
-  Customer     Customer      @relation(fields: [CustomerId], references: [CustomerId])
-  Designs      OrderDesign[]
+  OrderID       Int           @id @default(autoincrement())
+  CustomerId    Int?
+  Order_Date    DateTime      @default(now())
+  Order_Status  String
+  Client_Name   String?
+  Client_Email  String?
+  Client_Number String?
+  Customer      Customer?     @relation(fields: [CustomerId], references: [CustomerId])
+  Designs       OrderDesign[]
 }
 
-/// Junction table for Many-to-Many relation between Orders and Designs
+/// Join table for many-to-many between Order and Design
 model OrderDesign {
   id       Int    @id @default(autoincrement())
   orderId  Int
   designId Int
-  design   Design @relation(fields: [designId], references: [DesignID])
-  order    Order  @relation(fields: [orderId], references: [OrderID])
+  Design   Design @relation(fields: [designId], references: [DesignID])
+  Order    Order  @relation(fields: [orderId], references: [OrderID])
+
+  @@unique([orderId, designId])
 }

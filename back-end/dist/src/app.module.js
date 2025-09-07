@@ -11,12 +11,22 @@ const common_1 = require("@nestjs/common");
 const Authentication_module_1 = require("./Authentication/Authentication.module");
 const Email_module_1 = require("./Emails/Email.module");
 const Designs_module_1 = require("./Designs/Designs.module");
+const Customer_module_1 = require("./Customer/Customer.module");
+const Feedback_module_1 = require("./Feedback/Feedback.module");
+const Order_module_1 = require("./Order/Order.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [Authentication_module_1.AuthenticationModule, Email_module_1.EmailModule, Designs_module_1.DesignsModule],
+        imports: [
+            Authentication_module_1.AuthenticationModule,
+            Email_module_1.EmailModule,
+            Designs_module_1.DesignsModule,
+            Customer_module_1.CustomerModule,
+            Feedback_module_1.FeedbackModule,
+            Order_module_1.OrderModule,
+        ],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map
