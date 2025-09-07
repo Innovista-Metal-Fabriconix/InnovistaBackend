@@ -1,3 +1,4 @@
+// Order.DTO.ts
 import {
   IsEmail,
   IsNotEmpty,
@@ -6,9 +7,17 @@ import {
   IsString,
   IsArray,
   IsDate,
-} from "class-validator";
-import { CustomerDTO } from "../Customer/Customer.DTO";
-import { DesignDTO } from "../Designs/Designs.DTO";
+  IsEnum,
+} from 'class-validator';
+import { CustomerDTO } from '../Customer/Customer.DTO';
+import { DesignDTO } from '../Designs/Designs.DTO';
+
+export enum OrderStatus {
+  PENDING = 'PENDING',
+  SEND = 'SEND',
+  VIEWORDER = 'VIEWORDER',
+  COMPLETED = 'COMPLETED',
+}
 
 export class OrderDTO {
   @IsNumber()
@@ -23,9 +32,9 @@ export class OrderDTO {
   @IsOptional()
   Order_Date?: Date;
 
-  @IsString()
+  @IsEnum(OrderStatus)
   @IsNotEmpty()
-  Order_Status: string;
+  Order_Status: OrderStatus;
 
   @IsString()
   @IsOptional()
@@ -39,10 +48,8 @@ export class OrderDTO {
   @IsOptional()
   Client_Number?: string;
 
-
   @IsOptional()
   Customer?: CustomerDTO;
-
 
   @IsArray()
   @IsOptional()

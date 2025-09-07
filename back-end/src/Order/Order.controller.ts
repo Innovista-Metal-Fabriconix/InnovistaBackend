@@ -7,4 +7,19 @@ import { AdminAuthGuard } from "../Authentication/Authentication.AdminAuthgurd";
 @Controller("order")
 export class OrderController {
   constructor(private orderService: OrderService) {}
+
+  @Post("createOrder")
+  async createOrder(@Body() orderDto: OrderDTO) {
+    return this.orderService.createOrder(orderDto);
+  }
+
+  @Get("getAllOrders")
+  async getAllOrders() {
+    return this.orderService.getAllOrders();
+  }
+
+  @Get("getOrderById")
+  async getOrderById(@Query("id") orderId: string) {
+    return this.orderService.getOrderById(parseInt(orderId , 10));
+  }
 }

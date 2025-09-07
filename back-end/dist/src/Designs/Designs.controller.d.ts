@@ -7,6 +7,7 @@ export declare class DesignsController {
         message: string;
         design: {
             AdminId: number;
+            DesignID: number;
             Design_Name: string;
             Design_Image: string[];
             Design_Description: string;
@@ -15,11 +16,11 @@ export declare class DesignsController {
             Design_BlogPosts: string[];
             Design_Sizes: string[];
             Design_CreatedAt: Date;
-            DesignID: number;
         };
     }>;
     getAllDesigns(): Promise<{
         AdminId: number;
+        DesignID: number;
         Design_Name: string;
         Design_Image: string[];
         Design_Description: string;
@@ -28,12 +29,12 @@ export declare class DesignsController {
         Design_BlogPosts: string[];
         Design_Sizes: string[];
         Design_CreatedAt: Date;
-        DesignID: number;
     }[]>;
     deleteDesigns(designId: string, req: any): Promise<{
         message: string;
         design: {
             AdminId: number;
+            DesignID: number;
             Design_Name: string;
             Design_Image: string[];
             Design_Description: string;
@@ -42,13 +43,13 @@ export declare class DesignsController {
             Design_BlogPosts: string[];
             Design_Sizes: string[];
             Design_CreatedAt: Date;
-            DesignID: number;
         };
     }>;
     updateDesigns(designDto: DesignDTO, req: any): Promise<{
         message: string;
         design: {
             AdminId: number;
+            DesignID: number;
             Design_Name: string;
             Design_Image: string[];
             Design_Description: string;
@@ -57,7 +58,6 @@ export declare class DesignsController {
             Design_BlogPosts: string[];
             Design_Sizes: string[];
             Design_CreatedAt: Date;
-            DesignID: number;
         };
     }>;
 }

@@ -9,9 +9,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OrderDTO = void 0;
+exports.OrderDTO = exports.OrderStatus = void 0;
 const class_validator_1 = require("class-validator");
 const Customer_DTO_1 = require("../Customer/Customer.DTO");
+var OrderStatus;
+(function (OrderStatus) {
+    OrderStatus["PENDING"] = "PENDING";
+    OrderStatus["SEND"] = "SEND";
+    OrderStatus["VIEWORDER"] = "VIEWORDER";
+    OrderStatus["COMPLETED"] = "COMPLETED";
+})(OrderStatus || (exports.OrderStatus = OrderStatus = {}));
 class OrderDTO {
     OrderID;
     CustomerId;
@@ -40,7 +47,7 @@ __decorate([
     __metadata("design:type", Date)
 ], OrderDTO.prototype, "Order_Date", void 0);
 __decorate([
-    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsEnum)(OrderStatus),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], OrderDTO.prototype, "Order_Status", void 0);

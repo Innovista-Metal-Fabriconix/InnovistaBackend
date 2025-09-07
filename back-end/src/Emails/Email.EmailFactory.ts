@@ -22,7 +22,7 @@ export class EmailTemplateFactory {
           subject: "Your Order is Confirmed",
           template: "order-confirmation",
           context,
-           body: `Hello ${context.name},\n\nWelcome to our app! Your temporary password is: ${context.password}\n\nPlease change your password after logging in.`,
+          body: `Hello check the order details ${context.order}.`,
         };
 
       case EmailTemplate.CUSTOMER_WELCOME:
