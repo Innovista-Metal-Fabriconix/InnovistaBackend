@@ -72,6 +72,33 @@ let DesignsService = class DesignsService {
             throw new common_1.BadRequestException('Failed to delete design: ' + error.message);
         }
     }
+    async updateDesign(designDto, AdminId) {
+        try {
+            const admin = await this.prisma.admin.findUnique({
+                where: { AdminId: AdminId },
+            });
+            if (!admin) {
+                throw new common_1.UnauthorizedException('Admin not found');
+            }
+            const design = await this.prisma.design.update({
+                where: { DesignID: designDto.DesignID },
+                data: {
+                    Design_Name: designDto.Design_Name,
+                    Design_Image: designDto.Design_Image,
+                    Design_Description: designDto.Design_Description,
+                    Categories: designDto.Categories,
+                    Design_Colors: designDto.Design_Colors,
+                    Design_BlogPosts: designDto.Design_BlogPosts,
+                    Design_Sizes: designDto.Design_Sizes,
+                },
+            });
+            return { message: 'Design updated successfully', design };
+        }
+        catch (error) {
+            console.error('Prisma error:', error);
+            throw new common_1.BadRequestException('Failed to update design: ' + error.message);
+        }
+    }
 };
 exports.DesignsService = DesignsService;
 exports.DesignsService = DesignsService = __decorate([

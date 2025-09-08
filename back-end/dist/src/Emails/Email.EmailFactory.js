@@ -24,7 +24,21 @@ class EmailTemplateFactory {
                     subject: "Your Order is Confirmed",
                     template: "order-confirmation",
                     context,
+                    body: `Hello check the order details ${context.order}.`,
+                };
+            case Email_DTO_1.EmailTemplate.CUSTOMER_WELCOME:
+                return {
+                    subject: "Welcome to Our Service!",
+                    template: "customer-welcome",
+                    context,
                     body: `Hello ${context.name},\n\nWelcome to our app! Your temporary password is: ${context.password}\n\nPlease change your password after logging in.`,
+                };
+            case Email_DTO_1.EmailTemplate.CUSTOMER_REMOVE:
+                return {
+                    subject: "Account Removal Notification",
+                    template: "customer-remove",
+                    context,
+                    body: `Hello ${context.name},\n\nYour account has been removed from our service. If you have any questions, please contact support.`,
                 };
             default:
                 throw new Error(`Unknown email template: ${template}`);

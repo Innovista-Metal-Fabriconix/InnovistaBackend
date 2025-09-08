@@ -6,6 +6,8 @@ export declare class DesignsService {
     createDesign(designDto: DesignDTO, AdminId: number): Promise<{
         message: string;
         design: {
+            AdminId: number;
+            DesignID: number;
             Design_Name: string;
             Design_Image: string[];
             Design_Description: string;
@@ -14,11 +16,11 @@ export declare class DesignsService {
             Design_BlogPosts: string[];
             Design_Sizes: string[];
             Design_CreatedAt: Date;
-            DesignID: number;
-            AdminId: number;
         };
     }>;
     getAllDesigns(): Promise<{
+        AdminId: number;
+        DesignID: number;
         Design_Name: string;
         Design_Image: string[];
         Design_Description: string;
@@ -27,12 +29,12 @@ export declare class DesignsService {
         Design_BlogPosts: string[];
         Design_Sizes: string[];
         Design_CreatedAt: Date;
-        DesignID: number;
-        AdminId: number;
     }[]>;
     deleteDesign(designId: number, AdminId: number): Promise<{
         message: string;
         design: {
+            AdminId: number;
+            DesignID: number;
             Design_Name: string;
             Design_Image: string[];
             Design_Description: string;
@@ -41,8 +43,21 @@ export declare class DesignsService {
             Design_BlogPosts: string[];
             Design_Sizes: string[];
             Design_CreatedAt: Date;
-            DesignID: number;
+        };
+    }>;
+    updateDesign(designDto: DesignDTO, AdminId: number): Promise<{
+        message: string;
+        design: {
             AdminId: number;
+            DesignID: number;
+            Design_Name: string;
+            Design_Image: string[];
+            Design_Description: string;
+            Categories: string[];
+            Design_Colors: string[];
+            Design_BlogPosts: string[];
+            Design_Sizes: string[];
+            Design_CreatedAt: Date;
         };
     }>;
 }
