@@ -1,15 +1,17 @@
-// Order.service.ts
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { OrderDTO } from './Order.DTO';
 import { EmailService } from '../Emails/Email.service';
 import { EmailTemplate } from '../Emails/Email.DTO';
+import { NotificationService } from 'src/Notification/Notification.service';
+import { NotificationDTO } from 'src/Notification/Notification.DTO';
 
 @Injectable()
 export class OrderService {
   constructor(
     private prisma: PrismaService,
     private emailService: EmailService,
+    private notificationService: NotificationService,
   ) {}
 
   async createOrder(orderDto: OrderDTO) {
@@ -18,7 +20,6 @@ export class OrderService {
         where: { Cus_Email: orderDto.Client_Email },
       });
 
-      // 2. Build order data
       const orderData: any = {
         Order_Status: orderDto.Order_Status,
         Order_Date: orderDto.Order_Date ?? new Date(),
@@ -35,7 +36,6 @@ export class OrderService {
         },
       };
 
-      // 3. Create the order
       const order = await this.prisma.order.create({
         data: orderData,
         include: {
@@ -45,6 +45,21 @@ export class OrderService {
               Design: true,
             },
           },
+        },
+      });
+
+      this.notificationService.createNotification({
+        SenderEmail:"innovista.itdep@gmail.com",
+        Recevied_Emails: [order.Client_Email ?? ''],
+        Notifications_Body: 'Your order has been created successfully.',
+        Notifications_Title: 'Order Confirmation',
+      });
+
+      this.emailService.sendEmail({
+        to: order.Client_Email ?? '',
+        template: EmailTemplate.ORDER_CONFIRMATION,
+        context: {
+          order: order,
         },
       });
 

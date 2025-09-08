@@ -8,8 +8,8 @@ export declare class OrderController {
         order: {
             Customer: {
                 CustomerId: number;
-                Cus_Name: string;
                 Cus_Email: string;
+                Cus_Name: string;
                 Cus_PhoneNumber: string;
                 Cus_CompanyName: string | null;
                 Cus_Logo: string | null;
@@ -36,20 +36,20 @@ export declare class OrderController {
                 designId: number;
             })[];
         } & {
+            CustomerId: number | null;
             Order_Date: Date;
             Order_Status: string;
             Client_Name: string | null;
             Client_Email: string | null;
             Client_Number: string | null;
             OrderID: number;
-            CustomerId: number | null;
         };
     }>;
     getAllOrders(): Promise<({
         Customer: {
             CustomerId: number;
-            Cus_Name: string;
             Cus_Email: string;
+            Cus_Name: string;
             Cus_PhoneNumber: string;
             Cus_CompanyName: string | null;
             Cus_Logo: string | null;
@@ -76,19 +76,19 @@ export declare class OrderController {
             designId: number;
         })[];
     } & {
+        CustomerId: number | null;
         Order_Date: Date;
         Order_Status: string;
         Client_Name: string | null;
         Client_Email: string | null;
         Client_Number: string | null;
         OrderID: number;
-        CustomerId: number | null;
     })[]>;
     getOrderById(orderId: string): Promise<{
         Customer: {
             CustomerId: number;
-            Cus_Name: string;
             Cus_Email: string;
+            Cus_Name: string;
             Cus_PhoneNumber: string;
             Cus_CompanyName: string | null;
             Cus_Logo: string | null;
@@ -115,12 +115,12 @@ export declare class OrderController {
             designId: number;
         })[];
     } & {
+        CustomerId: number | null;
         Order_Date: Date;
         Order_Status: string;
         Client_Name: string | null;
         Client_Email: string | null;
         Client_Number: string | null;
         OrderID: number;
-        CustomerId: number | null;
     }>;
 }

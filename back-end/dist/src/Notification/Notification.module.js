@@ -6,21 +6,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OrderModule = void 0;
+exports.NotificationModule = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_module_1 = require("../../prisma/prisma.module");
-const Order_service_1 = require("./Order.service");
-const Order_controller_1 = require("./Order.controller");
-const Email_module_1 = require("../Emails/Email.module");
-const Notification_module_1 = require("../Notification/Notification.module");
-let OrderModule = class OrderModule {
+const Notification_service_1 = require("./Notification.service");
+let NotificationModule = class NotificationModule {
 };
-exports.OrderModule = OrderModule;
-exports.OrderModule = OrderModule = __decorate([
+exports.NotificationModule = NotificationModule;
+exports.NotificationModule = NotificationModule = __decorate([
     (0, common_1.Module)({
-        imports: [prisma_module_1.PrismaModule, Email_module_1.EmailModule, Notification_module_1.NotificationModule],
-        controllers: [Order_controller_1.OrderController],
-        providers: [Order_service_1.OrderService],
+        imports: [prisma_module_1.PrismaModule],
+        providers: [Notification_service_1.NotificationService],
+        exports: [Notification_service_1.NotificationService],
     })
-], OrderModule);
-//# sourceMappingURL=Order.module.js.map
+], NotificationModule);
+//# sourceMappingURL=Notification.module.js.map
