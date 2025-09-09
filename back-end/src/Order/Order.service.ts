@@ -4,7 +4,6 @@ import { OrderDTO } from './Order.DTO';
 import { EmailService } from '../Emails/Email.service';
 import { EmailTemplate } from '../Emails/Email.DTO';
 import { NotificationService } from 'src/Notification/Notification.service';
-import { NotificationDTO } from 'src/Notification/Notification.DTO';
 
 @Injectable()
 export class OrderService {
@@ -49,7 +48,7 @@ export class OrderService {
       });
 
       this.notificationService.createNotification({
-        SenderEmail:"innovista.itdep@gmail.com",
+        SenderEmail: 'innovista.itdep@gmail.com',
         Recevied_Emails: [order.Client_Email ?? ''],
         Notifications_Body: 'Your order has been created successfully.',
         Notifications_Title: 'Order Confirmation',
@@ -88,6 +87,49 @@ export class OrderService {
       throw new BadRequestException(
         'Failed to retrieve orders: ' + error.message,
       );
+    }
+  }
+
+  async chagetheStates(orderId: number, Status: string) {
+    try {
+      const findOrder = await this.prisma.order.findUnique({
+        where: { OrderID: orderId },
+      });
+      if (!findOrder) {
+        throw new BadRequestException("Order details can't find");
+      }
+
+      await this.prisma.order.update({
+        where: { OrderID: orderId },
+        data: { Order_Status: Status },
+      });
+
+      return { message: `Change States to ${Status}` };
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
+  }
+
+  async getcustomerORders(Client_Email: string) {
+    try {
+      const findCustomer = await this.prisma.customer.findUnique({
+        where: { Cus_Email: Client_Email },
+      });
+
+      const findOrders = await this.prisma.order.findMany({
+        where: { Client_Email: Client_Email },
+        include: {
+          Designs: {
+            include: {
+              Design: true,
+            },
+          },
+        },
+      });
+
+      return findOrders;
+    } catch (error) {
+      throw new BadRequestException(error);
     }
   }
 

@@ -12,7 +12,10 @@ export declare class NotificationService {
         Notifications_Title: string;
         NotificationsID: number;
     }>;
-    getNotifications(): Promise<{
+    markAsRead(Adminemail: string, NotificationsID: number): Promise<{
+        message: string;
+    }>;
+    getNotifications(Adminemail: string): Promise<{
         Date_Timestamp: Date;
         SenderEmail: string;
         Recevied_Emails: string[];

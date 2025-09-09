@@ -25,11 +25,43 @@ export class NotificationService {
     }
   }
 
-  //    fix this with view
-
-  async getNotifications() {
+  async markAsRead(Adminemail: string, NotificationsID: number) {
     try {
-      const notifications = await this.prisma.notifications.findMany();
+      const notification = await this.prisma.notifications.findUnique({
+        where: { NotificationsID: NotificationsID },
+      });
+
+      if (!notification) {
+        throw new Error('Notification not found');
+      }
+      const updatedViewList = notification.View_List || [];
+      if (!updatedViewList.includes(Adminemail)) {
+        updatedViewList.push(Adminemail);
+      }
+
+      await this.prisma.notifications.update({
+        where: { NotificationsID: NotificationsID },
+        data: { View_List: updatedViewList },
+      });
+      return { message: 'Notification view succesfully' };
+    } catch (error) {
+      console.error('Prisma error:', error);
+      throw new Error('Failed to mark notification as read: ' + error.message);
+    }
+  }
+
+  async getNotifications(Adminemail: string) {
+    try {
+      const notifications = await this.prisma.notifications.findMany({
+        where: {
+          NOT: {
+            View_List: {
+              has: Adminemail,
+            },
+          },
+        },
+      });
+
       return notifications;
     } catch (error) {
       console.error('Prisma error:', error);

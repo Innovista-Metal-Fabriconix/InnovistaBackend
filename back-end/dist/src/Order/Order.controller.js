@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const common_2 = require("@nestjs/common");
 const Order_DTO_1 = require("./Order.DTO");
 const Order_service_1 = require("./Order.service");
+const Authentication_AdminAuthgurd_1 = require("../Authentication/Authentication.AdminAuthgurd");
 let OrderController = class OrderController {
     orderService;
     constructor(orderService) {
@@ -30,6 +31,12 @@ let OrderController = class OrderController {
     }
     async getOrderById(orderId) {
         return this.orderService.getOrderById(parseInt(orderId, 10));
+    }
+    async stateschnage(orderId, Status) {
+        return this.orderService.chagetheStates(parseInt(orderId, 10), Status);
+    }
+    async getordersUnique(useremail) {
+        return this.orderService.getcustomerORders(useremail);
     }
 };
 exports.OrderController = OrderController;
@@ -53,6 +60,22 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], OrderController.prototype, "getOrderById", null);
+__decorate([
+    (0, common_2.UseGuards)(Authentication_AdminAuthgurd_1.AdminAuthGuard),
+    (0, common_1.Put)("ChangeStates"),
+    __param(0, (0, common_1.Query)("orderId")),
+    __param(1, (0, common_1.Query)("Status")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", Promise)
+], OrderController.prototype, "stateschnage", null);
+__decorate([
+    (0, common_1.Get)("Getordes"),
+    __param(0, (0, common_1.Query)("Email")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], OrderController.prototype, "getordersUnique", null);
 exports.OrderController = OrderController = __decorate([
     (0, common_2.Controller)("order"),
     __metadata("design:paramtypes", [Order_service_1.OrderService])

@@ -54,7 +54,7 @@ let OrderService = class OrderService {
                 },
             });
             this.notificationService.createNotification({
-                SenderEmail: "innovista.itdep@gmail.com",
+                SenderEmail: 'innovista.itdep@gmail.com',
                 Recevied_Emails: [order.Client_Email ?? ''],
                 Notifications_Body: 'Your order has been created successfully.',
                 Notifications_Title: 'Order Confirmation',
@@ -90,6 +90,45 @@ let OrderService = class OrderService {
         catch (error) {
             console.error('Prisma error:', error);
             throw new common_1.BadRequestException('Failed to retrieve orders: ' + error.message);
+        }
+    }
+    async chagetheStates(orderId, Status) {
+        try {
+            const findOrder = await this.prisma.order.findUnique({
+                where: { OrderID: orderId },
+            });
+            if (!findOrder) {
+                throw new common_1.BadRequestException("Order details can't find");
+            }
+            await this.prisma.order.update({
+                where: { OrderID: orderId },
+                data: { Order_Status: Status },
+            });
+            return { message: `Change States to ${Status}` };
+        }
+        catch (error) {
+            throw new common_1.BadRequestException(error);
+        }
+    }
+    async getcustomerORders(Client_Email) {
+        try {
+            const findCustomer = await this.prisma.customer.findUnique({
+                where: { Cus_Email: Client_Email },
+            });
+            const findOrders = await this.prisma.order.findMany({
+                where: { Client_Email: Client_Email },
+                include: {
+                    Designs: {
+                        include: {
+                            Design: true,
+                        },
+                    },
+                },
+            });
+            return findOrders;
+        }
+        catch (error) {
+            throw new common_1.BadRequestException(error);
         }
     }
     async getOrderById(orderId) {

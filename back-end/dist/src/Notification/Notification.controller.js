@@ -8,26 +8,46 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NotificationController = void 0;
 const common_1 = require("@nestjs/common");
 const Notification_service_1 = require("./Notification.service");
+const Authentication_AdminAuthgurd_1 = require("../Authentication/Authentication.AdminAuthgurd");
 let NotificationController = class NotificationController {
     notificationService;
     constructor(notificationService) {
         this.notificationService = notificationService;
     }
-    async getNotifications() {
-        return this.notificationService.getNotifications();
+    async getNotifications(req) {
+        const Adminemail = req.user.email;
+        return this.notificationService.getNotifications(Adminemail);
+    }
+    async readtNotifications(NotificationsID, req) {
+        const Adminemail = req.user.email;
+        return this.notificationService.markAsRead(Adminemail, parseInt(NotificationsID, 10));
     }
 };
 exports.NotificationController = NotificationController;
 __decorate([
-    (0, common_1.Get)(),
+    (0, common_1.UseGuards)(Authentication_AdminAuthgurd_1.AdminAuthGuard),
+    (0, common_1.Get)('getalerts'),
+    __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], NotificationController.prototype, "getNotifications", null);
+__decorate([
+    (0, common_1.UseGuards)(Authentication_AdminAuthgurd_1.AdminAuthGuard),
+    (0, common_1.Post)('markAsRead'),
+    __param(0, (0, common_1.Query)('NotificationsID')),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], NotificationController.prototype, "readtNotifications", null);
 exports.NotificationController = NotificationController = __decorate([
     (0, common_1.Controller)('Notification'),
     __metadata("design:paramtypes", [Notification_service_1.NotificationService])

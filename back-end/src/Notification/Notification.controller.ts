@@ -10,14 +10,29 @@ import {
   Put,
 } from '@nestjs/common';
 import { NotificationService } from './Notification.service';
-import { NotificationDTO } from './Notification.DTO';
+import { AdminAuthGuard } from '../Authentication/Authentication.AdminAuthgurd';
 
 @Controller('Notification')
 export class NotificationController {
   constructor(private notificationService: NotificationService) {}
 
-  @Get()
-  async getNotifications() {
-    return this.notificationService.getNotifications();
+  @UseGuards(AdminAuthGuard)
+  @Get('getalerts')
+  async getNotifications(@Req() req) {
+    const Adminemail = req.user.email;
+    return this.notificationService.getNotifications(Adminemail);
+  }
+
+  @UseGuards(AdminAuthGuard)
+  @Post('markAsRead')
+  async readtNotifications(
+    @Query('NotificationsID') NotificationsID: string,
+    @Req() req,
+  ) {
+    const Adminemail = req.user.email;
+    return this.notificationService.markAsRead(
+      Adminemail,
+      parseInt(NotificationsID, 10),
+    );
   }
 }
