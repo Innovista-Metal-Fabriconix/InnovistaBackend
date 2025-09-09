@@ -18,8 +18,21 @@ export class OrderController {
     return this.orderService.getAllOrders();
   }
 
+
   @Get("getOrderById")
   async getOrderById(@Query("id") orderId: string) {
     return this.orderService.getOrderById(parseInt(orderId , 10));
   }
+
+  @UseGuards(AdminAuthGuard)
+  @Put("ChangeStates")
+  async stateschnage(@Query("orderId") orderId: string ,@Query("Status") Status: string) {
+    return this.orderService.chagetheStates(parseInt(orderId, 10), Status);
+  }
+
+  @Get("Getordes")
+  async getordersUnique(@Query("Email") useremail: string) {
+    return this.orderService.getcustomerORders(useremail);
+  }
+
 }

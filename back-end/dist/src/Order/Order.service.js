@@ -14,12 +14,15 @@ const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../../prisma/prisma.service");
 const Email_service_1 = require("../Emails/Email.service");
 const Email_DTO_1 = require("../Emails/Email.DTO");
+const Notification_service_1 = require("../Notification/Notification.service");
 let OrderService = class OrderService {
     prisma;
     emailService;
-    constructor(prisma, emailService) {
+    notificationService;
+    constructor(prisma, emailService, notificationService) {
         this.prisma = prisma;
         this.emailService = emailService;
+        this.notificationService = notificationService;
     }
     async createOrder(orderDto) {
         try {
@@ -50,6 +53,19 @@ let OrderService = class OrderService {
                     },
                 },
             });
+            this.notificationService.createNotification({
+                SenderEmail: 'innovista.itdep@gmail.com',
+                Recevied_Emails: [order.Client_Email ?? ''],
+                Notifications_Body: 'Your order has been created successfully.',
+                Notifications_Title: 'Order Confirmation',
+            });
+            this.emailService.sendEmail({
+                to: order.Client_Email ?? '',
+                template: Email_DTO_1.EmailTemplate.ORDER_CONFIRMATION,
+                context: {
+                    order: order,
+                },
+            });
             return { message: 'Order created successfully', order };
         }
         catch (error) {
@@ -74,6 +90,45 @@ let OrderService = class OrderService {
         catch (error) {
             console.error('Prisma error:', error);
             throw new common_1.BadRequestException('Failed to retrieve orders: ' + error.message);
+        }
+    }
+    async chagetheStates(orderId, Status) {
+        try {
+            const findOrder = await this.prisma.order.findUnique({
+                where: { OrderID: orderId },
+            });
+            if (!findOrder) {
+                throw new common_1.BadRequestException("Order details can't find");
+            }
+            await this.prisma.order.update({
+                where: { OrderID: orderId },
+                data: { Order_Status: Status },
+            });
+            return { message: `Change States to ${Status}` };
+        }
+        catch (error) {
+            throw new common_1.BadRequestException(error);
+        }
+    }
+    async getcustomerORders(Client_Email) {
+        try {
+            const findCustomer = await this.prisma.customer.findUnique({
+                where: { Cus_Email: Client_Email },
+            });
+            const findOrders = await this.prisma.order.findMany({
+                where: { Client_Email: Client_Email },
+                include: {
+                    Designs: {
+                        include: {
+                            Design: true,
+                        },
+                    },
+                },
+            });
+            return findOrders;
+        }
+        catch (error) {
+            throw new common_1.BadRequestException(error);
         }
     }
     async getOrderById(orderId) {
@@ -111,6 +166,7 @@ exports.OrderService = OrderService;
 exports.OrderService = OrderService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService,
-        Email_service_1.EmailService])
+        Email_service_1.EmailService,
+        Notification_service_1.NotificationService])
 ], OrderService);
 //# sourceMappingURL=Order.service.js.map

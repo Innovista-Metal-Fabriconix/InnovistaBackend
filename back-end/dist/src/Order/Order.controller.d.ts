@@ -123,4 +123,35 @@ export declare class OrderController {
         OrderID: number;
         CustomerId: number | null;
     }>;
+    stateschnage(orderId: string, Status: string): Promise<{
+        message: string;
+    }>;
+    getordersUnique(useremail: string): Promise<({
+        Designs: ({
+            Design: {
+                DesignID: number;
+                Design_Name: string;
+                Design_Image: string[];
+                Design_Description: string;
+                Categories: string[];
+                Design_Colors: string[];
+                Design_BlogPosts: string[];
+                Design_Sizes: string[];
+                Design_CreatedAt: Date;
+                AdminId: number;
+            };
+        } & {
+            id: number;
+            orderId: number;
+            designId: number;
+        })[];
+    } & {
+        Order_Date: Date;
+        Order_Status: string;
+        Client_Name: string | null;
+        Client_Email: string | null;
+        Client_Number: string | null;
+        OrderID: number;
+        CustomerId: number | null;
+    })[]>;
 }
