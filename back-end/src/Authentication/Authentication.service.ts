@@ -20,7 +20,12 @@ export class AuthenticationService {
 
   async register(authDto: AuthDTO) {
     try {
-      const hashedPassword = await bcrypt.hash(authDto.Admin_Password, 10);
+
+    const namePart = authDto.Admin_Name.slice(0, 3); 
+    const emailPart = authDto.Admin_Email.split('@')[0].slice(-3); 
+    const rawPassword = `${namePart}${emailPart}${Date.now().toString().slice(-4)}`;
+
+      const hashedPassword = await bcrypt.hash(rawPassword, 10);
 
       const admin = await this.prisma.admin.create({
         data: {
@@ -37,7 +42,7 @@ export class AuthenticationService {
         template: EmailTemplate.WELCOME,
         context: {
           name: admin.Admin_Name,
-          password: authDto.Admin_Password,
+          password: rawPassword,
         },
       });
 
