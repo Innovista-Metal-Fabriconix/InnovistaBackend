@@ -39,6 +39,7 @@ export class CustomerService {
           Cus_Name: customerDto.Cus_Name,
           Cus_Email: customerDto.Cus_Email,
           Cus_PhoneNumber: customerDto.Cus_PhoneNumber,
+
           Cus_Password: hashedPassword,
           Cus_CompanyName: customerDto.Cus_CompanyName,
           Cus_Logo: customerDto.Cus_Logo,

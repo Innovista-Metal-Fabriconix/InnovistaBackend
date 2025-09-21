@@ -10,6 +10,25 @@ import { FeedbackDTO } from './Feedback.DTO';
 export class FeedbackService {
   constructor(private prisma: PrismaService) {}
 
+
+  async accesschecktoCustomer(customerEmail: string) {
+    try{
+      const customer = await this.prisma.customer.findUnique({
+        where: { Cus_Email: customerEmail },
+      });
+      if (!customer) {
+        throw new UnauthorizedException('Customer not found');
+      }
+      return { message: 'Access granted', customerId: customer.CustomerId };
+
+    }catch(error){
+      console.error('Prisma error:', error);
+      throw new BadRequestException(
+        'Failed to retrieve feedbacks: ' + error.message,
+      );
+    }
+  }
+
   async createFeedback(feedbackDto: FeedbackDTO) {
     try {
       const checkCustomer = await this.prisma.customer.findUnique({

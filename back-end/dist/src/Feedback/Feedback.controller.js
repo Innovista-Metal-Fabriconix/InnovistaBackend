@@ -23,6 +23,9 @@ let FeedbackController = class FeedbackController {
     constructor(feedbackService) {
         this.feedbackService = feedbackService;
     }
+    async accesschecktoCustomer(customerEmail) {
+        return this.feedbackService.accesschecktoCustomer(customerEmail);
+    }
     async createFeedback(feedbackDto) {
         return this.feedbackService.createFeedback(feedbackDto);
     }
@@ -39,21 +42,28 @@ let FeedbackController = class FeedbackController {
 };
 exports.FeedbackController = FeedbackController;
 __decorate([
-    (0, common_1.Post)("createFeedback"),
+    (0, common_1.Post)('AccessToCustomer'),
+    __param(0, (0, common_1.Query)('customerEmail')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], FeedbackController.prototype, "accesschecktoCustomer", null);
+__decorate([
+    (0, common_1.Post)('createFeedback'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Feedback_DTO_1.FeedbackDTO]),
     __metadata("design:returntype", Promise)
 ], FeedbackController.prototype, "createFeedback", null);
 __decorate([
-    (0, common_1.Get)("allFeedbacks"),
+    (0, common_1.Get)('allFeedbacks'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], FeedbackController.prototype, "getAllFeedbacks", null);
 __decorate([
     (0, common_2.UseGuards)(Authentication_AdminAuthgurd_1.AdminAuthGuard),
-    (0, common_1.Delete)("deleteFeedback"),
+    (0, common_1.Delete)('deleteFeedback'),
     __param(0, (0, common_1.Query)('feedbackId')),
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -61,14 +71,14 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], FeedbackController.prototype, "deleteFeedback", null);
 __decorate([
-    (0, common_1.Get)("feedbackByDesignId"),
+    (0, common_1.Get)('feedbackByDesignId'),
     __param(0, (0, common_1.Query)('designId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], FeedbackController.prototype, "getFeedbackByDesignId", null);
 exports.FeedbackController = FeedbackController = __decorate([
-    (0, common_2.Controller)("feedback"),
+    (0, common_2.Controller)('feedback'),
     __metadata("design:paramtypes", [Feedback_service_1.FeedbackService])
 ], FeedbackController);
 //# sourceMappingURL=Feedback.controller.js.map

@@ -21,7 +21,6 @@ class DesignDTO {
     Design_BlogPosts;
     Design_Sizes;
     Design_CreatedAt;
-    AdminId;
 }
 exports.DesignDTO = DesignDTO;
 __decorate([
@@ -69,9 +68,4 @@ __decorate([
     (0, class_validator_1.IsDate)(),
     __metadata("design:type", Date)
 ], DesignDTO.prototype, "Design_CreatedAt", void 0);
-__decorate([
-    (0, class_validator_1.IsNumber)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", Number)
-], DesignDTO.prototype, "AdminId", void 0);
 //# sourceMappingURL=Designs.DTO.js.map

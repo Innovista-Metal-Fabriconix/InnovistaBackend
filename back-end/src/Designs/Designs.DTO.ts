@@ -1,7 +1,6 @@
 import {
   IsString,
   IsNotEmpty,
-  IsEmail,
   IsOptional,
   IsArray,
   ArrayNotEmpty,
@@ -14,7 +13,7 @@ import {
 export class DesignDTO {
     @IsNumber()
     @IsNotEmpty()
-    public DesignID: number;
+    public DesignID?: number;
 
     @IsString()
     @IsNotEmpty()
@@ -47,10 +46,6 @@ export class DesignDTO {
     @IsOptional()
     @IsDate()
     public Design_CreatedAt?: Date;
-
-    @IsNumber()
-    @IsNotEmpty()
-    public AdminId: number;
 
 
 }

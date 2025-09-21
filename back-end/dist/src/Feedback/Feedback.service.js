@@ -17,6 +17,21 @@ let FeedbackService = class FeedbackService {
     constructor(prisma) {
         this.prisma = prisma;
     }
+    async accesschecktoCustomer(customerEmail) {
+        try {
+            const customer = await this.prisma.customer.findUnique({
+                where: { Cus_Email: customerEmail },
+            });
+            if (!customer) {
+                throw new common_1.UnauthorizedException('Customer not found');
+            }
+            return { message: 'Access granted', customerId: customer.CustomerId };
+        }
+        catch (error) {
+            console.error('Prisma error:', error);
+            throw new common_1.BadRequestException('Failed to retrieve feedbacks: ' + error.message);
+        }
+    }
     async createFeedback(feedbackDto) {
         try {
             const checkCustomer = await this.prisma.customer.findUnique({
