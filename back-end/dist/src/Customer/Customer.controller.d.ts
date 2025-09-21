@@ -6,54 +6,54 @@ export declare class CustomerController {
     registerCustomer(customerDto: CustomerDTO, req: any): Promise<{
         message: string;
         customer: {
-            CustomerId: number;
             Cus_Name: string;
             Cus_Email: string;
             Cus_PhoneNumber: string;
             Cus_CompanyName: string | null;
             Cus_Logo: string | null;
+            Verify_State: boolean;
             Cus_Password: string;
             Purchase_Goods: string[];
-            Verify_State: boolean;
+            CustomerId: number;
         };
     }>;
     getAllCustomers(): Promise<{
-        CustomerId: number;
         Cus_Name: string;
         Cus_Email: string;
         Cus_PhoneNumber: string;
         Cus_CompanyName: string | null;
         Cus_Logo: string | null;
+        Verify_State: boolean;
         Cus_Password: string;
         Purchase_Goods: string[];
-        Verify_State: boolean;
+        CustomerId: number;
     }[]>;
     verifyCustomer(customerId: string): Promise<{
         message: string;
         customer: {
-            CustomerId: number;
             Cus_Name: string;
             Cus_Email: string;
             Cus_PhoneNumber: string;
             Cus_CompanyName: string | null;
             Cus_Logo: string | null;
+            Verify_State: boolean;
             Cus_Password: string;
             Purchase_Goods: string[];
-            Verify_State: boolean;
+            CustomerId: number;
         };
     }>;
     deleteCustomer(customerId: string, req: any): Promise<{
         message: string;
         customer: {
-            CustomerId: number;
             Cus_Name: string;
             Cus_Email: string;
             Cus_PhoneNumber: string;
             Cus_CompanyName: string | null;
             Cus_Logo: string | null;
+            Verify_State: boolean;
             Cus_Password: string;
             Purchase_Goods: string[];
-            Verify_State: boolean;
+            CustomerId: number;
         };
     }>;
 }

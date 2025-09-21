@@ -87,7 +87,7 @@ let CustomerService = class CustomerService {
                 template: Email_DTO_1.EmailTemplate.CUSTOMER_WELCOME,
                 context: {
                     name: customerDto.Cus_Name,
-                    password: customerDto.Cus_Password,
+                    Link: `http://localhost:5173/CustomerVerify?customerId=${customer.CustomerId}`,
                 },
             });
             return {
