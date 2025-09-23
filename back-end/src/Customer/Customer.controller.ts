@@ -9,7 +9,7 @@ import {
   Delete,
   Put,
 } from '@nestjs/common';
-import { CustomerDTO } from './Customer.DTO';
+import { CustomerDTO, UpdateCustomer } from './Customer.DTO';
 import { CustomerService } from './Customer.service';
 import { AdminAuthGuard } from '../Authentication/Authentication.AdminAuthgurd';
 
@@ -42,6 +42,16 @@ export class CustomerController {
     return this.customerService.removeCustomer(
       parseInt(customerId, 10),
       AdminId,
+    );
+  }
+
+  @UseGuards(AdminAuthGuard)
+  @Put('updateCustomer')
+  async updateCustomer(@Body() UpdateCustomer: UpdateCustomer, @Req() req) {
+    const AdminId = req.user.userId;
+    return this.customerService.updateCustomer(
+      UpdateCustomer,
+      parseInt(AdminId, 10),
     );
   }
 }

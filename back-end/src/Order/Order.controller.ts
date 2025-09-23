@@ -18,7 +18,7 @@ export class OrderController {
     return this.orderService.getAllOrders();
   }
 
-
+  @UseGuards(AdminAuthGuard)
   @Get("getOrderById")
   async getOrderById(@Query("id") orderId: string) {
     return this.orderService.getOrderById(parseInt(orderId , 10));

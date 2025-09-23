@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CustomerDTO = void 0;
+exports.UpdateCustomer = exports.CustomerDTO = void 0;
 const class_validator_1 = require("class-validator");
 class CustomerDTO {
     CustomerId;
@@ -62,4 +62,60 @@ __decorate([
     (0, class_validator_1.IsArray)(),
     __metadata("design:type", Array)
 ], CustomerDTO.prototype, "Purchase_Goods", void 0);
+class UpdateCustomer {
+    CustomerId;
+    Cus_Name;
+    Cus_Email;
+    Cus_PhoneNumber;
+    Cus_CompanyName;
+    Cus_Logo;
+    Cus_Password;
+    Verify_State;
+    Purchase_Goods;
+}
+exports.UpdateCustomer = UpdateCustomer;
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsNumber)(),
+    __metadata("design:type", Number)
+], UpdateCustomer.prototype, "CustomerId", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], UpdateCustomer.prototype, "Cus_Name", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsEmail)(),
+    __metadata("design:type", String)
+], UpdateCustomer.prototype, "Cus_Email", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], UpdateCustomer.prototype, "Cus_PhoneNumber", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], UpdateCustomer.prototype, "Cus_CompanyName", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], UpdateCustomer.prototype, "Cus_Logo", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], UpdateCustomer.prototype, "Cus_Password", void 0);
+__decorate([
+    (0, class_validator_1.IsBoolean)(),
+    __metadata("design:type", Boolean)
+], UpdateCustomer.prototype, "Verify_State", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsArray)(),
+    __metadata("design:type", Array)
+], UpdateCustomer.prototype, "Purchase_Goods", void 0);
 //# sourceMappingURL=Customer.DTO.js.map

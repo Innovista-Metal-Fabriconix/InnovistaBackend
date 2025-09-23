@@ -54,6 +54,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], OrderController.prototype, "getAllOrders", null);
 __decorate([
+    (0, common_2.UseGuards)(Authentication_AdminAuthgurd_1.AdminAuthGuard),
     (0, common_1.Get)("getOrderById"),
     __param(0, (0, common_1.Query)("id")),
     __metadata("design:type", Function),

@@ -36,6 +36,10 @@ let CustomerController = class CustomerController {
         const AdminId = req.user.userId;
         return this.customerService.removeCustomer(parseInt(customerId, 10), AdminId);
     }
+    async updateCustomer(UpdateCustomer, req) {
+        const AdminId = req.user.userId;
+        return this.customerService.updateCustomer(UpdateCustomer, parseInt(AdminId, 10));
+    }
 };
 exports.CustomerController = CustomerController;
 __decorate([
@@ -70,6 +74,15 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], CustomerController.prototype, "deleteCustomer", null);
+__decorate([
+    (0, common_1.UseGuards)(Authentication_AdminAuthgurd_1.AdminAuthGuard),
+    (0, common_1.Put)('updateCustomer'),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Customer_DTO_1.UpdateCustomer, Object]),
+    __metadata("design:returntype", Promise)
+], CustomerController.prototype, "updateCustomer", null);
 exports.CustomerController = CustomerController = __decorate([
     (0, common_1.Controller)('customer'),
     __metadata("design:paramtypes", [Customer_service_1.CustomerService])

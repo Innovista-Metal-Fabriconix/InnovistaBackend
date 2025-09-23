@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 
 import { PrismaService } from '../../prisma/prisma.service';
-import { CustomerDTO } from './Customer.DTO';
+import { CustomerDTO, UpdateCustomer } from './Customer.DTO';
 import * as bcrypt from 'bcrypt';
 import { EmailService } from '../Emails/Email.service';
 import { EmailTemplate } from '../Emails/Email.DTO';
@@ -70,7 +70,7 @@ export class CustomerService {
     }
   }
 
-//    optional this services
+  //    optional this services
 
   async changePassword(customerId: number, newPassword: string) {
     try {
@@ -141,7 +141,7 @@ export class CustomerService {
     }
   }
 
-  async updateCustomer(customerDto: CustomerDTO, AdminId: number) {
+  async updateCustomer(UpdateCustomer: UpdateCustomer, AdminId: number) {
     try {
       const admin = await this.prisma.admin.findUnique({
         where: { AdminId: AdminId },
@@ -150,14 +150,16 @@ export class CustomerService {
         throw new UnauthorizedException('Admin not found');
       }
       const customer = await this.prisma.customer.update({
-        where: { CustomerId: customerDto.CustomerId },
+        where: { CustomerId: UpdateCustomer.CustomerId },
         data: {
-          Cus_Name: customerDto.Cus_Name,
-          Cus_Email: customerDto.Cus_Email,
-          Cus_PhoneNumber: customerDto.Cus_PhoneNumber,
-          Cus_CompanyName: customerDto.Cus_CompanyName,
-          Cus_Logo: customerDto.Cus_Logo,
-          Purchase_Goods: customerDto.Purchase_Goods,
+          Cus_Name: UpdateCustomer.Cus_Name,
+          Cus_Email: UpdateCustomer.Cus_Email,
+          Cus_PhoneNumber: UpdateCustomer.Cus_PhoneNumber,
+          Cus_CompanyName: UpdateCustomer.Cus_CompanyName,
+          Cus_Logo: UpdateCustomer.Cus_Logo,
+          Purchase_Goods: UpdateCustomer.Purchase_Goods,
+          Cus_Password: UpdateCustomer.Cus_Password,
+          Verify_State: UpdateCustomer.Verify_State,
         },
       });
       return { message: 'Customer updated successfully', customer };

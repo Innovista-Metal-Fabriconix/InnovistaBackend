@@ -6,9 +6,19 @@ export declare class OrderController {
     createOrder(orderDto: OrderDTO): Promise<{
         message: string;
         order: {
+            Customer: {
+                CustomerId: number;
+                Cus_Name: string;
+                Cus_Email: string;
+                Cus_PhoneNumber: string;
+                Cus_CompanyName: string | null;
+                Cus_Logo: string | null;
+                Verify_State: boolean;
+                Cus_Password: string;
+                Purchase_Goods: string[];
+            } | null;
             Designs: ({
                 Design: {
-                    AdminId: number;
                     DesignID: number;
                     Design_Name: string;
                     Design_Image: string[];
@@ -18,37 +28,37 @@ export declare class OrderController {
                     Design_BlogPosts: string[];
                     Design_Sizes: string[];
                     Design_CreatedAt: Date;
+                    AdminId: number;
                 };
             } & {
                 id: number;
                 orderId: number;
                 designId: number;
             })[];
-            Customer: {
-                CustomerId: number;
-                Cus_Email: string;
-                Cus_Name: string;
-                Cus_PhoneNumber: string;
-                Cus_CompanyName: string | null;
-                Cus_Logo: string | null;
-                Verify_State: boolean;
-                Cus_Password: string;
-                Purchase_Goods: string[];
-            } | null;
         } & {
-            CustomerId: number | null;
             Order_Date: Date;
             Order_Status: string;
             Client_Name: string | null;
             Client_Email: string | null;
             Client_Number: string | null;
             OrderID: number;
+            CustomerId: number | null;
         };
     }>;
     getAllOrders(): Promise<({
+        Customer: {
+            CustomerId: number;
+            Cus_Name: string;
+            Cus_Email: string;
+            Cus_PhoneNumber: string;
+            Cus_CompanyName: string | null;
+            Cus_Logo: string | null;
+            Verify_State: boolean;
+            Cus_Password: string;
+            Purchase_Goods: string[];
+        } | null;
         Designs: ({
             Design: {
-                AdminId: number;
                 DesignID: number;
                 Design_Name: string;
                 Design_Image: string[];
@@ -58,36 +68,36 @@ export declare class OrderController {
                 Design_BlogPosts: string[];
                 Design_Sizes: string[];
                 Design_CreatedAt: Date;
+                AdminId: number;
             };
         } & {
             id: number;
             orderId: number;
             designId: number;
         })[];
-        Customer: {
-            CustomerId: number;
-            Cus_Email: string;
-            Cus_Name: string;
-            Cus_PhoneNumber: string;
-            Cus_CompanyName: string | null;
-            Cus_Logo: string | null;
-            Verify_State: boolean;
-            Cus_Password: string;
-            Purchase_Goods: string[];
-        } | null;
     } & {
-        CustomerId: number | null;
         Order_Date: Date;
         Order_Status: string;
         Client_Name: string | null;
         Client_Email: string | null;
         Client_Number: string | null;
         OrderID: number;
+        CustomerId: number | null;
     })[]>;
     getOrderById(orderId: string): Promise<{
+        Customer: {
+            CustomerId: number;
+            Cus_Name: string;
+            Cus_Email: string;
+            Cus_PhoneNumber: string;
+            Cus_CompanyName: string | null;
+            Cus_Logo: string | null;
+            Verify_State: boolean;
+            Cus_Password: string;
+            Purchase_Goods: string[];
+        } | null;
         Designs: ({
             Design: {
-                AdminId: number;
                 DesignID: number;
                 Design_Name: string;
                 Design_Image: string[];
@@ -97,31 +107,21 @@ export declare class OrderController {
                 Design_BlogPosts: string[];
                 Design_Sizes: string[];
                 Design_CreatedAt: Date;
+                AdminId: number;
             };
         } & {
             id: number;
             orderId: number;
             designId: number;
         })[];
-        Customer: {
-            CustomerId: number;
-            Cus_Email: string;
-            Cus_Name: string;
-            Cus_PhoneNumber: string;
-            Cus_CompanyName: string | null;
-            Cus_Logo: string | null;
-            Verify_State: boolean;
-            Cus_Password: string;
-            Purchase_Goods: string[];
-        } | null;
     } & {
-        CustomerId: number | null;
         Order_Date: Date;
         Order_Status: string;
         Client_Name: string | null;
         Client_Email: string | null;
         Client_Number: string | null;
         OrderID: number;
+        CustomerId: number | null;
     }>;
     stateschnage(orderId: string, Status: string): Promise<{
         message: string;
@@ -129,7 +129,6 @@ export declare class OrderController {
     getordersUnique(useremail: string): Promise<({
         Designs: ({
             Design: {
-                AdminId: number;
                 DesignID: number;
                 Design_Name: string;
                 Design_Image: string[];
@@ -139,6 +138,7 @@ export declare class OrderController {
                 Design_BlogPosts: string[];
                 Design_Sizes: string[];
                 Design_CreatedAt: Date;
+                AdminId: number;
             };
         } & {
             id: number;
@@ -146,12 +146,12 @@ export declare class OrderController {
             designId: number;
         })[];
     } & {
-        CustomerId: number | null;
         Order_Date: Date;
         Order_Status: string;
         Client_Name: string | null;
         Client_Email: string | null;
         Client_Number: string | null;
         OrderID: number;
+        CustomerId: number | null;
     })[]>;
 }

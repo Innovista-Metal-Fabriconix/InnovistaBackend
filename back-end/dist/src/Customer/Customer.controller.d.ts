@@ -1,4 +1,4 @@
-import { CustomerDTO } from './Customer.DTO';
+import { CustomerDTO, UpdateCustomer } from './Customer.DTO';
 import { CustomerService } from './Customer.service';
 export declare class CustomerController {
     private customerService;
@@ -43,6 +43,20 @@ export declare class CustomerController {
         };
     }>;
     deleteCustomer(customerId: string, req: any): Promise<{
+        message: string;
+        customer: {
+            Cus_Name: string;
+            Cus_Email: string;
+            Cus_PhoneNumber: string;
+            Cus_CompanyName: string | null;
+            Cus_Logo: string | null;
+            Verify_State: boolean;
+            Cus_Password: string;
+            Purchase_Goods: string[];
+            CustomerId: number;
+        };
+    }>;
+    updateCustomer(UpdateCustomer: UpdateCustomer, req: any): Promise<{
         message: string;
         customer: {
             Cus_Name: string;

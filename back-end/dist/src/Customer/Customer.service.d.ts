@@ -1,5 +1,5 @@
 import { PrismaService } from '../../prisma/prisma.service';
-import { CustomerDTO } from './Customer.DTO';
+import { CustomerDTO, UpdateCustomer } from './Customer.DTO';
 import { EmailService } from '../Emails/Email.service';
 export declare class CustomerService {
     private prisma;
@@ -72,7 +72,7 @@ export declare class CustomerService {
             CustomerId: number;
         };
     }>;
-    updateCustomer(customerDto: CustomerDTO, AdminId: number): Promise<{
+    updateCustomer(UpdateCustomer: UpdateCustomer, AdminId: number): Promise<{
         message: string;
         customer: {
             Cus_Name: string;
