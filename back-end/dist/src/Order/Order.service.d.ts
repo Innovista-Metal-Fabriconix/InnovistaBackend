@@ -25,8 +25,8 @@ export declare class OrderService {
                 };
             } & {
                 id: number;
-                orderId: number;
                 designId: number;
+                orderId: number;
             })[];
             Customer: {
                 CustomerId: number;
@@ -65,8 +65,8 @@ export declare class OrderService {
             };
         } & {
             id: number;
-            orderId: number;
             designId: number;
+            orderId: number;
         })[];
         Customer: {
             CustomerId: number;
@@ -107,8 +107,8 @@ export declare class OrderService {
             };
         } & {
             id: number;
-            orderId: number;
             designId: number;
+            orderId: number;
         })[];
     } & {
         CustomerId: number | null;
@@ -135,8 +135,8 @@ export declare class OrderService {
             };
         } & {
             id: number;
-            orderId: number;
             designId: number;
+            orderId: number;
         })[];
         Customer: {
             CustomerId: number;

@@ -12,10 +12,10 @@ export declare class FeedbackController {
         feedback: {
             DesignID: number;
             CustomerId: number;
-            Feed_backId: number;
             Feed_back_comment: string;
             Feed_Back_Images: string[];
             Rating: number;
+            Feed_backId: number;
         };
     }>;
     getAllFeedbacks(): Promise<({
@@ -45,20 +45,20 @@ export declare class FeedbackController {
     } & {
         DesignID: number;
         CustomerId: number;
-        Feed_backId: number;
         Feed_back_comment: string;
         Feed_Back_Images: string[];
         Rating: number;
+        Feed_backId: number;
     })[]>;
     deleteFeedback(feedbackId: string, req: any): Promise<{
         message: string;
         feedback: {
             DesignID: number;
             CustomerId: number;
-            Feed_backId: number;
             Feed_back_comment: string;
             Feed_Back_Images: string[];
             Rating: number;
+            Feed_backId: number;
         };
     }>;
     getFeedbackByDesignId(designId: string): Promise<({
@@ -88,9 +88,9 @@ export declare class FeedbackController {
     } & {
         DesignID: number;
         CustomerId: number;
-        Feed_backId: number;
         Feed_back_comment: string;
         Feed_Back_Images: string[];
         Rating: number;
+        Feed_backId: number;
     })[]>;
 }

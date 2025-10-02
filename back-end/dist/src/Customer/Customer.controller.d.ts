@@ -6,68 +6,68 @@ export declare class CustomerController {
     registerCustomer(customerDto: CustomerDTO, req: any): Promise<{
         message: string;
         customer: {
+            CustomerId: number;
             Cus_Name: string;
             Cus_Email: string;
             Cus_PhoneNumber: string;
             Cus_CompanyName: string | null;
             Cus_Logo: string | null;
-            Verify_State: boolean;
             Cus_Password: string;
             Purchase_Goods: string[];
-            CustomerId: number;
+            Verify_State: boolean;
         };
     }>;
     getAllCustomers(): Promise<{
+        CustomerId: number;
         Cus_Name: string;
         Cus_Email: string;
         Cus_PhoneNumber: string;
         Cus_CompanyName: string | null;
         Cus_Logo: string | null;
-        Verify_State: boolean;
         Cus_Password: string;
         Purchase_Goods: string[];
-        CustomerId: number;
+        Verify_State: boolean;
     }[]>;
     verifyCustomer(customerId: string): Promise<{
         message: string;
         customer: {
+            CustomerId: number;
             Cus_Name: string;
             Cus_Email: string;
             Cus_PhoneNumber: string;
             Cus_CompanyName: string | null;
             Cus_Logo: string | null;
-            Verify_State: boolean;
             Cus_Password: string;
             Purchase_Goods: string[];
-            CustomerId: number;
+            Verify_State: boolean;
         };
     }>;
     deleteCustomer(customerId: string, req: any): Promise<{
         message: string;
         customer: {
+            CustomerId: number;
             Cus_Name: string;
             Cus_Email: string;
             Cus_PhoneNumber: string;
             Cus_CompanyName: string | null;
             Cus_Logo: string | null;
-            Verify_State: boolean;
             Cus_Password: string;
             Purchase_Goods: string[];
-            CustomerId: number;
+            Verify_State: boolean;
         };
     }>;
     updateCustomer(UpdateCustomer: UpdateCustomer, req: any): Promise<{
         message: string;
         customer: {
+            CustomerId: number;
             Cus_Name: string;
             Cus_Email: string;
             Cus_PhoneNumber: string;
             Cus_CompanyName: string | null;
             Cus_Logo: string | null;
-            Verify_State: boolean;
             Cus_Password: string;
             Purchase_Goods: string[];
-            CustomerId: number;
+            Verify_State: boolean;
         };
     }>;
 }

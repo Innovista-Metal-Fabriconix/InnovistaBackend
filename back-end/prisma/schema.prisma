@@ -78,6 +78,21 @@ model Design {
   Orders             OrderDesign[]
 }
 
+model Project {
+  ProjectID            Int       @id @default(autoincrement())
+  Project_Title        String
+  Project_Description  String
+  Project_Images       String[]
+  Project_CreatedAt    DateTime  @default(now())
+  Location             String
+  Client_Name          String
+  Client_Email         String
+  Client_Number        String?
+  Client_Company       String?
+  Project_FinishedDate DateTime?
+  Budget               Float
+}
+
 model Order {
   OrderID       Int           @id @default(autoincrement())
   CustomerId    Int?

@@ -10,9 +10,6 @@ import {
 } from 'class-validator';
 
 export class FeedbackDTO {
-  @IsNotEmpty()
-  @IsNumber()
-  public Feed_backId: number;
 
   @IsNotEmpty()
   @IsString()

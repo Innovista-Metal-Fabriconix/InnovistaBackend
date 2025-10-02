@@ -78,6 +78,24 @@ CREATE TABLE "public"."Design" (
 );
 
 -- CreateTable
+CREATE TABLE "public"."Project" (
+    "ProjectID" SERIAL NOT NULL,
+    "Project_Title" TEXT NOT NULL,
+    "Project_Description" TEXT NOT NULL,
+    "Project_Images" TEXT[],
+    "Project_CreatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "Location" TEXT NOT NULL,
+    "Client_Name" TEXT NOT NULL,
+    "Client_Email" TEXT NOT NULL,
+    "Client_Number" TEXT,
+    "Client_Company" TEXT,
+    "Project_FinishedDate" TIMESTAMP(3),
+    "Budget" DOUBLE PRECISION NOT NULL,
+
+    CONSTRAINT "Project_pkey" PRIMARY KEY ("ProjectID")
+);
+
+-- CreateTable
 CREATE TABLE "public"."Order" (
     "OrderID" SERIAL NOT NULL,
     "CustomerId" INTEGER,
@@ -127,7 +145,7 @@ ALTER TABLE "public"."Design" ADD CONSTRAINT "Design_AdminId_fkey" FOREIGN KEY (
 ALTER TABLE "public"."Order" ADD CONSTRAINT "Order_CustomerId_fkey" FOREIGN KEY ("CustomerId") REFERENCES "public"."Customer"("CustomerId") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."OrderDesign" ADD CONSTRAINT "OrderDesign_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "public"."Order"("OrderID") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "public"."OrderDesign" ADD CONSTRAINT "OrderDesign_designId_fkey" FOREIGN KEY ("designId") REFERENCES "public"."Design"("DesignID") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."OrderDesign" ADD CONSTRAINT "OrderDesign_designId_fkey" FOREIGN KEY ("designId") REFERENCES "public"."Design"("DesignID") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "public"."OrderDesign" ADD CONSTRAINT "OrderDesign_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "public"."Order"("OrderID") ON DELETE RESTRICT ON UPDATE CASCADE;

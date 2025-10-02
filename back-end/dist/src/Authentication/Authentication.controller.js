@@ -43,7 +43,6 @@ let AuthenticationController = class AuthenticationController {
 };
 exports.AuthenticationController = AuthenticationController;
 __decorate([
-    (0, common_1.UseGuards)(Authentication_AdminAuthgurd_1.AdminAuthGuard),
     (0, common_1.Post)('register'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
