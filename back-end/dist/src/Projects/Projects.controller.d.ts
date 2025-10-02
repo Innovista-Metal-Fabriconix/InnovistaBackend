@@ -6,6 +6,7 @@ export declare class ProjectsController {
     createProject(projectDto: ProjectDTO): Promise<{
         message: string;
         project: {
+            ProjectID: number;
             Project_Title: string;
             Project_Description: string;
             Project_Images: string[];
@@ -17,12 +18,12 @@ export declare class ProjectsController {
             Client_Company: string | null;
             Project_FinishedDate: Date | null;
             Budget: number;
-            ProjectID: number;
         };
     }>;
     getAllProjects(): Promise<{
         message: string;
         projects: {
+            ProjectID: number;
             Project_Title: string;
             Project_Description: string;
             Project_Images: string[];
@@ -34,12 +35,12 @@ export declare class ProjectsController {
             Client_Company: string | null;
             Project_FinishedDate: Date | null;
             Budget: number;
-            ProjectID: number;
         }[];
     }>;
     deleteProject(projectId: number): Promise<{
         message: string;
         project: {
+            ProjectID: number;
             Project_Title: string;
             Project_Description: string;
             Project_Images: string[];
@@ -51,7 +52,6 @@ export declare class ProjectsController {
             Client_Company: string | null;
             Project_FinishedDate: Date | null;
             Budget: number;
-            ProjectID: number;
         };
     }>;
 }

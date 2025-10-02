@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProjectDTO = void 0;
 const class_validator_1 = require("class-validator");
+const class_transformer_1 = require("class-transformer");
 class ProjectDTO {
     ProjectID;
     Project_Title;
@@ -79,6 +80,7 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsDate)(),
     (0, class_validator_1.IsOptional)(),
+    (0, class_transformer_1.Type)(() => Date),
     __metadata("design:type", Date)
 ], ProjectDTO.prototype, "Project_FinishedDate", void 0);
 __decorate([

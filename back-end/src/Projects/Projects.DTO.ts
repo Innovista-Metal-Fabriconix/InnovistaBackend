@@ -7,6 +7,7 @@ import {
   IsArray,
   IsDate,
 } from 'class-validator';
+import { Type } from "class-transformer";
 
 
 export class ProjectDTO {
@@ -52,6 +53,7 @@ export class ProjectDTO {
 
     @IsDate()
     @IsOptional()
+    @Type(() => Date) 
     Project_FinishedDate?: Date;
 
     @IsNumber()
