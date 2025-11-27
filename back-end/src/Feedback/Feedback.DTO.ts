@@ -4,9 +4,6 @@ import {
   IsOptional,
   IsNumber,
   IsArray,
-  ArrayNotEmpty,
-  IsDate,
-  IsEmail,
 } from 'class-validator';
 
 export class FeedbackDTO {

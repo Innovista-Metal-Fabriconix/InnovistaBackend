@@ -43,6 +43,9 @@ export declare class AuthenticationController {
     forgotPassword(req: any, newPassword: string): Promise<{
         message: string;
     }>;
+    passwordReset_Loginuser(Adminemail: string): Promise<{
+        message: string;
+    }>;
     getAllAdmins(): Promise<{
         Admin_Name: string;
         Admin_Email: string;
@@ -51,4 +54,7 @@ export declare class AuthenticationController {
         Admin_Password: string;
         AdminId: number;
     }[]>;
+    removeAdmin(adminId: string): Promise<{
+        message: string;
+    }>;
 }

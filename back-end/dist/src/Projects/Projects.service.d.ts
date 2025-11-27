@@ -6,15 +6,15 @@ export declare class ProjectsService {
     createProject(projectDto: ProjectDTO): Promise<{
         message: string;
         project: {
+            Client_Name: string;
+            Client_Email: string;
+            Client_Number: string | null;
             ProjectID: number;
             Project_Title: string;
             Project_Description: string;
             Project_Images: string[];
             Project_CreatedAt: Date;
             Location: string;
-            Client_Name: string;
-            Client_Email: string;
-            Client_Number: string | null;
             Client_Company: string | null;
             Project_FinishedDate: Date | null;
             Budget: number;
@@ -23,15 +23,15 @@ export declare class ProjectsService {
     getAllProjects(): Promise<{
         message: string;
         projects: {
+            Client_Name: string;
+            Client_Email: string;
+            Client_Number: string | null;
             ProjectID: number;
             Project_Title: string;
             Project_Description: string;
             Project_Images: string[];
             Project_CreatedAt: Date;
             Location: string;
-            Client_Name: string;
-            Client_Email: string;
-            Client_Number: string | null;
             Client_Company: string | null;
             Project_FinishedDate: Date | null;
             Budget: number;
@@ -40,15 +40,15 @@ export declare class ProjectsService {
     deleteProject(ProjectID: number): Promise<{
         message: string;
         project: {
+            Client_Name: string;
+            Client_Email: string;
+            Client_Number: string | null;
             ProjectID: number;
             Project_Title: string;
             Project_Description: string;
             Project_Images: string[];
             Project_CreatedAt: Date;
             Location: string;
-            Client_Name: string;
-            Client_Email: string;
-            Client_Number: string | null;
             Client_Company: string | null;
             Project_FinishedDate: Date | null;
             Budget: number;

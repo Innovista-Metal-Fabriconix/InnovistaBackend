@@ -182,6 +182,37 @@ let AuthenticationService = class AuthenticationService {
             throw new common_1.BadRequestException('Error during logout');
         }
     }
+    async passwordRset_Login(email) {
+        try {
+            const findAdminAccount = await this.prisma.admin.findUnique({
+                where: { Admin_Email: email },
+            });
+            if (!findAdminAccount) {
+                throw new common_1.BadRequestException('Admin with this email does not exist');
+            }
+            const nameOf_Admin = findAdminAccount.Admin_Name.slice(0, 3);
+            const emailOf_Admin = findAdminAccount.Admin_Email.split('@')[0].slice(-3);
+            const newUpdate_Password = `${nameOf_Admin}${emailOf_Admin}${Date.now().toString().slice(-4)}`;
+            const hashNewpassword = await bcrypt.hash(newUpdate_Password, 10);
+            await this.prisma.admin.update({
+                where: { Admin_Email: email },
+                data: { Admin_Password: hashNewpassword },
+            });
+            await this.emailService.sendEmail({
+                to: findAdminAccount.Admin_Email,
+                template: Email_DTO_1.EmailTemplate.REQUEST_NEWPASSWORD,
+                context: {
+                    newPassword: newUpdate_Password,
+                    name: nameOf_Admin,
+                },
+            });
+            console.log(newUpdate_Password, 'new password');
+            return { message: 'Password Reset Successfully Check Your email' };
+        }
+        catch (error) {
+            throw new common_1.BadRequestException('Admin cant fine on this Email');
+        }
+    }
     async passwordReset(email, newPassword) {
         try {
             const findAdmin = await this.prisma.admin.findUnique({
@@ -208,6 +239,20 @@ let AuthenticationService = class AuthenticationService {
         }
         catch (error) {
             throw new common_1.BadRequestException('Error while fetching admins');
+        }
+    }
+    async RemoveAdmin(adminId) {
+        try {
+            await this.prisma.admin.delete({
+                where: { AdminId: adminId },
+            });
+            if (!adminId) {
+                throw new common_1.BadRequestException('Admin not found');
+            }
+            return { message: 'Admin removed successfully' };
+        }
+        catch (error) {
+            throw new common_1.BadRequestException('Error while removing admin');
         }
     }
 };

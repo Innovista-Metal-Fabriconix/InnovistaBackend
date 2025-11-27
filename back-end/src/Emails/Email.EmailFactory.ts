@@ -1,4 +1,6 @@
+import { Subject } from 'rxjs';
 import { EmailTemplate } from './Email.DTO';
+import { Body } from '@nestjs/common';
 
 export class EmailTemplateFactory {
   static create(template: EmailTemplate, context?: any) {
@@ -13,6 +15,18 @@ export class EmailTemplateFactory {
 Welcome to our app! Your temporary password is: ${context.password}
 
 Please change your password after logging in.`,
+        };
+
+      case EmailTemplate.REQUEST_NEWPASSWORD:
+        return {
+          subject: 'Your New password',
+          template: 'request_newpassword',
+          context,
+          bodyText: `Hellow  ${context.name},
+         Welcome to our app! Your New password is: ${context.newPassword}
+
+         Please change your password after logging in.
+          `,
         };
 
       case EmailTemplate.PASSWORD_RESET:

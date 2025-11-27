@@ -16,6 +16,17 @@ Welcome to our app! Your temporary password is: ${context.password}
 
 Please change your password after logging in.`,
                 };
+            case Email_DTO_1.EmailTemplate.REQUEST_NEWPASSWORD:
+                return {
+                    subject: 'Your New password',
+                    template: 'request_newpassword',
+                    context,
+                    bodyText: `Hellow  ${context.name},
+         Welcome to our app! Your New password is: ${context.newPassword}
+
+         Please change your password after logging in.
+          `,
+                };
             case Email_DTO_1.EmailTemplate.PASSWORD_RESET:
                 return {
                     subject: 'Reset Your Password',
