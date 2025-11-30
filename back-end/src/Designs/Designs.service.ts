@@ -34,11 +34,9 @@ export class DesignsService {
         },
       });
       return { message: 'Design created successfully', design };
-    } catch (error) {
-      console.error('Prisma error:', error);
-      throw new BadRequestException(
-        'Failed to create design: ' + error.message,
-      );
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
@@ -46,11 +44,9 @@ export class DesignsService {
     try {
       const designs = await this.prisma.design.findMany();
       return designs;
-    } catch (error) {
-      console.error('Prisma error:', error);
-      throw new BadRequestException(
-        'Failed to retrieve designs: ' + error.message,
-      );
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
@@ -67,10 +63,9 @@ export class DesignsService {
         where: { DesignID: designId },
       });
       return { message: 'Design deleted successfully', design };
-    } catch (error) {
-      throw new BadRequestException(
-        'Failed to delete design: ' + error.message,
-      );
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
@@ -97,11 +92,9 @@ export class DesignsService {
         },
       });
       return { message: 'Design updated successfully', design };
-    } catch (error) {
-      console.error('Prisma error:', error);
-      throw new BadRequestException(
-        'Failed to update design: ' + error.message,
-      );
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 }

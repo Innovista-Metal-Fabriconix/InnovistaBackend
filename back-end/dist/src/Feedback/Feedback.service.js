@@ -28,8 +28,8 @@ let FeedbackService = class FeedbackService {
             return { message: 'Access granted', customerId: customer.CustomerId };
         }
         catch (error) {
-            console.error('Prisma error:', error);
-            throw new common_1.BadRequestException('Failed to retrieve feedbacks: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
     async createFeedback(feedbackDto) {
@@ -58,8 +58,8 @@ let FeedbackService = class FeedbackService {
             return { message: 'Feedback submitted successfully', feedback };
         }
         catch (error) {
-            console.error('Prisma error:', error);
-            throw new common_1.BadRequestException('Failed to submit feedback: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
     async getAllFeedbacks() {
@@ -73,8 +73,8 @@ let FeedbackService = class FeedbackService {
             return feedbacks;
         }
         catch (error) {
-            console.error('Prisma error:', error);
-            throw new common_1.BadRequestException('Failed to retrieve feedbacks: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
     async deleteFeedback(feedbackId, AdminId) {
@@ -91,8 +91,8 @@ let FeedbackService = class FeedbackService {
             return { message: 'Feedback deleted successfully', feedback };
         }
         catch (error) {
-            console.error('Prisma error:', error);
-            throw new common_1.BadRequestException('Failed to delete feedback: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
     async getfeedbackByDesignId(designId) {
@@ -107,8 +107,8 @@ let FeedbackService = class FeedbackService {
             return feedbacks;
         }
         catch (error) {
-            console.error('Prisma error:', error);
-            throw new common_1.BadRequestException('Failed to retrieve feedbacks: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
 };

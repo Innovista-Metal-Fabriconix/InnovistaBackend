@@ -32,8 +32,8 @@ let NotificationService = class NotificationService {
             return notification;
         }
         catch (error) {
-            console.error('Prisma error:', error);
-            throw new Error('Failed to create notification: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
     async markAsRead(Adminemail, NotificationsID) {
@@ -55,8 +55,8 @@ let NotificationService = class NotificationService {
             return { message: 'Notification view succesfully' };
         }
         catch (error) {
-            console.error('Prisma error:', error);
-            throw new Error('Failed to mark notification as read: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
     async getNotifications(Adminemail) {
@@ -73,8 +73,8 @@ let NotificationService = class NotificationService {
             return notifications;
         }
         catch (error) {
-            console.error('Prisma error:', error);
-            throw new Error('Failed to get notifications: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
 };

@@ -21,11 +21,9 @@ export class FeedbackService {
       }
       return { message: 'Access granted', customerId: customer.CustomerId };
 
-    }catch(error){
-      console.error('Prisma error:', error);
-      throw new BadRequestException(
-        'Failed to retrieve feedbacks: ' + error.message,
-      );
+  } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
@@ -54,11 +52,9 @@ export class FeedbackService {
         },
       });
       return { message: 'Feedback submitted successfully', feedback };
-    } catch (error) {
-      console.error('Prisma error:', error);
-      throw new BadRequestException(
-        'Failed to submit feedback: ' + error.message,
-      );
+  } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
@@ -71,11 +67,9 @@ export class FeedbackService {
         },
       });
       return feedbacks;
-    } catch (error) {
-      console.error('Prisma error:', error);
-      throw new BadRequestException(
-        'Failed to retrieve feedbacks: ' + error.message,
-      );
+  } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
@@ -92,11 +86,9 @@ export class FeedbackService {
         where: { Feed_backId: feedbackId },
       });
       return { message: 'Feedback deleted successfully', feedback };
-    } catch (error) {
-      console.error('Prisma error:', error);
-      throw new BadRequestException(
-        'Failed to delete feedback: ' + error.message,
-      );
+  } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
@@ -110,11 +102,9 @@ export class FeedbackService {
         },
       });
       return feedbacks;
-    } catch (error) {
-      console.error('Prisma error:', error);
-      throw new BadRequestException(
-        'Failed to retrieve feedbacks: ' + error.message,
-      );
+   } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 }

@@ -36,7 +36,8 @@ let ProjectsService = class ProjectsService {
             return { message: 'Project created successfully', project };
         }
         catch (error) {
-            throw new common_1.BadRequestException('Error creating project: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error creating project: ' + message);
         }
     }
     async getAllProjects() {
@@ -45,7 +46,8 @@ let ProjectsService = class ProjectsService {
             return { message: 'Projects retrieved successfully', projects };
         }
         catch (error) {
-            throw new common_1.BadRequestException('Error retrieving projects: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
     async deleteProject(ProjectID) {
@@ -56,7 +58,8 @@ let ProjectsService = class ProjectsService {
             return { message: 'Project deleted successfully', project };
         }
         catch (error) {
-            throw new common_1.BadRequestException('Error deleting project: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error deleting project: ' + message);
         }
     }
 };

@@ -99,7 +99,8 @@ let AuthenticationService = class AuthenticationService {
             return { message: 'Admin registered successfully', admin, tokens };
         }
         catch (error) {
-            throw new common_1.BadRequestException('Error registering admin');
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
     async login(email, password) {
@@ -132,7 +133,8 @@ let AuthenticationService = class AuthenticationService {
             return { message: 'Login successful', admin, tokens };
         }
         catch (error) {
-            throw new common_1.UnauthorizedException('Login failed');
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
     async refreshAccessToken(refreshToken) {
@@ -168,7 +170,8 @@ let AuthenticationService = class AuthenticationService {
             };
         }
         catch (error) {
-            throw new common_1.UnauthorizedException('Invalid refresh token');
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
     async logout(adminId) {
@@ -179,7 +182,8 @@ let AuthenticationService = class AuthenticationService {
             return { message: 'Logout successful' };
         }
         catch (error) {
-            throw new common_1.BadRequestException('Error during logout');
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
     async passwordRset_Login(email) {
@@ -210,7 +214,8 @@ let AuthenticationService = class AuthenticationService {
             return { message: 'Password Reset Successfully Check Your email' };
         }
         catch (error) {
-            throw new common_1.BadRequestException('Admin cant fine on this Email');
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
     async passwordReset(email, newPassword) {
@@ -229,7 +234,8 @@ let AuthenticationService = class AuthenticationService {
             return { message: 'Password reset successful' };
         }
         catch (error) {
-            throw new common_1.BadRequestException('Error during password reset');
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
     async GetallAdmins() {
@@ -238,7 +244,8 @@ let AuthenticationService = class AuthenticationService {
             return admins;
         }
         catch (error) {
-            throw new common_1.BadRequestException('Error while fetching admins');
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
     async RemoveAdmin(adminId) {
@@ -252,7 +259,8 @@ let AuthenticationService = class AuthenticationService {
             return { message: 'Admin removed successfully' };
         }
         catch (error) {
-            throw new common_1.BadRequestException('Error while removing admin');
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
 };

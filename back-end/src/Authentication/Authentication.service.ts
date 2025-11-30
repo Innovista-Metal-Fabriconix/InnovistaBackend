@@ -63,8 +63,9 @@ export class AuthenticationService {
       });
 
       return { message: 'Admin registered successfully', admin, tokens };
-    } catch (error) {
-      throw new BadRequestException('Error registering admin');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
@@ -104,8 +105,9 @@ export class AuthenticationService {
       });
 
       return { message: 'Login successful', admin, tokens };
-    } catch (error) {
-      throw new UnauthorizedException('Login failed');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
@@ -148,8 +150,9 @@ export class AuthenticationService {
         accessToken: tokens.accessToken,
         refreshToken: tokens.refreshToken,
       };
-    } catch (error) {
-      throw new UnauthorizedException('Invalid refresh token');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
@@ -159,8 +162,9 @@ export class AuthenticationService {
         where: { adminId },
       });
       return { message: 'Logout successful' };
-    } catch (error) {
-      throw new BadRequestException('Error during logout');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
@@ -197,8 +201,9 @@ export class AuthenticationService {
 
       console.log(newUpdate_Password, 'new password');
       return { message: 'Password Reset Successfully Check Your email' };
-    } catch (error) {
-      throw new BadRequestException('Admin cant fine on this Email');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
@@ -217,8 +222,9 @@ export class AuthenticationService {
         data: { Admin_Password: hashedPassword },
       });
       return { message: 'Password reset successful' };
-    } catch (error) {
-      throw new BadRequestException('Error during password reset');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
@@ -226,8 +232,9 @@ export class AuthenticationService {
     try {
       const admins = await this.prisma.admin.findMany();
       return admins;
-    } catch (error) {
-      throw new BadRequestException('Error while fetching admins');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
@@ -241,8 +248,9 @@ export class AuthenticationService {
         throw new BadRequestException('Admin not found');
       }
       return { message: 'Admin removed successfully' };
-    } catch (error) {
-      throw new BadRequestException('Error while removing admin');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 }

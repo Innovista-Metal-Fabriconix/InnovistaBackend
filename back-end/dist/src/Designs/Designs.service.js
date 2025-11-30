@@ -41,8 +41,8 @@ let DesignsService = class DesignsService {
             return { message: 'Design created successfully', design };
         }
         catch (error) {
-            console.error('Prisma error:', error);
-            throw new common_1.BadRequestException('Failed to create design: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
     async getAllDesigns() {
@@ -51,8 +51,8 @@ let DesignsService = class DesignsService {
             return designs;
         }
         catch (error) {
-            console.error('Prisma error:', error);
-            throw new common_1.BadRequestException('Failed to retrieve designs: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
     async deleteDesign(designId, AdminId) {
@@ -69,7 +69,8 @@ let DesignsService = class DesignsService {
             return { message: 'Design deleted successfully', design };
         }
         catch (error) {
-            throw new common_1.BadRequestException('Failed to delete design: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
     async updateDesign(designDto, AdminId) {
@@ -95,8 +96,8 @@ let DesignsService = class DesignsService {
             return { message: 'Design updated successfully', design };
         }
         catch (error) {
-            console.error('Prisma error:', error);
-            throw new common_1.BadRequestException('Failed to update design: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
 };

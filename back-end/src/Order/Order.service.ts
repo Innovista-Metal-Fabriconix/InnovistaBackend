@@ -47,14 +47,14 @@ export class OrderService {
         },
       });
 
-      this.notificationService.createNotification({
+      await this.notificationService.createNotification({
         SenderEmail: 'innovista.itdep@gmail.com',
         Recevied_Emails: [order.Client_Email ?? ''],
         Notifications_Body: 'Your order has been created successfully.',
         Notifications_Title: 'Order Confirmation',
       });
 
-      this.emailService.sendEmail({
+      await this.emailService.sendEmail({
         to: order.Client_Email ?? '',
         template: EmailTemplate.ORDER_CONFIRMATION,
         context: {
@@ -63,9 +63,9 @@ export class OrderService {
       });
 
       return { message: 'Order created successfully', order };
-    } catch (error) {
-      console.error('Prisma error:', error);
-      throw new BadRequestException('Failed to create order: ' + error.message);
+   } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
@@ -82,11 +82,9 @@ export class OrderService {
         },
       });
       return orders;
-    } catch (error) {
-      console.error('Prisma error:', error);
-      throw new BadRequestException(
-        'Failed to retrieve orders: ' + error.message,
-      );
+   } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
@@ -105,17 +103,14 @@ export class OrderService {
       });
 
       return { message: `Change States to ${Status}` };
-    } catch (error) {
-      throw new BadRequestException(error);
+  } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
   async getcustomerORders(Client_Email: string) {
     try {
-      const findCustomer = await this.prisma.customer.findUnique({
-        where: { Cus_Email: Client_Email },
-      });
-
       const findOrders = await this.prisma.order.findMany({
         where: { Client_Email: Client_Email },
         include: {
@@ -151,7 +146,7 @@ export class OrderService {
         throw new BadRequestException('Order not found');
       }
 
-      this.emailService.sendEmail({
+      await this.emailService.sendEmail({
         to: order.Client_Email ?? '',
         template: EmailTemplate.ORDER_CONFIRMATION,
         context: {
@@ -160,11 +155,9 @@ export class OrderService {
       });
 
       return order;
-    } catch (error) {
-      console.error('Prisma error:', error);
-      throw new BadRequestException(
-        'Failed to retrieve order: ' + error.message,
-      );
+     } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 }

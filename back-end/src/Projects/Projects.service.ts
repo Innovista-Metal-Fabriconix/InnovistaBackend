@@ -23,31 +23,29 @@ export class ProjectsService {
         },
       });
       return { message: 'Project created successfully', project };
-    } catch (error) {
-      throw new BadRequestException('Error creating project: ' + error.message);
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error creating project: ' + message);
     }
   }
-
   async getAllProjects() {
     try {
       const projects = await this.prisma.project.findMany();
       return { message: 'Projects retrieved successfully', projects };
-    } catch (error) {
-      throw new BadRequestException(
-        'Error retrieving projects: ' + error.message,
-      );
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
-
   async deleteProject(ProjectID: number) {
     try {
       const project = await this.prisma.project.delete({
         where: { ProjectID: ProjectID },
       });
       return { message: 'Project deleted successfully', project };
-    } catch (error) {
-      throw new BadRequestException('Error deleting project: ' + error.message);
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error deleting project: ' + message);
     }
   }
-
 }

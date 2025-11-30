@@ -96,8 +96,8 @@ let CustomerService = class CustomerService {
             };
         }
         catch (error) {
-            console.error('Prisma error:', error);
-            throw new common_1.BadRequestException('Failed to register customer: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
     async changePassword(customerId, newPassword) {
@@ -110,8 +110,8 @@ let CustomerService = class CustomerService {
             return { message: 'Password changed successfully', customer };
         }
         catch (error) {
-            console.error('Prisma error:', error);
-            throw new common_1.BadRequestException('Failed to change password: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
     async verifyCustomerEmail(customerId) {
@@ -123,8 +123,8 @@ let CustomerService = class CustomerService {
             return { message: 'Email verified successfully', customer };
         }
         catch (error) {
-            console.error('Prisma error:', error);
-            throw new common_1.BadRequestException('Failed to verify email: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
     async getAllCustomers() {
@@ -133,8 +133,8 @@ let CustomerService = class CustomerService {
             return customers;
         }
         catch (error) {
-            console.error('Prisma error:', error);
-            throw new common_1.BadRequestException('Failed to retrieve customers: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
     async removeCustomer(customerId, AdminId) {
@@ -158,7 +158,8 @@ let CustomerService = class CustomerService {
             return { message: 'Customer deleted successfully', customer };
         }
         catch (error) {
-            throw new common_1.BadRequestException('Failed to delete customer: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
     async updateCustomer(UpdateCustomer, AdminId) {
@@ -185,8 +186,8 @@ let CustomerService = class CustomerService {
             return { message: 'Customer updated successfully', customer };
         }
         catch (error) {
-            console.error('Prisma error:', error);
-            throw new common_1.BadRequestException('Failed to update customer: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
 };

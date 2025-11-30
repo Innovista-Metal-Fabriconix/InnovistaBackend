@@ -62,11 +62,9 @@ export class CustomerService {
           'Customer registered successfully. Check your email for verification.',
         customer,
       };
-    } catch (error) {
-      console.error('Prisma error:', error);
-      throw new BadRequestException(
-        'Failed to register customer: ' + error.message,
-      );
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
@@ -80,11 +78,9 @@ export class CustomerService {
         data: { Cus_Password: hashedPassword },
       });
       return { message: 'Password changed successfully', customer };
-    } catch (error) {
-      console.error('Prisma error:', error);
-      throw new BadRequestException(
-        'Failed to change password: ' + error.message,
-      );
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
@@ -96,8 +92,8 @@ export class CustomerService {
       });
       return { message: 'Email verified successfully', customer };
     } catch (error) {
-      console.error('Prisma error:', error);
-      throw new BadRequestException('Failed to verify email: ' + error.message);
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
@@ -105,11 +101,9 @@ export class CustomerService {
     try {
       const customers = await this.prisma.customer.findMany();
       return customers;
-    } catch (error) {
-      console.error('Prisma error:', error);
-      throw new BadRequestException(
-        'Failed to retrieve customers: ' + error.message,
-      );
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
@@ -134,10 +128,9 @@ export class CustomerService {
       });
 
       return { message: 'Customer deleted successfully', customer };
-    } catch (error) {
-      throw new BadRequestException(
-        'Failed to delete customer: ' + error.message,
-      );
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
@@ -163,11 +156,9 @@ export class CustomerService {
         },
       });
       return { message: 'Customer updated successfully', customer };
-    } catch (error) {
-      console.error('Prisma error:', error);
-      throw new BadRequestException(
-        'Failed to update customer: ' + error.message,
-      );
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 }
