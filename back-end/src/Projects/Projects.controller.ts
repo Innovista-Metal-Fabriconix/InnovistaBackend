@@ -15,7 +15,7 @@ import { AdminAuthGuard } from '../Authentication/Authentication.AdminAuthgurd';
 export class ProjectsController {
   constructor(private projectsService: ProjectsService) {}
 
-  @UseGuards(AdminAuthGuard)
+  // @UseGuards(AdminAuthGuard)
   @Post('createProject')
   async createProject(@Body() projectDto: ProjectDTO) {
     return this.projectsService.createProject(projectDto);

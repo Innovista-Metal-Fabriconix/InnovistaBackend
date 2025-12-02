@@ -35,7 +35,6 @@ let ProjectsController = class ProjectsController {
 };
 exports.ProjectsController = ProjectsController;
 __decorate([
-    (0, common_2.UseGuards)(Authentication_AdminAuthgurd_1.AdminAuthGuard),
     (0, common_1.Post)('createProject'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
