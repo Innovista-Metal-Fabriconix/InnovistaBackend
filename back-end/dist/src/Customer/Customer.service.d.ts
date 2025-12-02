@@ -9,81 +9,81 @@ export declare class CustomerService {
         message: string;
         customer: {
             CustomerId: number;
-            Cus_Email: string;
             Cus_Name: string;
+            Cus_Email: string;
             Cus_PhoneNumber: string;
             Cus_CompanyName: string | null;
             Cus_Logo: string | null;
-            Verify_State: boolean;
             Cus_Password: string;
             Purchase_Goods: string[];
+            Verify_State: boolean;
         };
     }>;
     changePassword(customerId: number, newPassword: string): Promise<{
         message: string;
         customer: {
             CustomerId: number;
-            Cus_Email: string;
             Cus_Name: string;
+            Cus_Email: string;
             Cus_PhoneNumber: string;
             Cus_CompanyName: string | null;
             Cus_Logo: string | null;
-            Verify_State: boolean;
             Cus_Password: string;
             Purchase_Goods: string[];
+            Verify_State: boolean;
         };
     }>;
     verifyCustomerEmail(customerId: number): Promise<{
         message: string;
         customer: {
             CustomerId: number;
-            Cus_Email: string;
             Cus_Name: string;
+            Cus_Email: string;
             Cus_PhoneNumber: string;
             Cus_CompanyName: string | null;
             Cus_Logo: string | null;
-            Verify_State: boolean;
             Cus_Password: string;
             Purchase_Goods: string[];
+            Verify_State: boolean;
         };
     }>;
     getAllCustomers(): Promise<{
         CustomerId: number;
-        Cus_Email: string;
         Cus_Name: string;
+        Cus_Email: string;
         Cus_PhoneNumber: string;
         Cus_CompanyName: string | null;
         Cus_Logo: string | null;
-        Verify_State: boolean;
         Cus_Password: string;
         Purchase_Goods: string[];
+        Verify_State: boolean;
     }[]>;
     removeCustomer(customerId: number, AdminId: number): Promise<{
         message: string;
         customer: {
             CustomerId: number;
-            Cus_Email: string;
             Cus_Name: string;
+            Cus_Email: string;
             Cus_PhoneNumber: string;
             Cus_CompanyName: string | null;
             Cus_Logo: string | null;
-            Verify_State: boolean;
             Cus_Password: string;
             Purchase_Goods: string[];
+            Verify_State: boolean;
         };
     }>;
     updateCustomer(UpdateCustomer: UpdateCustomer, AdminId: number): Promise<{
         message: string;
         customer: {
             CustomerId: number;
-            Cus_Email: string;
             Cus_Name: string;
+            Cus_Email: string;
             Cus_PhoneNumber: string;
             Cus_CompanyName: string | null;
             Cus_Logo: string | null;
-            Verify_State: boolean;
             Cus_Password: string;
             Purchase_Goods: string[];
+            Verify_State: boolean;
         };
     }>;
 }
