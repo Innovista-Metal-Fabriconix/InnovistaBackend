@@ -50,6 +50,29 @@ export class DesignsService {
     }
   }
 
+  async getUnderCategoryDesigns(category: string) {
+  try {
+    const designs = await this.prisma.design.findMany({
+      where: {
+        Categories: {
+          has: category,
+        },
+      },
+    });
+
+    if (!designs || designs.length === 0) {
+      throw new BadRequestException('No designs found under this category');
+    }
+
+    return designs;
+
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    throw new BadRequestException('Error retrieving projects: ' + message);
+  }
+}
+
+
   async deleteDesign(designId: number, AdminId: number) {
     try {
       const admin = await this.prisma.admin.findUnique({

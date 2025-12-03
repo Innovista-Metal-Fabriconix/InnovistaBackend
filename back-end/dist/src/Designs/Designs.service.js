@@ -55,6 +55,25 @@ let DesignsService = class DesignsService {
             throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
+    async getUnderCategoryDesigns(category) {
+        try {
+            const designs = await this.prisma.design.findMany({
+                where: {
+                    Categories: {
+                        has: category,
+                    },
+                },
+            });
+            if (!designs || designs.length === 0) {
+                throw new common_1.BadRequestException('No designs found under this category');
+            }
+            return designs;
+        }
+        catch (error) {
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
+        }
+    }
     async deleteDesign(designId, AdminId) {
         try {
             const admin = await this.prisma.admin.findUnique({
