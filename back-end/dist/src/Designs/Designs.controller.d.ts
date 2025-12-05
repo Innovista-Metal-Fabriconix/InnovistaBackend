@@ -6,6 +6,8 @@ export declare class DesignsController {
     createDesigns(designDto: DesignDTO, req: any): Promise<{
         message: string;
         design: {
+            AdminId: number;
+            DesignID: number;
             Design_Name: string;
             Design_Image: string[];
             Design_Description: string;
@@ -14,11 +16,11 @@ export declare class DesignsController {
             Design_BlogPosts: string[];
             Design_Sizes: string[];
             Design_CreatedAt: Date;
-            DesignID: number;
-            AdminId: number;
         };
     }>;
     getAllDesigns(): Promise<{
+        AdminId: number;
+        DesignID: number;
         Design_Name: string;
         Design_Image: string[];
         Design_Description: string;
@@ -27,10 +29,10 @@ export declare class DesignsController {
         Design_BlogPosts: string[];
         Design_Sizes: string[];
         Design_CreatedAt: Date;
-        DesignID: number;
-        AdminId: number;
     }[]>;
     getDesignsByCategory(category: string): Promise<{
+        AdminId: number;
+        DesignID: number;
         Design_Name: string;
         Design_Image: string[];
         Design_Description: string;
@@ -39,12 +41,24 @@ export declare class DesignsController {
         Design_BlogPosts: string[];
         Design_Sizes: string[];
         Design_CreatedAt: Date;
-        DesignID: number;
+    }[]>;
+    getDesignDetails(ids: string): Promise<{
         AdminId: number;
+        DesignID: number;
+        Design_Name: string;
+        Design_Image: string[];
+        Design_Description: string;
+        Categories: string[];
+        Design_Colors: string[];
+        Design_BlogPosts: string[];
+        Design_Sizes: string[];
+        Design_CreatedAt: Date;
     }[]>;
     deleteDesigns(designId: string, req: any): Promise<{
         message: string;
         design: {
+            AdminId: number;
+            DesignID: number;
             Design_Name: string;
             Design_Image: string[];
             Design_Description: string;
@@ -53,13 +67,13 @@ export declare class DesignsController {
             Design_BlogPosts: string[];
             Design_Sizes: string[];
             Design_CreatedAt: Date;
-            DesignID: number;
-            AdminId: number;
         };
     }>;
     updateDesigns(designDto: DesignDTO, req: any): Promise<{
         message: string;
         design: {
+            AdminId: number;
+            DesignID: number;
             Design_Name: string;
             Design_Image: string[];
             Design_Description: string;
@@ -68,8 +82,6 @@ export declare class DesignsController {
             Design_BlogPosts: string[];
             Design_Sizes: string[];
             Design_CreatedAt: Date;
-            DesignID: number;
-            AdminId: number;
         };
     }>;
 }

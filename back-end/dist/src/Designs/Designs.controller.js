@@ -32,6 +32,10 @@ let DesignsController = class DesignsController {
     async getDesignsByCategory(category) {
         return this.designsService.getUnderCategoryDesigns(category);
     }
+    async getDesignDetails(ids) {
+        const designIDs = ids.split(',').map(Number);
+        return this.designsService.GetItemDesignDetails(designIDs);
+    }
     async deleteDesigns(designId, req) {
         const AdminId = req.user.userId;
         return this.designsService.deleteDesign(parseInt(designId, 10), AdminId);
@@ -64,6 +68,13 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], DesignsController.prototype, "getDesignsByCategory", null);
+__decorate([
+    (0, common_1.Get)('DesignDetails'),
+    __param(0, (0, common_1.Query)('ids')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], DesignsController.prototype, "getDesignDetails", null);
 __decorate([
     (0, common_1.UseGuards)(Authentication_AdminAuthgurd_1.AdminAuthGuard),
     (0, common_1.Delete)('deleteDesign'),

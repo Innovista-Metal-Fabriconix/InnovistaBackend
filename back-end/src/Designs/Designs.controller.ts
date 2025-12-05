@@ -34,7 +34,11 @@ export class DesignsController {
     return this.designsService.getUnderCategoryDesigns(category);
   }
 
-  //   need to add unique Design IDS
+  @Get('DesignDetails')
+  async getDesignDetails(@Query('ids') ids: string) {
+    const designIDs = ids.split(',').map(Number);
+    return this.designsService.GetItemDesignDetails(designIDs);
+  }
 
   @UseGuards(AdminAuthGuard)
   @Delete('deleteDesign')
