@@ -19,14 +19,28 @@ export class DesignsController {
 
   @UseGuards(AdminAuthGuard)
   @Post('create')
-  async createDesigns(@Body() designDto: DesignDTO, @Req() req) {
+  async createDesigns(
+    @Body() designDto: DesignDTO,
+    @Req() req: { user: { userId: number } },
+  ) {
     const AdminId = req.user.userId;
     return this.designsService.createDesign(designDto, AdminId);
   }
 
+  // @Get('all')
+  // async getAllDesigns() {
+  //   return this.designsService.getAllDesigns();
+  // }
+
   @Get('all')
-  async getAllDesigns() {
-    return this.designsService.getAllDesigns();
+  async getAllDesigns(
+    @Query('page') page: string,
+    @Query('limit') limit: string,
+  ) {
+    return this.designsService.getAllDesigns(
+      Number(page) || 1,
+      Number(limit) || 10,
+    );
   }
 
   @Get('byCategory')
@@ -42,14 +56,20 @@ export class DesignsController {
 
   @UseGuards(AdminAuthGuard)
   @Delete('deleteDesign')
-  async deleteDesigns(@Query('designId') designId: string, @Req() req) {
+  async deleteDesigns(
+    @Query('designId') designId: string,
+    @Req() req: { user: { userId: number } },
+  ) {
     const AdminId = req.user.userId;
     return this.designsService.deleteDesign(parseInt(designId, 10), AdminId);
   }
 
   @UseGuards(AdminAuthGuard)
   @Put('updateDesign')
-  async updateDesigns(@Body() designDto: DesignDTO, @Req() req) {
+  async updateDesigns(
+    @Body() designDto: DesignDTO,
+    @Req() req: { user: { userId: number } },
+  ) {
     const AdminId = req.user.userId;
     return this.designsService.updateDesign(designDto, AdminId);
   }

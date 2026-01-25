@@ -1,4 +1,4 @@
-import { Body, Query, Post, Get, Delete, Put, Req } from '@nestjs/common';
+import { Body, Query, Post, Get, Delete, Req } from '@nestjs/common';
 import { Controller, UseGuards } from '@nestjs/common';
 import { FeedbackDTO } from './Feedback.DTO';
 import { FeedbackService } from './Feedback.service';
@@ -18,18 +18,35 @@ export class FeedbackController {
     return this.feedbackService.createFeedback(feedbackDto);
   }
 
+  // @Get('allFeedbacks')
+  // async getAllFeedbacks() {
+  //   return this.feedbackService.getAllFeedbacks();
+  // }
+
   @Get('allFeedbacks')
-  async getAllFeedbacks() {
-    return this.feedbackService.getAllFeedbacks();
+  async getAllFeedbacks(
+    @Query('page') page: string,
+    @Query('limit') limit: string,
+  ) {
+    return this.feedbackService.getAllFeedbacks(
+      Number(page) || 1,
+      Number(limit) || 10,
+    );
   }
 
   @UseGuards(AdminAuthGuard)
   @Delete('deleteFeedback')
-  async deleteFeedback(@Query('feedbackId') feedbackId: string, @Req() req) {
-    const AdminId = req.user.userId;
+  async deleteFeedback(
+    @Query('feedbackId') feedbackId: string,
+    @Req() req: { user?: { userId?: string } },
+  ) {
+    const AdminId = req.user?.userId;
+    if (!AdminId) {
+      throw new Error('AdminId is missing');
+    }
     return this.feedbackService.deleteFeedback(
       parseInt(feedbackId, 10),
-      AdminId,
+      parseInt(AdminId, 10),
     );
   }
 

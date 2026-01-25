@@ -128,7 +128,9 @@ export class AuthenticationService {
       }
 
       const admin = await this.prisma.admin.findUnique({
-        where: { AdminId: payload.sub },
+        where: { 
+          AdminId: payload.sub
+         },
       });
 
       if (!admin) {
@@ -234,7 +236,7 @@ export class AuthenticationService {
       return admins;
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
-      throw new BadRequestException('Error retrieving projects: ' + message);
+      throw new BadRequestException('Error retrieving admins: ' + message);
     }
   }
 
@@ -250,7 +252,7 @@ export class AuthenticationService {
       return { message: 'Admin removed successfully' };
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
-      throw new BadRequestException('Error retrieving projects: ' + message);
+      throw new BadRequestException('Error retrieving admins: ' + message);
     }
   }
 }

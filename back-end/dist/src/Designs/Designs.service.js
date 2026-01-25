@@ -45,10 +45,26 @@ let DesignsService = class DesignsService {
             throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
-    async getAllDesigns() {
+    async getAllDesigns(page = 1, limit = 10) {
         try {
-            const designs = await this.prisma.design.findMany();
-            return designs;
+            const skip = (page - 1) * limit;
+            const [designs, total] = await this.prisma.$transaction([
+                this.prisma.design.findMany({
+                    skip,
+                    take: limit,
+                    orderBy: {
+                        DesignID: 'desc',
+                    },
+                }),
+                this.prisma.design.count(),
+            ]);
+            return {
+                page,
+                limit,
+                total,
+                totalPages: Math.ceil(total / limit),
+                data: designs,
+            };
         }
         catch (error) {
             const message = error instanceof Error ? error.message : String(error);

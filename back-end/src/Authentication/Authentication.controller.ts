@@ -11,6 +11,7 @@ import {
 import { AuthenticationService } from './Authentication.service';
 import { AuthDTO } from './DTO/Authentication.DTO';
 import { AdminAuthGuard } from './Authentication.AdminAuthgurd';
+import { Request } from 'express';
 
 @Controller('auth')
 export class AuthenticationController {

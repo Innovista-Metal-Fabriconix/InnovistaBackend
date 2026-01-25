@@ -62,15 +62,30 @@ let FeedbackService = class FeedbackService {
             throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
-    async getAllFeedbacks() {
+    async getAllFeedbacks(page, limit) {
         try {
-            const feedbacks = await this.prisma.feed_Back.findMany({
-                include: {
-                    Design: true,
-                    Customer: true,
-                },
-            });
-            return feedbacks;
+            const skip = (page - 1) * limit;
+            const [feedbacks, total] = await this.prisma.$transaction([
+                this.prisma.feed_Back.findMany({
+                    skip,
+                    take: limit,
+                    orderBy: {
+                        Feed_backId: 'desc',
+                    },
+                    include: {
+                        Design: true,
+                        Customer: true,
+                    },
+                }),
+                this.prisma.feed_Back.count(),
+            ]);
+            return {
+                page,
+                limit,
+                total,
+                totalPages: Math.ceil(total / limit),
+                data: feedbacks,
+            };
         }
         catch (error) {
             const message = error instanceof Error ? error.message : String(error);

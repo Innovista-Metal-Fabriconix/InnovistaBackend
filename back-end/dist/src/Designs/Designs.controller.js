@@ -26,8 +26,8 @@ let DesignsController = class DesignsController {
         const AdminId = req.user.userId;
         return this.designsService.createDesign(designDto, AdminId);
     }
-    async getAllDesigns() {
-        return this.designsService.getAllDesigns();
+    async getAllDesigns(page, limit) {
+        return this.designsService.getAllDesigns(Number(page) || 1, Number(limit) || 10);
     }
     async getDesignsByCategory(category) {
         return this.designsService.getUnderCategoryDesigns(category);
@@ -57,8 +57,10 @@ __decorate([
 ], DesignsController.prototype, "createDesigns", null);
 __decorate([
     (0, common_1.Get)('all'),
+    __param(0, (0, common_1.Query)('page')),
+    __param(1, (0, common_1.Query)('limit')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
 ], DesignsController.prototype, "getAllDesigns", null);
 __decorate([

@@ -10,9 +10,8 @@ import { FeedbackDTO } from './Feedback.DTO';
 export class FeedbackService {
   constructor(private prisma: PrismaService) {}
 
-
   async accesschecktoCustomer(customerEmail: string) {
-    try{
+    try {
       const customer = await this.prisma.customer.findUnique({
         where: { Cus_Email: customerEmail },
       });
@@ -20,8 +19,7 @@ export class FeedbackService {
         throw new UnauthorizedException('Customer not found');
       }
       return { message: 'Access granted', customerId: customer.CustomerId };
-
-  } catch (error: unknown) {
+    } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
       throw new BadRequestException('Error retrieving projects: ' + message);
     }
@@ -52,22 +50,51 @@ export class FeedbackService {
         },
       });
       return { message: 'Feedback submitted successfully', feedback };
-  } catch (error: unknown) {
+    } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
       throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
-  async getAllFeedbacks() {
+  // async getAllFeedbacks() {
+  //   try {
+  //     const feedbacks = await this.prisma.feed_Back.findMany({
+  //       include: {
+  //         Design: true,
+  //         Customer: true,
+  //       },
+  //     });
+  //     return feedbacks;
+  // } catch (error: unknown) {
+  //     const message = error instanceof Error ? error.message : String(error);
+  //     throw new BadRequestException('Error retrieving projects: ' + message);
+  //   }
+  // }
+  async getAllFeedbacks(page: number, limit: number) {
     try {
-      const feedbacks = await this.prisma.feed_Back.findMany({
-        include: {
-          Design: true,
-          Customer: true,
-        },
-      });
-      return feedbacks;
-  } catch (error: unknown) {
+      const skip = (page - 1) * limit;
+      const [feedbacks, total] = await this.prisma.$transaction([
+        this.prisma.feed_Back.findMany({
+          skip,
+          take: limit,
+          orderBy: {
+            Feed_backId: 'desc',
+          },
+          include: {
+            Design: true,
+            Customer: true,
+          },
+        }),
+        this.prisma.feed_Back.count(),
+      ]);
+      return {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+        data: feedbacks,
+      };
+    } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
       throw new BadRequestException('Error retrieving projects: ' + message);
     }
@@ -86,7 +113,7 @@ export class FeedbackService {
         where: { Feed_backId: feedbackId },
       });
       return { message: 'Feedback deleted successfully', feedback };
-  } catch (error: unknown) {
+    } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
       throw new BadRequestException('Error retrieving projects: ' + message);
     }
@@ -102,7 +129,7 @@ export class FeedbackService {
         },
       });
       return feedbacks;
-   } catch (error: unknown) {
+    } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
       throw new BadRequestException('Error retrieving projects: ' + message);
     }

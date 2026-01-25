@@ -26,8 +26,8 @@ let ProjectsController = class ProjectsController {
     async createProject(projectDto) {
         return this.projectsService.createProject(projectDto);
     }
-    async getAllProjects() {
-        return this.projectsService.getAllProjects();
+    async getAllProjects(page, limit) {
+        return this.projectsService.getAllProjects(Number(page) || 1, Number(limit) || 10);
     }
     async deleteProject(projectId) {
         return this.projectsService.deleteProject(projectId);
@@ -44,8 +44,10 @@ __decorate([
 ], ProjectsController.prototype, "createProject", null);
 __decorate([
     (0, common_1.Get)('getAllProjects'),
+    __param(0, (0, common_1.Query)('page')),
+    __param(1, (0, common_1.Query)('limit')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
 ], ProjectsController.prototype, "getAllProjects", null);
 __decorate([
