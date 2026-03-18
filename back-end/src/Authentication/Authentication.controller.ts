@@ -13,6 +13,13 @@ import { AuthDTO } from './DTO/Authentication.DTO';
 import { AdminAuthGuard } from './Authentication.AdminAuthgurd';
 import { Request } from 'express';
 
+
+interface AuthRequest extends Request {
+  user: {
+    email: string;
+  };
+}
+
 @Controller('auth')
 export class AuthenticationController {
   constructor(private authService: AuthenticationService) {}
@@ -41,15 +48,19 @@ export class AuthenticationController {
     return this.authService.logout(Number(adminId));
   }
 
+ 
   @UseGuards(AdminAuthGuard)
   @Post('forgot-password')
-  async forgotPassword(@Req() req, @Query('newPassword') newPassword: string) {
+  async forgotPassword(
+    @Req() req: AuthRequest,
+    @Query('newPassword') newPassword: string,
+  ) {
     return this.authService.passwordReset(req.user.email, newPassword);
   }
 
   @Post('ResetPassword')
   async passwordReset_Loginuser(@Query('email') Adminemail: string) {
-    return this.authService.passwordRset_Login(Adminemail);
+    return this.authService.passwordReset_Login(Adminemail);
   }
 
   @UseGuards(AdminAuthGuard)

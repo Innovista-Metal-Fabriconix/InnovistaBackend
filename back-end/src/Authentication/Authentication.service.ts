@@ -10,6 +10,12 @@ import { EmailService } from '../Emails/Email.service';
 import { EmailTemplate } from '../Emails/Email.DTO';
 import { TokenCreate } from './Authentication.TokenCreate';
 
+interface TokenPayload {
+  sub: number;
+  iat?: number;
+  exp?: number;
+}
+
 @Injectable()
 export class AuthenticationService {
   constructor(
@@ -113,7 +119,11 @@ export class AuthenticationService {
 
   async refreshAccessToken(refreshToken: string) {
     try {
-      const payload: any = this.tokenCreate.verifyToken(refreshToken);
+      const payload = this.tokenCreate.verifyToken(refreshToken) as unknown as TokenPayload;
+      
+      if (typeof payload.sub === 'string') {
+        payload.sub = Number(payload.sub);
+      }
 
       const storedToken = await this.prisma.refreshToken.findUnique({
         where: { adminId: payload.sub },
@@ -170,7 +180,7 @@ export class AuthenticationService {
     }
   }
 
-  async passwordRset_Login(email: string) {
+  async passwordReset_Login(email: string) {
     try {
       const findAdminAccount = await this.prisma.admin.findUnique({
         where: { Admin_Email: email },
@@ -200,8 +210,6 @@ export class AuthenticationService {
           name: nameOf_Admin,
         },
       });
-
-      console.log(newUpdate_Password, 'new password');
       return { message: 'Password Reset Successfully Check Your email' };
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
