@@ -20,9 +20,12 @@ export declare class ProjectsController {
             Budget: number;
         };
     }>;
-    getAllProjects(): Promise<{
-        message: string;
-        projects: {
+    getAllProjects(page: string, limit: string): Promise<{
+        page: number;
+        limit: number;
+        total: number;
+        totalPages: number;
+        data: {
             Client_Name: string;
             Client_Email: string;
             Client_Number: string | null;

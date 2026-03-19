@@ -19,7 +19,7 @@ export class OrderService {
         where: { Cus_Email: orderDto.Client_Email },
       });
 
-      const orderData: any = {
+      const orderData: Parameters<typeof this.prisma.order.create>[0]['data'] = {
         Order_Status: orderDto.Order_Status,
         Order_Date: orderDto.Order_Date ?? new Date(),
         Client_Name: orderDto.Client_Name,
@@ -30,7 +30,9 @@ export class OrderService {
         Designs: {
           create:
             orderDto.Designs?.map((d) => ({
-              designId: d.DesignID,
+              Design: {
+                connect: { DesignID: d.DesignID },
+              },
             })) || [],
         },
       };
@@ -63,30 +65,65 @@ export class OrderService {
       });
 
       return { message: 'Order created successfully', order };
-   } catch (error: unknown) {
+    } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
       throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
-  async getAllOrders() {
+  // async getAllOrders() {
+  //   try {
+  //     const orders = await this.prisma.order.findMany({
+  //       include: {
+  //         Customer: true,
+  //         Designs: {
+  //           include: {
+  //             Design: true,
+  //           },
+  //         },
+  //       },
+  //     });
+  //     return orders;
+  //  } catch (error: unknown) {
+  //     const message = error instanceof Error ? error.message : String(error);
+  //     throw new BadRequestException('Error retrieving projects: ' + message);
+  //   }
+  // }
+
+  async getAllOrders(page: number, limit: number) {
     try {
-      const orders = await this.prisma.order.findMany({
-        include: {
-          Customer: true,
-          Designs: {
-            include: {
-              Design: true,
+      const skip = (page - 1) * limit;
+      const [orders, total] = await this.prisma.$transaction([
+        this.prisma.order.findMany({
+          skip,
+          take: limit,
+          orderBy: {
+            OrderID: 'desc',
+          },
+          include: {
+            Customer: true,
+            Designs: {
+              include: {
+                Design: true,
+              },
             },
           },
-        },
-      });
-      return orders;
-   } catch (error: unknown) {
+        }),
+        this.prisma.order.count(),
+      ]);
+      return {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+        data: orders,
+      };
+    } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
       throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
+
 
   async chagetheStates(orderId: number, Status: string) {
     try {
@@ -103,7 +140,7 @@ export class OrderService {
       });
 
       return { message: `Change States to ${Status}` };
-  } catch (error: unknown) {
+    } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
       throw new BadRequestException('Error retrieving projects: ' + message);
     }
@@ -155,7 +192,7 @@ export class OrderService {
       });
 
       return order;
-     } catch (error: unknown) {
+    } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
       throw new BadRequestException('Error retrieving projects: ' + message);
     }

@@ -28,15 +28,42 @@ export class ProjectsService {
       throw new BadRequestException('Error creating project: ' + message);
     }
   }
-  async getAllProjects() {
+  // async getAllProjects() {
+  //   try {
+  //     const projects = await this.prisma.project.findMany();
+  //     return { message: 'Projects retrieved successfully', projects };
+  //   } catch (error: unknown) {
+  //     const message = error instanceof Error ? error.message : String(error);
+  //     throw new BadRequestException('Error retrieving projects: ' + message);
+  //   }
+  // }
+
+  async getAllProjects(page: number = 1, limit: number = 10) {
     try {
-      const projects = await this.prisma.project.findMany();
-      return { message: 'Projects retrieved successfully', projects };
+      const skip = (page - 1) * limit;
+      const [projects, total] = await this.prisma.$transaction([
+        this.prisma.project.findMany({
+          skip,
+          take: limit,
+          orderBy: {
+            ProjectID: 'desc',
+          },
+        }),
+        this.prisma.project.count(),
+      ]);
+      return {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+        data: projects,
+      };
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
       throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
+
   async deleteProject(ProjectID: number) {
     try {
       const project = await this.prisma.project.delete({

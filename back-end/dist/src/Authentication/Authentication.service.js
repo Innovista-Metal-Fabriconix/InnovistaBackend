@@ -150,7 +150,9 @@ let AuthenticationService = class AuthenticationService {
                 throw new common_1.UnauthorizedException('Refresh token expired');
             }
             const admin = await this.prisma.admin.findUnique({
-                where: { AdminId: payload.sub },
+                where: {
+                    AdminId: payload.sub
+                },
             });
             if (!admin) {
                 throw new common_1.UnauthorizedException('Admin not found');
@@ -245,7 +247,7 @@ let AuthenticationService = class AuthenticationService {
         }
         catch (error) {
             const message = error instanceof Error ? error.message : String(error);
-            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
+            throw new common_1.BadRequestException('Error retrieving admins: ' + message);
         }
     }
     async RemoveAdmin(adminId) {
@@ -260,7 +262,7 @@ let AuthenticationService = class AuthenticationService {
         }
         catch (error) {
             const message = error instanceof Error ? error.message : String(error);
-            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
+            throw new common_1.BadRequestException('Error retrieving admins: ' + message);
         }
     }
 };

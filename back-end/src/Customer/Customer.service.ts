@@ -97,15 +97,44 @@ export class CustomerService {
     }
   }
 
-  async getAllCustomers() {
-    try {
-      const customers = await this.prisma.customer.findMany();
-      return customers;
-    } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : String(error);
-      throw new BadRequestException('Error retrieving projects: ' + message);
-    }
+  async getAllCustomers(page: number = 1, limit: number = 10) {
+  try {
+    const skip = (page - 1) * limit;
+
+    const [customers, total] = await this.prisma.$transaction([
+      this.prisma.customer.findMany({
+        skip,
+        take: limit,
+        orderBy: {
+          CustomerId: 'desc', // Change to a valid field, e.g., CustomerId or another timestamp field
+        },
+      }),
+      this.prisma.customer.count(),
+    ]);
+
+    return {
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit),
+      data: customers,
+    };
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    throw new BadRequestException('Error retrieving customers: ' + message);
   }
+}
+
+
+  // async getAllCustomers() {
+  //   try {
+  //     const customers = await this.prisma.customer.findMany();
+  //     return customers;
+  //   } catch (error: unknown) {
+  //     const message = error instanceof Error ? error.message : String(error);
+  //     throw new BadRequestException('Error retrieving projects: ' + message);
+  //   }
+  // }
 
   async removeCustomer(customerId: number, AdminId: number) {
     try {

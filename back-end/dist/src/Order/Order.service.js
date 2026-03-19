@@ -38,7 +38,9 @@ let OrderService = class OrderService {
                 CustomerId: findCustomer ? findCustomer.CustomerId : null,
                 Designs: {
                     create: orderDto.Designs?.map((d) => ({
-                        designId: d.DesignID,
+                        Design: {
+                            connect: { DesignID: d.DesignID },
+                        },
                     })) || [],
                 },
             };
@@ -73,19 +75,34 @@ let OrderService = class OrderService {
             throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
-    async getAllOrders() {
+    async getAllOrders(page, limit) {
         try {
-            const orders = await this.prisma.order.findMany({
-                include: {
-                    Customer: true,
-                    Designs: {
-                        include: {
-                            Design: true,
+            const skip = (page - 1) * limit;
+            const [orders, total] = await this.prisma.$transaction([
+                this.prisma.order.findMany({
+                    skip,
+                    take: limit,
+                    orderBy: {
+                        OrderID: 'desc',
+                    },
+                    include: {
+                        Customer: true,
+                        Designs: {
+                            include: {
+                                Design: true,
+                            },
                         },
                     },
-                },
-            });
-            return orders;
+                }),
+                this.prisma.order.count(),
+            ]);
+            return {
+                page,
+                limit,
+                total,
+                totalPages: Math.ceil(total / limit),
+                data: orders,
+            };
         }
         catch (error) {
             const message = error instanceof Error ? error.message : String(error);

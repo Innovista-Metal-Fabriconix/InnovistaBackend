@@ -29,12 +29,15 @@ let FeedbackController = class FeedbackController {
     async createFeedback(feedbackDto) {
         return this.feedbackService.createFeedback(feedbackDto);
     }
-    async getAllFeedbacks() {
-        return this.feedbackService.getAllFeedbacks();
+    async getAllFeedbacks(page, limit) {
+        return this.feedbackService.getAllFeedbacks(Number(page) || 1, Number(limit) || 10);
     }
     async deleteFeedback(feedbackId, req) {
-        const AdminId = req.user.userId;
-        return this.feedbackService.deleteFeedback(parseInt(feedbackId, 10), AdminId);
+        const AdminId = req.user?.userId;
+        if (!AdminId) {
+            throw new Error('AdminId is missing');
+        }
+        return this.feedbackService.deleteFeedback(parseInt(feedbackId, 10), parseInt(AdminId, 10));
     }
     async getFeedbackByDesignId(designId) {
         return this.feedbackService.getfeedbackByDesignId(parseInt(designId, 10));
@@ -57,8 +60,10 @@ __decorate([
 ], FeedbackController.prototype, "createFeedback", null);
 __decorate([
     (0, common_1.Get)('allFeedbacks'),
+    __param(0, (0, common_1.Query)('page')),
+    __param(1, (0, common_1.Query)('limit')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
 ], FeedbackController.prototype, "getAllFeedbacks", null);
 __decorate([

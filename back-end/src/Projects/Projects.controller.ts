@@ -21,10 +21,22 @@ export class ProjectsController {
     return this.projectsService.createProject(projectDto);
   }
 
+  // @Get('getAllProjects')
+  // async getAllProjects() {
+  //   return this.projectsService.getAllProjects();
+  // }
+
   @Get('getAllProjects')
-  async getAllProjects() {
-    return this.projectsService.getAllProjects();
+  async getAllProjects(
+    @Query('page') page: string,  
+    @Query('limit') limit: string,
+  ) {
+    return this.projectsService.getAllProjects(
+      Number(page) || 1,
+      Number(limit) || 10,
+    );
   }
+  
 
   @UseGuards(AdminAuthGuard)
   @Delete('deleteProject')
