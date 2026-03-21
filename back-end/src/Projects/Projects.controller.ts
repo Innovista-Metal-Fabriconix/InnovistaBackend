@@ -21,10 +21,7 @@ export class ProjectsController {
     return this.projectsService.createProject(projectDto);
   }
 
-  // @Get('getAllProjects')
-  // async getAllProjects() {
-  //   return this.projectsService.getAllProjects();
-  // }
+
 
   @Get('getAllProjects')
   async getAllProjects(

@@ -34,7 +34,7 @@ export class OrderDTO {
 
   @IsEnum(OrderStatus)
   @IsNotEmpty()
-  Order_Status: OrderStatus;
+  Order_Status!: OrderStatus;
 
   @IsString()
   @IsOptional()

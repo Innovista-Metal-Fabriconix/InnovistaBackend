@@ -44,7 +44,7 @@ export declare class AuthenticationService {
     logout(adminId: number): Promise<{
         message: string;
     }>;
-    passwordRset_Login(email: string): Promise<{
+    passwordReset_Login(email: string): Promise<{
         message: string;
     }>;
     passwordReset(email: string, newPassword: string): Promise<{

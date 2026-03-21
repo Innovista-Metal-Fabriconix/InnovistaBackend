@@ -18,10 +18,6 @@ export class FeedbackController {
     return this.feedbackService.createFeedback(feedbackDto);
   }
 
-  // @Get('allFeedbacks')
-  // async getAllFeedbacks() {
-  //   return this.feedbackService.getAllFeedbacks();
-  // }
 
   @Get('allFeedbacks')
   async getAllFeedbacks(

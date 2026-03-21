@@ -13,35 +13,35 @@ export class CustomerDTO {
 
     @IsNotEmpty()
     @IsNumber()
-    public CustomerId: number;
+    public CustomerId!: number;
 
     @IsNotEmpty()
     @IsString()
-    public Cus_Name: string;
+    public Cus_Name!: string;
 
     @IsNotEmpty()
     @IsEmail()
-    public Cus_Email: string;
+    public Cus_Email!: string;
 
     @IsNotEmpty()
     @IsString()
-    public Cus_PhoneNumber: string;
+    public Cus_PhoneNumber!: string;
 
     @IsOptional()
     @IsString()
-    public Cus_CompanyName: string;
+    public Cus_CompanyName!: string;
 
     @IsOptional()
     @IsString()
-    public Cus_Logo: string;
+    public Cus_Logo!: string;
 
     @IsNotEmpty()
     @IsString()
-    public Cus_Password: string;
+    public Cus_Password!: string;
 
     @IsOptional()
     @IsArray()
-    public Purchase_Goods: string[];
+    public Purchase_Goods!: string[];
 
 }
 
@@ -49,27 +49,27 @@ export class UpdateCustomer{
 
     @IsNotEmpty()
     @IsNumber()
-    public CustomerId: number;
+    public CustomerId!: number;
 
     @IsNotEmpty()
     @IsString()
-    public Cus_Name: string;
+    public Cus_Name!: string;
 
     @IsNotEmpty()
     @IsEmail()
-    public Cus_Email: string;
+    public Cus_Email!: string;
 
     @IsNotEmpty()
     @IsString()
-    public Cus_PhoneNumber: string;
+    public Cus_PhoneNumber!: string;
 
     @IsOptional()
     @IsString()
-    public Cus_CompanyName: string;
+    public Cus_CompanyName!: string;
 
     @IsOptional()
     @IsString()
-    public Cus_Logo: string;
+    public Cus_Logo!: string;
 
     @IsNotEmpty()
     @IsString()
@@ -80,5 +80,5 @@ export class UpdateCustomer{
 
     @IsOptional()
     @IsArray()
-    public Purchase_Goods: string[];
+    public Purchase_Goods!: string[];
 }

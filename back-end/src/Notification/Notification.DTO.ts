@@ -20,11 +20,11 @@ export class NotificationDTO {
     @IsNotEmpty()
     @IsString()
     @MaxLength(255)
-    SenderEmail: string;
+    SenderEmail!: string;
 
     @IsNotEmpty()
     @IsString()
-    Recevied_Emails: string[];
+    Recevied_Emails!: string[];
 
     @IsOptional()
     @IsString()
@@ -32,9 +32,9 @@ export class NotificationDTO {
 
     @IsNotEmpty()
     @IsString()
-    Notifications_Body: string;
+    Notifications_Body!: string;
 
     @IsNotEmpty()
     @IsString()
-    Notifications_Title: string;
+    Notifications_Title!: string;
 }

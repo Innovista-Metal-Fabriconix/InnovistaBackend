@@ -1,16 +1,5 @@
-import { EmailTemplate } from './Email.DTO';
+import { EmailTemplate, EmailContext } from './Email.DTO';
+import { EmailTemplateResult } from './Email.EmailTemplateResult';
 export declare class EmailTemplateFactory {
-    static create(template: EmailTemplate, context?: any): {
-        subject: string;
-        template: string;
-        context: any;
-        bodyText: string;
-        bodyHtml?: undefined;
-    } | {
-        subject: string;
-        template: string;
-        context: any;
-        bodyHtml: string;
-        bodyText?: undefined;
-    };
+    static create(template: EmailTemplate, context: EmailContext): EmailTemplateResult;
 }
