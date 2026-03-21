@@ -4,22 +4,24 @@ import serverlessExpress from '@vendia/serverless-express';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import express from 'express';
 
-const server = express();
-
-let cachedServer: any;
+let server;
 
 async function bootstrap() {
-  const app = await NestFactory.create(
+  const app = express();
+
+  const nestApp = await NestFactory.create(
     AppModule,
-    new ExpressAdapter(server),
+    new ExpressAdapter(app),
   );
-  await app.init();
-  return serverlessExpress({ app: server });
+
+  await nestApp.init();
+
+  return serverlessExpress({ app });
 }
 
-export default async function handler(req: any, res: any) {
-  if (!cachedServer) {
-    cachedServer = await bootstrap();
+export default async function handler(req, res) {
+  if (!server) {
+    server = await bootstrap();
   }
-  return cachedServer(req, res);
+  return server(req, res);
 }
