@@ -13,7 +13,6 @@ exports.NotificationService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../../prisma/prisma.service");
 let NotificationService = class NotificationService {
-    prisma;
     constructor(prisma) {
         this.prisma = prisma;
     }

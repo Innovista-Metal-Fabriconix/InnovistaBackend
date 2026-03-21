@@ -19,7 +19,6 @@ const Feedback_DTO_1 = require("./Feedback.DTO");
 const Feedback_service_1 = require("./Feedback.service");
 const Authentication_AdminAuthgurd_1 = require("../Authentication/Authentication.AdminAuthgurd");
 let FeedbackController = class FeedbackController {
-    feedbackService;
     constructor(feedbackService) {
         this.feedbackService = feedbackService;
     }

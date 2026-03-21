@@ -12,11 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.FeedbackDTO = void 0;
 const class_validator_1 = require("class-validator");
 class FeedbackDTO {
-    Feed_back_comment;
-    Feed_Back_Images;
-    Rating;
-    CustomerId;
-    DesignID;
 }
 exports.FeedbackDTO = FeedbackDTO;
 __decorate([

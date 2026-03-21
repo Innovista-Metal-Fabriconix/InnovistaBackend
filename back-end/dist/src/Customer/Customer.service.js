@@ -49,8 +49,6 @@ const bcrypt = __importStar(require("bcrypt"));
 const Email_service_1 = require("../Emails/Email.service");
 const Email_DTO_1 = require("../Emails/Email.DTO");
 let CustomerService = class CustomerService {
-    prisma;
-    emailService;
     constructor(prisma, emailService) {
         this.prisma = prisma;
         this.emailService = emailService;

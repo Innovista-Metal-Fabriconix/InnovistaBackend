@@ -19,7 +19,6 @@ const Projects_DTO_1 = require("./Projects.DTO");
 const Projects_service_1 = require("./Projects.service");
 const Authentication_AdminAuthgurd_1 = require("../Authentication/Authentication.AdminAuthgurd");
 let ProjectsController = class ProjectsController {
-    projectsService;
     constructor(projectsService) {
         this.projectsService = projectsService;
     }

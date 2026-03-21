@@ -20,15 +20,6 @@ var OrderStatus;
     OrderStatus["COMPLETED"] = "COMPLETED";
 })(OrderStatus || (exports.OrderStatus = OrderStatus = {}));
 class OrderDTO {
-    OrderID;
-    CustomerId;
-    Order_Date;
-    Order_Status;
-    Client_Name;
-    Client_Email;
-    Client_Number;
-    Customer;
-    Designs;
 }
 exports.OrderDTO = OrderDTO;
 __decorate([

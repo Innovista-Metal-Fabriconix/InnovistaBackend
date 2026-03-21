@@ -18,7 +18,6 @@ const Authentication_service_1 = require("./Authentication.service");
 const Authentication_DTO_1 = require("./DTO/Authentication.DTO");
 const Authentication_AdminAuthgurd_1 = require("./Authentication.AdminAuthgurd");
 let AuthenticationController = class AuthenticationController {
-    authService;
     constructor(authService) {
         this.authService = authService;
     }

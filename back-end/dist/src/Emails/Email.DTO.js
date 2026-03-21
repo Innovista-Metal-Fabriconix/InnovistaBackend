@@ -21,10 +21,6 @@ var EmailTemplate;
     EmailTemplate["REQUEST_NEWPASSWORD"] = "REQUEST_NEWPASSWORD";
 })(EmailTemplate || (exports.EmailTemplate = EmailTemplate = {}));
 class EmailDTO {
-    to;
-    template;
-    context;
-    body;
 }
 exports.EmailDTO = EmailDTO;
 __decorate([

@@ -19,7 +19,6 @@ const Order_DTO_1 = require("./Order.DTO");
 const Order_service_1 = require("./Order.service");
 const Authentication_AdminAuthgurd_1 = require("../Authentication/Authentication.AdminAuthgurd");
 let OrderController = class OrderController {
-    orderService;
     constructor(orderService) {
         this.orderService = orderService;
     }
