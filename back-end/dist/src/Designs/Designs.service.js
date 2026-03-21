@@ -41,18 +41,72 @@ let DesignsService = class DesignsService {
             return { message: 'Design created successfully', design };
         }
         catch (error) {
-            console.error('Prisma error:', error);
-            throw new common_1.BadRequestException('Failed to create design: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
-    async getAllDesigns() {
+    async getAllDesigns(page = 1, limit = 10) {
         try {
-            const designs = await this.prisma.design.findMany();
+            const skip = (page - 1) * limit;
+            const [designs, total] = await this.prisma.$transaction([
+                this.prisma.design.findMany({
+                    skip,
+                    take: limit,
+                    orderBy: {
+                        DesignID: 'desc',
+                    },
+                }),
+                this.prisma.design.count(),
+            ]);
+            return {
+                page,
+                limit,
+                total,
+                totalPages: Math.ceil(total / limit),
+                data: designs,
+            };
+        }
+        catch (error) {
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
+        }
+    }
+    async getUnderCategoryDesigns(category) {
+        try {
+            const designs = await this.prisma.design.findMany({
+                where: {
+                    Categories: {
+                        has: category,
+                    },
+                },
+            });
+            if (!designs || designs.length === 0) {
+                throw new common_1.BadRequestException('No designs found under this category');
+            }
             return designs;
         }
         catch (error) {
-            console.error('Prisma error:', error);
-            throw new common_1.BadRequestException('Failed to retrieve designs: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
+        }
+    }
+    async GetItemDesignDetails(designIDs) {
+        if (designIDs.length === 0) {
+            throw new common_1.BadRequestException('Design IDs array is empty');
+        }
+        try {
+            const designs = await this.prisma.design.findMany({
+                where: {
+                    DesignID: {
+                        in: designIDs,
+                    },
+                },
+            });
+            return designs;
+        }
+        catch (error) {
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
     async deleteDesign(designId, AdminId) {
@@ -69,7 +123,8 @@ let DesignsService = class DesignsService {
             return { message: 'Design deleted successfully', design };
         }
         catch (error) {
-            throw new common_1.BadRequestException('Failed to delete design: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
     async updateDesign(designDto, AdminId) {
@@ -95,8 +150,8 @@ let DesignsService = class DesignsService {
             return { message: 'Design updated successfully', design };
         }
         catch (error) {
-            console.error('Prisma error:', error);
-            throw new common_1.BadRequestException('Failed to update design: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
 };

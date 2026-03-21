@@ -10,19 +10,9 @@ export declare class OrderService {
     createOrder(orderDto: OrderDTO): Promise<{
         message: string;
         order: {
-            Customer: {
-                CustomerId: number;
-                Cus_Name: string;
-                Cus_Email: string;
-                Cus_PhoneNumber: string;
-                Cus_CompanyName: string | null;
-                Cus_Logo: string | null;
-                Verify_State: boolean;
-                Cus_Password: string;
-                Purchase_Goods: string[];
-            } | null;
             Designs: ({
                 Design: {
+                    AdminId: number;
                     DesignID: number;
                     Design_Name: string;
                     Design_Image: string[];
@@ -32,68 +22,85 @@ export declare class OrderService {
                     Design_BlogPosts: string[];
                     Design_Sizes: string[];
                     Design_CreatedAt: Date;
-                    AdminId: number;
                 };
             } & {
                 id: number;
-                orderId: number;
                 designId: number;
+                orderId: number;
             })[];
+            Customer: {
+                CustomerId: number;
+                Cus_Name: string;
+                Cus_Email: string;
+                Cus_PhoneNumber: string;
+                Cus_CompanyName: string | null;
+                Cus_Logo: string | null;
+                Cus_Password: string;
+                Purchase_Goods: string[];
+                Verify_State: boolean;
+            } | null;
         } & {
+            CustomerId: number | null;
+            OrderID: number;
             Order_Date: Date;
             Order_Status: string;
             Client_Name: string | null;
             Client_Email: string | null;
             Client_Number: string | null;
-            OrderID: number;
-            CustomerId: number | null;
         };
     }>;
-    getAllOrders(): Promise<({
-        Customer: {
-            CustomerId: number;
-            Cus_Name: string;
-            Cus_Email: string;
-            Cus_PhoneNumber: string;
-            Cus_CompanyName: string | null;
-            Cus_Logo: string | null;
-            Verify_State: boolean;
-            Cus_Password: string;
-            Purchase_Goods: string[];
-        } | null;
-        Designs: ({
-            Design: {
-                DesignID: number;
-                Design_Name: string;
-                Design_Image: string[];
-                Design_Description: string;
-                Categories: string[];
-                Design_Colors: string[];
-                Design_BlogPosts: string[];
-                Design_Sizes: string[];
-                Design_CreatedAt: Date;
-                AdminId: number;
-            };
+    getAllOrders(page: number, limit: number): Promise<{
+        page: number;
+        limit: number;
+        total: number;
+        totalPages: number;
+        data: ({
+            Designs: ({
+                Design: {
+                    AdminId: number;
+                    DesignID: number;
+                    Design_Name: string;
+                    Design_Image: string[];
+                    Design_Description: string;
+                    Categories: string[];
+                    Design_Colors: string[];
+                    Design_BlogPosts: string[];
+                    Design_Sizes: string[];
+                    Design_CreatedAt: Date;
+                };
+            } & {
+                id: number;
+                designId: number;
+                orderId: number;
+            })[];
+            Customer: {
+                CustomerId: number;
+                Cus_Name: string;
+                Cus_Email: string;
+                Cus_PhoneNumber: string;
+                Cus_CompanyName: string | null;
+                Cus_Logo: string | null;
+                Cus_Password: string;
+                Purchase_Goods: string[];
+                Verify_State: boolean;
+            } | null;
         } & {
-            id: number;
-            orderId: number;
-            designId: number;
+            CustomerId: number | null;
+            OrderID: number;
+            Order_Date: Date;
+            Order_Status: string;
+            Client_Name: string | null;
+            Client_Email: string | null;
+            Client_Number: string | null;
         })[];
-    } & {
-        Order_Date: Date;
-        Order_Status: string;
-        Client_Name: string | null;
-        Client_Email: string | null;
-        Client_Number: string | null;
-        OrderID: number;
-        CustomerId: number | null;
-    })[]>;
+    }>;
     chagetheStates(orderId: number, Status: string): Promise<{
         message: string;
     }>;
     getcustomerORders(Client_Email: string): Promise<({
         Designs: ({
             Design: {
+                AdminId: number;
                 DesignID: number;
                 Design_Name: string;
                 Design_Image: string[];
@@ -103,23 +110,40 @@ export declare class OrderService {
                 Design_BlogPosts: string[];
                 Design_Sizes: string[];
                 Design_CreatedAt: Date;
-                AdminId: number;
             };
         } & {
             id: number;
-            orderId: number;
             designId: number;
+            orderId: number;
         })[];
     } & {
+        CustomerId: number | null;
+        OrderID: number;
         Order_Date: Date;
         Order_Status: string;
         Client_Name: string | null;
         Client_Email: string | null;
         Client_Number: string | null;
-        OrderID: number;
-        CustomerId: number | null;
     })[]>;
     getOrderById(orderId: number): Promise<{
+        Designs: ({
+            Design: {
+                AdminId: number;
+                DesignID: number;
+                Design_Name: string;
+                Design_Image: string[];
+                Design_Description: string;
+                Categories: string[];
+                Design_Colors: string[];
+                Design_BlogPosts: string[];
+                Design_Sizes: string[];
+                Design_CreatedAt: Date;
+            };
+        } & {
+            id: number;
+            designId: number;
+            orderId: number;
+        })[];
         Customer: {
             CustomerId: number;
             Cus_Name: string;
@@ -127,35 +151,17 @@ export declare class OrderService {
             Cus_PhoneNumber: string;
             Cus_CompanyName: string | null;
             Cus_Logo: string | null;
-            Verify_State: boolean;
             Cus_Password: string;
             Purchase_Goods: string[];
+            Verify_State: boolean;
         } | null;
-        Designs: ({
-            Design: {
-                DesignID: number;
-                Design_Name: string;
-                Design_Image: string[];
-                Design_Description: string;
-                Categories: string[];
-                Design_Colors: string[];
-                Design_BlogPosts: string[];
-                Design_Sizes: string[];
-                Design_CreatedAt: Date;
-                AdminId: number;
-            };
-        } & {
-            id: number;
-            orderId: number;
-            designId: number;
-        })[];
     } & {
+        CustomerId: number | null;
+        OrderID: number;
         Order_Date: Date;
         Order_Status: string;
         Client_Name: string | null;
         Client_Email: string | null;
         Client_Number: string | null;
-        OrderID: number;
-        CustomerId: number | null;
     }>;
 }

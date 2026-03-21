@@ -6,12 +6,12 @@ export declare class AuthenticationController {
     register(authDto: AuthDTO): Promise<{
         message: string;
         admin: {
-            AdminId: number;
             Admin_Name: string;
             Admin_Email: string;
             Admin_Phone: string;
             Admin_Profile: string | null;
             Admin_Password: string;
+            AdminId: number;
         };
         tokens: {
             accessToken: string;
@@ -21,12 +21,12 @@ export declare class AuthenticationController {
     login(email: string, password: string): Promise<{
         message: string;
         admin: {
-            AdminId: number;
             Admin_Name: string;
             Admin_Email: string;
             Admin_Phone: string;
             Admin_Profile: string | null;
             Admin_Password: string;
+            AdminId: number;
         };
         tokens: {
             accessToken: string;
@@ -43,12 +43,18 @@ export declare class AuthenticationController {
     forgotPassword(req: any, newPassword: string): Promise<{
         message: string;
     }>;
+    passwordReset_Loginuser(Adminemail: string): Promise<{
+        message: string;
+    }>;
     getAllAdmins(): Promise<{
-        AdminId: number;
         Admin_Name: string;
         Admin_Email: string;
         Admin_Phone: string;
         Admin_Profile: string | null;
         Admin_Password: string;
+        AdminId: number;
     }[]>;
+    removeAdmin(adminId: string): Promise<{
+        message: string;
+    }>;
 }

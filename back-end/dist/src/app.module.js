@@ -15,6 +15,7 @@ const Customer_module_1 = require("./Customer/Customer.module");
 const Feedback_module_1 = require("./Feedback/Feedback.module");
 const Order_module_1 = require("./Order/Order.module");
 const Notification_module_1 = require("./Notification/Notification.module");
+const Projects_module_1 = require("./Projects/Projects.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -27,7 +28,8 @@ exports.AppModule = AppModule = __decorate([
             Customer_module_1.CustomerModule,
             Feedback_module_1.FeedbackModule,
             Order_module_1.OrderModule,
-            Notification_module_1.NotificationModule
+            Notification_module_1.NotificationModule,
+            Projects_module_1.ProjectsModule
         ],
     })
 ], AppModule);

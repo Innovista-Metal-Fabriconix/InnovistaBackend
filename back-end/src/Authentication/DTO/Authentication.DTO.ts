@@ -2,15 +2,10 @@ import {
   IsString,
   IsNotEmpty,
   IsOptional,
-  IsNumber,
   IsEmail,
 } from "class-validator";
 
 export class AuthDTO {
-
-    @IsNotEmpty()
-    @IsNumber()
-    public AdminId: number;
 
     @IsNotEmpty()
     @IsString()
@@ -28,9 +23,6 @@ export class AuthDTO {
     @IsString()
     public Admin_Profile: string;
 
-    @IsNotEmpty()
-    @IsString()
-    public Admin_Password: string;
 
 }
 

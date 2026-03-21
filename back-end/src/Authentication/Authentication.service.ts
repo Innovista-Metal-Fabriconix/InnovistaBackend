@@ -10,6 +10,12 @@ import { EmailService } from '../Emails/Email.service';
 import { EmailTemplate } from '../Emails/Email.DTO';
 import { TokenCreate } from './Authentication.TokenCreate';
 
+interface TokenPayload {
+  sub: number;
+  iat?: number;
+  exp?: number;
+}
+
 @Injectable()
 export class AuthenticationService {
   constructor(
@@ -20,7 +26,11 @@ export class AuthenticationService {
 
   async register(authDto: AuthDTO) {
     try {
-      const hashedPassword = await bcrypt.hash(authDto.Admin_Password, 10);
+      const namePart = authDto.Admin_Name.slice(0, 3);
+      const emailPart = authDto.Admin_Email.split('@')[0].slice(-3);
+      const rawPassword = `${namePart}${emailPart}${Date.now().toString().slice(-4)}`;
+
+      const hashedPassword = await bcrypt.hash(rawPassword, 10);
 
       const admin = await this.prisma.admin.create({
         data: {
@@ -37,7 +47,7 @@ export class AuthenticationService {
         template: EmailTemplate.WELCOME,
         context: {
           name: admin.Admin_Name,
-          password: authDto.Admin_Password,
+          password: rawPassword,
         },
       });
 
@@ -59,8 +69,9 @@ export class AuthenticationService {
       });
 
       return { message: 'Admin registered successfully', admin, tokens };
-    } catch (error) {
-      throw new BadRequestException('Error registering admin');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
@@ -100,14 +111,19 @@ export class AuthenticationService {
       });
 
       return { message: 'Login successful', admin, tokens };
-    } catch (error) {
-      throw new UnauthorizedException('Login failed');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
   async refreshAccessToken(refreshToken: string) {
     try {
-      const payload: any = this.tokenCreate.verifyToken(refreshToken);
+      const payload = this.tokenCreate.verifyToken(refreshToken) as unknown as TokenPayload;
+      
+      if (typeof payload.sub === 'string') {
+        payload.sub = Number(payload.sub);
+      }
 
       const storedToken = await this.prisma.refreshToken.findUnique({
         where: { adminId: payload.sub },
@@ -122,7 +138,9 @@ export class AuthenticationService {
       }
 
       const admin = await this.prisma.admin.findUnique({
-        where: { AdminId: payload.sub },
+        where: { 
+          AdminId: payload.sub
+         },
       });
 
       if (!admin) {
@@ -144,8 +162,9 @@ export class AuthenticationService {
         accessToken: tokens.accessToken,
         refreshToken: tokens.refreshToken,
       };
-    } catch (error) {
-      throw new UnauthorizedException('Invalid refresh token');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
@@ -155,8 +174,46 @@ export class AuthenticationService {
         where: { adminId },
       });
       return { message: 'Logout successful' };
-    } catch (error) {
-      throw new BadRequestException('Error during logout');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
+    }
+  }
+
+  async passwordReset_Login(email: string) {
+    try {
+      const findAdminAccount = await this.prisma.admin.findUnique({
+        where: { Admin_Email: email },
+      });
+
+      if (!findAdminAccount) {
+        throw new BadRequestException('Admin with this email does not exist');
+      }
+
+      const nameOf_Admin = findAdminAccount.Admin_Name.slice(0, 3);
+      const emailOf_Admin =
+        findAdminAccount.Admin_Email.split('@')[0].slice(-3);
+      const newUpdate_Password = `${nameOf_Admin}${emailOf_Admin}${Date.now().toString().slice(-4)}`;
+
+      const hashNewpassword = await bcrypt.hash(newUpdate_Password, 10);
+
+      await this.prisma.admin.update({
+        where: { Admin_Email: email },
+        data: { Admin_Password: hashNewpassword },
+      });
+
+      await this.emailService.sendEmail({
+        to: findAdminAccount.Admin_Email,
+        template: EmailTemplate.REQUEST_NEWPASSWORD,
+        context: {
+          newPassword: newUpdate_Password,
+          name: nameOf_Admin,
+        },
+      });
+      return { message: 'Password Reset Successfully Check Your email' };
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
@@ -175,18 +232,35 @@ export class AuthenticationService {
         data: { Admin_Password: hashedPassword },
       });
       return { message: 'Password reset successful' };
-    } catch (error) {
-      throw new BadRequestException('Error during password reset');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
-  async GetallAdmins(){
-    try{
+  async GetallAdmins() {
+    try {
       const admins = await this.prisma.admin.findMany();
       return admins;
-    }catch(error){
-      throw new BadRequestException('Error while fetching admins');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving admins: ' + message);
     }
   }
 
+  async RemoveAdmin(adminId: number) {
+    try {
+      await this.prisma.admin.delete({
+        where: { AdminId: adminId },
+      });
+
+      if (!adminId) {
+        throw new BadRequestException('Admin not found');
+      }
+      return { message: 'Admin removed successfully' };
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving admins: ' + message);
+    }
+  }
 }

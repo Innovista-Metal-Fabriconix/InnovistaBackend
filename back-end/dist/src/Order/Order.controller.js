@@ -26,8 +26,8 @@ let OrderController = class OrderController {
     async createOrder(orderDto) {
         return this.orderService.createOrder(orderDto);
     }
-    async getAllOrders() {
-        return this.orderService.getAllOrders();
+    async getAllOrders(page, limit) {
+        return this.orderService.getAllOrders(Number(page) || 1, Number(limit) || 10);
     }
     async getOrderById(orderId) {
         return this.orderService.getOrderById(parseInt(orderId, 10));
@@ -49,11 +49,14 @@ __decorate([
 ], OrderController.prototype, "createOrder", null);
 __decorate([
     (0, common_1.Get)("getAllOrders"),
+    __param(0, (0, common_1.Query)("page")),
+    __param(1, (0, common_1.Query)("limit")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
 ], OrderController.prototype, "getAllOrders", null);
 __decorate([
+    (0, common_2.UseGuards)(Authentication_AdminAuthgurd_1.AdminAuthGuard),
     (0, common_1.Get)("getOrderById"),
     __param(0, (0, common_1.Query)("id")),
     __metadata("design:type", Function),

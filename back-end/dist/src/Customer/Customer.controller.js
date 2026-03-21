@@ -23,18 +23,31 @@ let CustomerController = class CustomerController {
         this.customerService = customerService;
     }
     async registerCustomer(customerDto, req) {
-        const AdminId = req.user.userId;
-        return this.customerService.registedCustomer(customerDto, AdminId);
+        const AdminId = req.user?.userId;
+        if (!AdminId) {
+            throw new Error('AdminId is missing');
+        }
+        return this.customerService.registedCustomer(customerDto, parseInt(AdminId, 10));
     }
-    async getAllCustomers() {
-        return this.customerService.getAllCustomers();
+    async getAllCustomers(page, limit) {
+        return this.customerService.getAllCustomers(Number(page) || 1, Number(limit) || 10);
     }
     async verifyCustomer(customerId) {
         return this.customerService.verifyCustomerEmail(parseInt(customerId, 10));
     }
     async deleteCustomer(customerId, req) {
-        const AdminId = req.user.userId;
-        return this.customerService.removeCustomer(parseInt(customerId, 10), AdminId);
+        const AdminId = req.user?.userId;
+        if (!AdminId) {
+            throw new Error('AdminId is missing');
+        }
+        return this.customerService.removeCustomer(parseInt(customerId, 10), parseInt(AdminId, 10));
+    }
+    async updateCustomer(UpdateCustomer, req) {
+        const AdminId = req.user?.userId;
+        if (!AdminId) {
+            throw new Error('AdminId is missing');
+        }
+        return this.customerService.updateCustomer(UpdateCustomer, parseInt(AdminId, 10));
     }
 };
 exports.CustomerController = CustomerController;
@@ -50,8 +63,10 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(Authentication_AdminAuthgurd_1.AdminAuthGuard),
     (0, common_1.Get)('getAllCustomers'),
+    __param(0, (0, common_1.Query)('page')),
+    __param(1, (0, common_1.Query)('limit')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
 ], CustomerController.prototype, "getAllCustomers", null);
 __decorate([
@@ -70,6 +85,15 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], CustomerController.prototype, "deleteCustomer", null);
+__decorate([
+    (0, common_1.UseGuards)(Authentication_AdminAuthgurd_1.AdminAuthGuard),
+    (0, common_1.Put)('updateCustomer'),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Customer_DTO_1.UpdateCustomer, Object]),
+    __metadata("design:returntype", Promise)
+], CustomerController.prototype, "updateCustomer", null);
 exports.CustomerController = CustomerController = __decorate([
     (0, common_1.Controller)('customer'),
     __metadata("design:paramtypes", [Customer_service_1.CustomerService])

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable,BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { NotificationDTO } from './Notification.DTO';
 
@@ -19,9 +19,9 @@ export class NotificationService {
         },
       });
       return notification;
-    } catch (error) {
-      console.error('Prisma error:', error);
-      throw new Error('Failed to create notification: ' + error.message);
+  } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
@@ -44,9 +44,9 @@ export class NotificationService {
         data: { View_List: updatedViewList },
       });
       return { message: 'Notification view succesfully' };
-    } catch (error) {
-      console.error('Prisma error:', error);
-      throw new Error('Failed to mark notification as read: ' + error.message);
+  } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
@@ -63,9 +63,9 @@ export class NotificationService {
       });
 
       return notifications;
-    } catch (error) {
-      console.error('Prisma error:', error);
-      throw new Error('Failed to get notifications: ' + error.message);
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 }

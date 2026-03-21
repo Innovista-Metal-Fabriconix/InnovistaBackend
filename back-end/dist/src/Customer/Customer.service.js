@@ -87,7 +87,7 @@ let CustomerService = class CustomerService {
                 template: Email_DTO_1.EmailTemplate.CUSTOMER_WELCOME,
                 context: {
                     name: customerDto.Cus_Name,
-                    password: customerDto.Cus_Password,
+                    Link: `http://localhost:5173/CustomerVerify?customerId=${customer.CustomerId}`,
                 },
             });
             return {
@@ -96,8 +96,8 @@ let CustomerService = class CustomerService {
             };
         }
         catch (error) {
-            console.error('Prisma error:', error);
-            throw new common_1.BadRequestException('Failed to register customer: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
     async changePassword(customerId, newPassword) {
@@ -110,8 +110,8 @@ let CustomerService = class CustomerService {
             return { message: 'Password changed successfully', customer };
         }
         catch (error) {
-            console.error('Prisma error:', error);
-            throw new common_1.BadRequestException('Failed to change password: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
     async verifyCustomerEmail(customerId) {
@@ -123,18 +123,34 @@ let CustomerService = class CustomerService {
             return { message: 'Email verified successfully', customer };
         }
         catch (error) {
-            console.error('Prisma error:', error);
-            throw new common_1.BadRequestException('Failed to verify email: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
-    async getAllCustomers() {
+    async getAllCustomers(page = 1, limit = 10) {
         try {
-            const customers = await this.prisma.customer.findMany();
-            return customers;
+            const skip = (page - 1) * limit;
+            const [customers, total] = await this.prisma.$transaction([
+                this.prisma.customer.findMany({
+                    skip,
+                    take: limit,
+                    orderBy: {
+                        CustomerId: 'desc',
+                    },
+                }),
+                this.prisma.customer.count(),
+            ]);
+            return {
+                page,
+                limit,
+                total,
+                totalPages: Math.ceil(total / limit),
+                data: customers,
+            };
         }
         catch (error) {
-            console.error('Prisma error:', error);
-            throw new common_1.BadRequestException('Failed to retrieve customers: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving customers: ' + message);
         }
     }
     async removeCustomer(customerId, AdminId) {
@@ -158,10 +174,11 @@ let CustomerService = class CustomerService {
             return { message: 'Customer deleted successfully', customer };
         }
         catch (error) {
-            throw new common_1.BadRequestException('Failed to delete customer: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
-    async updateCustomer(customerDto, AdminId) {
+    async updateCustomer(UpdateCustomer, AdminId) {
         try {
             const admin = await this.prisma.admin.findUnique({
                 where: { AdminId: AdminId },
@@ -170,21 +187,23 @@ let CustomerService = class CustomerService {
                 throw new common_1.UnauthorizedException('Admin not found');
             }
             const customer = await this.prisma.customer.update({
-                where: { CustomerId: customerDto.CustomerId },
+                where: { CustomerId: UpdateCustomer.CustomerId },
                 data: {
-                    Cus_Name: customerDto.Cus_Name,
-                    Cus_Email: customerDto.Cus_Email,
-                    Cus_PhoneNumber: customerDto.Cus_PhoneNumber,
-                    Cus_CompanyName: customerDto.Cus_CompanyName,
-                    Cus_Logo: customerDto.Cus_Logo,
-                    Purchase_Goods: customerDto.Purchase_Goods,
+                    Cus_Name: UpdateCustomer.Cus_Name,
+                    Cus_Email: UpdateCustomer.Cus_Email,
+                    Cus_PhoneNumber: UpdateCustomer.Cus_PhoneNumber,
+                    Cus_CompanyName: UpdateCustomer.Cus_CompanyName,
+                    Cus_Logo: UpdateCustomer.Cus_Logo,
+                    Purchase_Goods: UpdateCustomer.Purchase_Goods,
+                    Cus_Password: UpdateCustomer.Cus_Password,
+                    Verify_State: UpdateCustomer.Verify_State,
                 },
             });
             return { message: 'Customer updated successfully', customer };
         }
         catch (error) {
-            console.error('Prisma error:', error);
-            throw new common_1.BadRequestException('Failed to update customer: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
 };

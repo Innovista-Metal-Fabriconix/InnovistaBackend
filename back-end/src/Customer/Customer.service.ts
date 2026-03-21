@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 
 import { PrismaService } from '../../prisma/prisma.service';
-import { CustomerDTO } from './Customer.DTO';
+import { CustomerDTO, UpdateCustomer } from './Customer.DTO';
 import * as bcrypt from 'bcrypt';
 import { EmailService } from '../Emails/Email.service';
 import { EmailTemplate } from '../Emails/Email.DTO';
@@ -39,6 +39,7 @@ export class CustomerService {
           Cus_Name: customerDto.Cus_Name,
           Cus_Email: customerDto.Cus_Email,
           Cus_PhoneNumber: customerDto.Cus_PhoneNumber,
+
           Cus_Password: hashedPassword,
           Cus_CompanyName: customerDto.Cus_CompanyName,
           Cus_Logo: customerDto.Cus_Logo,
@@ -52,7 +53,7 @@ export class CustomerService {
         template: EmailTemplate.CUSTOMER_WELCOME,
         context: {
           name: customerDto.Cus_Name,
-          password: customerDto.Cus_Password,
+          Link: `http://localhost:5173/CustomerVerify?customerId=${customer.CustomerId}`,
         },
       });
 
@@ -61,15 +62,13 @@ export class CustomerService {
           'Customer registered successfully. Check your email for verification.',
         customer,
       };
-    } catch (error) {
-      console.error('Prisma error:', error);
-      throw new BadRequestException(
-        'Failed to register customer: ' + error.message,
-      );
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
-//    optional this services
+  //    optional this services
 
   async changePassword(customerId: number, newPassword: string) {
     try {
@@ -79,11 +78,9 @@ export class CustomerService {
         data: { Cus_Password: hashedPassword },
       });
       return { message: 'Password changed successfully', customer };
-    } catch (error) {
-      console.error('Prisma error:', error);
-      throw new BadRequestException(
-        'Failed to change password: ' + error.message,
-      );
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
@@ -95,22 +92,49 @@ export class CustomerService {
       });
       return { message: 'Email verified successfully', customer };
     } catch (error) {
-      console.error('Prisma error:', error);
-      throw new BadRequestException('Failed to verify email: ' + error.message);
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
-  async getAllCustomers() {
-    try {
-      const customers = await this.prisma.customer.findMany();
-      return customers;
-    } catch (error) {
-      console.error('Prisma error:', error);
-      throw new BadRequestException(
-        'Failed to retrieve customers: ' + error.message,
-      );
-    }
+  async getAllCustomers(page: number = 1, limit: number = 10) {
+  try {
+    const skip = (page - 1) * limit;
+
+    const [customers, total] = await this.prisma.$transaction([
+      this.prisma.customer.findMany({
+        skip,
+        take: limit,
+        orderBy: {
+          CustomerId: 'desc', // Change to a valid field, e.g., CustomerId or another timestamp field
+        },
+      }),
+      this.prisma.customer.count(),
+    ]);
+
+    return {
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit),
+      data: customers,
+    };
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    throw new BadRequestException('Error retrieving customers: ' + message);
   }
+}
+
+
+  // async getAllCustomers() {
+  //   try {
+  //     const customers = await this.prisma.customer.findMany();
+  //     return customers;
+  //   } catch (error: unknown) {
+  //     const message = error instanceof Error ? error.message : String(error);
+  //     throw new BadRequestException('Error retrieving projects: ' + message);
+  //   }
+  // }
 
   async removeCustomer(customerId: number, AdminId: number) {
     try {
@@ -133,14 +157,13 @@ export class CustomerService {
       });
 
       return { message: 'Customer deleted successfully', customer };
-    } catch (error) {
-      throw new BadRequestException(
-        'Failed to delete customer: ' + error.message,
-      );
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
-  async updateCustomer(customerDto: CustomerDTO, AdminId: number) {
+  async updateCustomer(UpdateCustomer: UpdateCustomer, AdminId: number) {
     try {
       const admin = await this.prisma.admin.findUnique({
         where: { AdminId: AdminId },
@@ -149,22 +172,22 @@ export class CustomerService {
         throw new UnauthorizedException('Admin not found');
       }
       const customer = await this.prisma.customer.update({
-        where: { CustomerId: customerDto.CustomerId },
+        where: { CustomerId: UpdateCustomer.CustomerId },
         data: {
-          Cus_Name: customerDto.Cus_Name,
-          Cus_Email: customerDto.Cus_Email,
-          Cus_PhoneNumber: customerDto.Cus_PhoneNumber,
-          Cus_CompanyName: customerDto.Cus_CompanyName,
-          Cus_Logo: customerDto.Cus_Logo,
-          Purchase_Goods: customerDto.Purchase_Goods,
+          Cus_Name: UpdateCustomer.Cus_Name,
+          Cus_Email: UpdateCustomer.Cus_Email,
+          Cus_PhoneNumber: UpdateCustomer.Cus_PhoneNumber,
+          Cus_CompanyName: UpdateCustomer.Cus_CompanyName,
+          Cus_Logo: UpdateCustomer.Cus_Logo,
+          Purchase_Goods: UpdateCustomer.Purchase_Goods,
+          Cus_Password: UpdateCustomer.Cus_Password,
+          Verify_State: UpdateCustomer.Verify_State,
         },
       });
       return { message: 'Customer updated successfully', customer };
-    } catch (error) {
-      console.error('Prisma error:', error);
-      throw new BadRequestException(
-        'Failed to update customer: ' + error.message,
-      );
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 }

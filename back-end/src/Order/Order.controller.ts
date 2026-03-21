@@ -1,4 +1,4 @@
-import { Body , Query , Post, Get ,Delete ,Put,Req } from "@nestjs/common";
+import { Body , Query , Post, Get ,Put} from "@nestjs/common";
 import { Controller, UseGuards } from "@nestjs/common";
 import { OrderDTO } from "./Order.DTO";
 import { OrderService } from "./Order.service";
@@ -13,12 +13,24 @@ export class OrderController {
     return this.orderService.createOrder(orderDto);
   }
 
+  // @Get("getAllOrders")
+  // async getAllOrders() {
+  //   return this.orderService.getAllOrders();
+  // }
+
   @Get("getAllOrders")
-  async getAllOrders() {
-    return this.orderService.getAllOrders();
+  async getAllOrders(
+    @Query("page") page: string,
+    @Query("limit") limit: string,
+  ) {
+    return this.orderService.getAllOrders(
+      Number(page) || 1,
+      Number(limit) || 10,
+    );
   }
 
 
+  @UseGuards(AdminAuthGuard)
   @Get("getOrderById")
   async getOrderById(@Query("id") orderId: string) {
     return this.orderService.getOrderById(parseInt(orderId , 10));

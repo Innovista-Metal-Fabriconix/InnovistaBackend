@@ -34,23 +34,85 @@ export class DesignsService {
         },
       });
       return { message: 'Design created successfully', design };
-    } catch (error) {
-      console.error('Prisma error:', error);
-      throw new BadRequestException(
-        'Failed to create design: ' + error.message,
-      );
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
-  async getAllDesigns() {
+  // async getAllDesigns() {
+  //   try {
+  //     const designs = await this.prisma.design.findMany();
+  //     return designs;
+  //   } catch (error: unknown) {
+  //     const message = error instanceof Error ? error.message : String(error);
+  //     throw new BadRequestException('Error retrieving projects: ' + message);
+  //   }
+  // }
+
+  async getAllDesigns(page: number = 1, limit: number = 10) {
     try {
-      const designs = await this.prisma.design.findMany();
+      const skip = (page - 1) * limit;
+      const [designs, total] = await this.prisma.$transaction([
+        this.prisma.design.findMany({
+          skip,
+          take: limit,
+          orderBy: {
+            DesignID: 'desc',
+          },
+        }),
+        this.prisma.design.count(),
+      ]);
+      return {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+        data: designs,
+      };
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
+    }
+  }
+
+  async getUnderCategoryDesigns(category: string) {
+    try {
+      const designs = await this.prisma.design.findMany({
+        where: {
+          Categories: {
+            has: category,
+          },
+        },
+      });
+
+      if (!designs || designs.length === 0) {
+        throw new BadRequestException('No designs found under this category');
+      }
+
       return designs;
-    } catch (error) {
-      console.error('Prisma error:', error);
-      throw new BadRequestException(
-        'Failed to retrieve designs: ' + error.message,
-      );
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
+    }
+  }
+
+  async GetItemDesignDetails(designIDs: number[]) {
+    if (designIDs.length === 0) {
+      throw new BadRequestException('Design IDs array is empty');
+    }
+    try {
+      const designs = await this.prisma.design.findMany({
+        where: {
+          DesignID: {
+            in: designIDs,
+          },
+        },
+      });
+      return designs;
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
@@ -67,10 +129,9 @@ export class DesignsService {
         where: { DesignID: designId },
       });
       return { message: 'Design deleted successfully', design };
-    } catch (error) {
-      throw new BadRequestException(
-        'Failed to delete design: ' + error.message,
-      );
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 
@@ -97,11 +158,9 @@ export class DesignsService {
         },
       });
       return { message: 'Design updated successfully', design };
-    } catch (error) {
-      console.error('Prisma error:', error);
-      throw new BadRequestException(
-        'Failed to update design: ' + error.message,
-      );
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
 }

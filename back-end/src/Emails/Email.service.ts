@@ -8,17 +8,16 @@ export class EmailService {
   constructor(private readonly mailerService: MailerService) {}
 
   async sendEmail(emailDto: EmailDTO) {
-    const { subject, template, context, body } = EmailTemplateFactory.create(
-      emailDto.template,
-      emailDto.context,
-    );
+    const { subject, template, context, bodyText, bodyHtml } =
+      EmailTemplateFactory.create(emailDto.template, emailDto.context);
 
     await this.mailerService.sendMail({
       to: emailDto.to,
       subject,
       template,
       context,
-      text: body,
+      text: bodyText,
+      html: bodyHtml,
     });
   }
 }

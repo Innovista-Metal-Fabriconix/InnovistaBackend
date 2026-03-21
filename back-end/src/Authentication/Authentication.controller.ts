@@ -1,7 +1,24 @@
-import { Body, Controller, Post, UseGuards, Query, Req, Get } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  UseGuards,
+  Query,
+  Req,
+  Get,
+  Delete,
+} from '@nestjs/common';
 import { AuthenticationService } from './Authentication.service';
 import { AuthDTO } from './DTO/Authentication.DTO';
 import { AdminAuthGuard } from './Authentication.AdminAuthgurd';
+import { Request } from 'express';
+
+
+interface AuthRequest extends Request {
+  user: {
+    email: string;
+  };
+}
 
 @Controller('auth')
 export class AuthenticationController {
@@ -31,16 +48,30 @@ export class AuthenticationController {
     return this.authService.logout(Number(adminId));
   }
 
+ 
   @UseGuards(AdminAuthGuard)
   @Post('forgot-password')
-  async forgotPassword(@Req() req, @Query('newPassword') newPassword: string) {
+  async forgotPassword(
+    @Req() req: AuthRequest,
+    @Query('newPassword') newPassword: string,
+  ) {
     return this.authService.passwordReset(req.user.email, newPassword);
   }
-  
+
+  @Post('ResetPassword')
+  async passwordReset_Loginuser(@Query('email') Adminemail: string) {
+    return this.authService.passwordReset_Login(Adminemail);
+  }
+
   @UseGuards(AdminAuthGuard)
-  @Get("getAllAdmins")
-  async getAllAdmins(){
+  @Get('getAllAdmins')
+  async getAllAdmins() {
     return this.authService.GetallAdmins();
   }
 
+  @UseGuards(AdminAuthGuard)
+  @Delete('RemoveAdmin')
+  async removeAdmin(@Query('adminId') adminId: string) {
+    return this.authService.RemoveAdmin(parseInt(adminId, 10));
+  }
 }

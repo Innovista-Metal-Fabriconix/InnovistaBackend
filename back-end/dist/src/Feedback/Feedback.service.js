@@ -17,6 +17,21 @@ let FeedbackService = class FeedbackService {
     constructor(prisma) {
         this.prisma = prisma;
     }
+    async accesschecktoCustomer(customerEmail) {
+        try {
+            const customer = await this.prisma.customer.findUnique({
+                where: { Cus_Email: customerEmail },
+            });
+            if (!customer) {
+                throw new common_1.UnauthorizedException('Customer not found');
+            }
+            return { message: 'Access granted', customerId: customer.CustomerId };
+        }
+        catch (error) {
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
+        }
+    }
     async createFeedback(feedbackDto) {
         try {
             const checkCustomer = await this.prisma.customer.findUnique({
@@ -43,23 +58,38 @@ let FeedbackService = class FeedbackService {
             return { message: 'Feedback submitted successfully', feedback };
         }
         catch (error) {
-            console.error('Prisma error:', error);
-            throw new common_1.BadRequestException('Failed to submit feedback: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
-    async getAllFeedbacks() {
+    async getAllFeedbacks(page, limit) {
         try {
-            const feedbacks = await this.prisma.feed_Back.findMany({
-                include: {
-                    Design: true,
-                    Customer: true,
-                },
-            });
-            return feedbacks;
+            const skip = (page - 1) * limit;
+            const [feedbacks, total] = await this.prisma.$transaction([
+                this.prisma.feed_Back.findMany({
+                    skip,
+                    take: limit,
+                    orderBy: {
+                        Feed_backId: 'desc',
+                    },
+                    include: {
+                        Design: true,
+                        Customer: true,
+                    },
+                }),
+                this.prisma.feed_Back.count(),
+            ]);
+            return {
+                page,
+                limit,
+                total,
+                totalPages: Math.ceil(total / limit),
+                data: feedbacks,
+            };
         }
         catch (error) {
-            console.error('Prisma error:', error);
-            throw new common_1.BadRequestException('Failed to retrieve feedbacks: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
     async deleteFeedback(feedbackId, AdminId) {
@@ -76,8 +106,8 @@ let FeedbackService = class FeedbackService {
             return { message: 'Feedback deleted successfully', feedback };
         }
         catch (error) {
-            console.error('Prisma error:', error);
-            throw new common_1.BadRequestException('Failed to delete feedback: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
     async getfeedbackByDesignId(designId) {
@@ -92,8 +122,8 @@ let FeedbackService = class FeedbackService {
             return feedbacks;
         }
         catch (error) {
-            console.error('Prisma error:', error);
-            throw new common_1.BadRequestException('Failed to retrieve feedbacks: ' + error.message);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
 };

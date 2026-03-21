@@ -18,6 +18,7 @@ var EmailTemplate;
     EmailTemplate["ORDER_CONFIRMATION"] = "ORDER_CONFIRMATION";
     EmailTemplate["CUSTOMER_WELCOME"] = "CUSTOMER_WELCOME";
     EmailTemplate["CUSTOMER_REMOVE"] = "CUSTOMER_REMOVE";
+    EmailTemplate["REQUEST_NEWPASSWORD"] = "REQUEST_NEWPASSWORD";
 })(EmailTemplate || (exports.EmailTemplate = EmailTemplate = {}));
 class EmailDTO {
     to;

@@ -1,5 +1,5 @@
 import { PrismaService } from '../../prisma/prisma.service';
-import { CustomerDTO } from './Customer.DTO';
+import { CustomerDTO, UpdateCustomer } from './Customer.DTO';
 import { EmailService } from '../Emails/Email.service';
 export declare class CustomerService {
     private prisma;
@@ -47,17 +47,23 @@ export declare class CustomerService {
             Verify_State: boolean;
         };
     }>;
-    getAllCustomers(): Promise<{
-        CustomerId: number;
-        Cus_Name: string;
-        Cus_Email: string;
-        Cus_PhoneNumber: string;
-        Cus_CompanyName: string | null;
-        Cus_Logo: string | null;
-        Cus_Password: string;
-        Purchase_Goods: string[];
-        Verify_State: boolean;
-    }[]>;
+    getAllCustomers(page?: number, limit?: number): Promise<{
+        page: number;
+        limit: number;
+        total: number;
+        totalPages: number;
+        data: {
+            CustomerId: number;
+            Cus_Name: string;
+            Cus_Email: string;
+            Cus_PhoneNumber: string;
+            Cus_CompanyName: string | null;
+            Cus_Logo: string | null;
+            Cus_Password: string;
+            Purchase_Goods: string[];
+            Verify_State: boolean;
+        }[];
+    }>;
     removeCustomer(customerId: number, AdminId: number): Promise<{
         message: string;
         customer: {
@@ -72,7 +78,7 @@ export declare class CustomerService {
             Verify_State: boolean;
         };
     }>;
-    updateCustomer(customerDto: CustomerDTO, AdminId: number): Promise<{
+    updateCustomer(UpdateCustomer: UpdateCustomer, AdminId: number): Promise<{
         message: string;
         customer: {
             CustomerId: number;

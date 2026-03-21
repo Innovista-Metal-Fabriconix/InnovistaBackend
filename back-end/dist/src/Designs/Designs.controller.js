@@ -26,8 +26,15 @@ let DesignsController = class DesignsController {
         const AdminId = req.user.userId;
         return this.designsService.createDesign(designDto, AdminId);
     }
-    async getAllDesigns() {
-        return this.designsService.getAllDesigns();
+    async getAllDesigns(page, limit) {
+        return this.designsService.getAllDesigns(Number(page) || 1, Number(limit) || 10);
+    }
+    async getDesignsByCategory(category) {
+        return this.designsService.getUnderCategoryDesigns(category);
+    }
+    async getDesignDetails(ids) {
+        const designIDs = ids.split(',').map(Number);
+        return this.designsService.GetItemDesignDetails(designIDs);
     }
     async deleteDesigns(designId, req) {
         const AdminId = req.user.userId;
@@ -41,7 +48,7 @@ let DesignsController = class DesignsController {
 exports.DesignsController = DesignsController;
 __decorate([
     (0, common_1.UseGuards)(Authentication_AdminAuthgurd_1.AdminAuthGuard),
-    (0, common_1.Post)("create"),
+    (0, common_1.Post)('create'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -49,14 +56,30 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], DesignsController.prototype, "createDesigns", null);
 __decorate([
-    (0, common_1.Get)("all"),
+    (0, common_1.Get)('all'),
+    __param(0, (0, common_1.Query)('page')),
+    __param(1, (0, common_1.Query)('limit')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
 ], DesignsController.prototype, "getAllDesigns", null);
 __decorate([
+    (0, common_1.Get)('byCategory'),
+    __param(0, (0, common_1.Query)('category')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], DesignsController.prototype, "getDesignsByCategory", null);
+__decorate([
+    (0, common_1.Get)('DesignDetails'),
+    __param(0, (0, common_1.Query)('ids')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], DesignsController.prototype, "getDesignDetails", null);
+__decorate([
     (0, common_1.UseGuards)(Authentication_AdminAuthgurd_1.AdminAuthGuard),
-    (0, common_1.Delete)("deleteDesign"),
+    (0, common_1.Delete)('deleteDesign'),
     __param(0, (0, common_1.Query)('designId')),
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -65,7 +88,7 @@ __decorate([
 ], DesignsController.prototype, "deleteDesigns", null);
 __decorate([
     (0, common_1.UseGuards)(Authentication_AdminAuthgurd_1.AdminAuthGuard),
-    (0, common_1.Put)("updateDesign"),
+    (0, common_1.Put)('updateDesign'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -73,7 +96,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], DesignsController.prototype, "updateDesigns", null);
 exports.DesignsController = DesignsController = __decorate([
-    (0, common_1.Controller)("designs"),
+    (0, common_1.Controller)('designs'),
     __metadata("design:paramtypes", [Designs_service_1.DesignsService])
 ], DesignsController);
 //# sourceMappingURL=Designs.controller.js.map

@@ -37,8 +37,14 @@ let AuthenticationController = class AuthenticationController {
     async forgotPassword(req, newPassword) {
         return this.authService.passwordReset(req.user.email, newPassword);
     }
+    async passwordReset_Loginuser(Adminemail) {
+        return this.authService.passwordRset_Login(Adminemail);
+    }
     async getAllAdmins() {
         return this.authService.GetallAdmins();
+    }
+    async removeAdmin(adminId) {
+        return this.authService.RemoveAdmin(parseInt(adminId, 10));
     }
 };
 exports.AuthenticationController = AuthenticationController;
@@ -82,12 +88,27 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthenticationController.prototype, "forgotPassword", null);
 __decorate([
+    (0, common_1.Post)('ResetPassword'),
+    __param(0, (0, common_1.Query)('email')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], AuthenticationController.prototype, "passwordReset_Loginuser", null);
+__decorate([
     (0, common_1.UseGuards)(Authentication_AdminAuthgurd_1.AdminAuthGuard),
-    (0, common_1.Get)("getAllAdmins"),
+    (0, common_1.Get)('getAllAdmins'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], AuthenticationController.prototype, "getAllAdmins", null);
+__decorate([
+    (0, common_1.UseGuards)(Authentication_AdminAuthgurd_1.AdminAuthGuard),
+    (0, common_1.Delete)('RemoveAdmin'),
+    __param(0, (0, common_1.Query)('adminId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], AuthenticationController.prototype, "removeAdmin", null);
 exports.AuthenticationController = AuthenticationController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [Authentication_service_1.AuthenticationService])
