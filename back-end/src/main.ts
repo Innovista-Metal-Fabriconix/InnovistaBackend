@@ -24,21 +24,6 @@ async function bootstrap() {
   );
   app.use(cookieParser());
 
-  if (process.env.VERCEL) {
-    await app.init();
-    return app.getHttpAdapter().getInstance();
-  }
-
   await app.listen(process.env.PORT ?? 4000);
 }
-
-if (!process.env.VERCEL) {
-  bootstrap();
-}
-
-export default async function handler(req: any, res: any) {
-  if (!cachedServer) {
-    cachedServer = await bootstrap();
-  }
-  return cachedServer(req, res);
-}
+bootstrap();
