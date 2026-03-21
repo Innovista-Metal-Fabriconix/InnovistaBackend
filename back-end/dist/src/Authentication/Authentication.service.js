@@ -140,6 +140,9 @@ let AuthenticationService = class AuthenticationService {
     async refreshAccessToken(refreshToken) {
         try {
             const payload = this.tokenCreate.verifyToken(refreshToken);
+            if (typeof payload.sub === 'string') {
+                payload.sub = Number(payload.sub);
+            }
             const storedToken = await this.prisma.refreshToken.findUnique({
                 where: { adminId: payload.sub },
             });
@@ -188,7 +191,7 @@ let AuthenticationService = class AuthenticationService {
             throw new common_1.BadRequestException('Error retrieving projects: ' + message);
         }
     }
-    async passwordRset_Login(email) {
+    async passwordReset_Login(email) {
         try {
             const findAdminAccount = await this.prisma.admin.findUnique({
                 where: { Admin_Email: email },
@@ -212,7 +215,6 @@ let AuthenticationService = class AuthenticationService {
                     name: nameOf_Admin,
                 },
             });
-            console.log(newUpdate_Password, 'new password');
             return { message: 'Password Reset Successfully Check Your email' };
         }
         catch (error) {

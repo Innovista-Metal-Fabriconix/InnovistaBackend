@@ -17,12 +17,12 @@ export class ProjectDTO {
 
     @IsString()
     @IsNotEmpty()
-    Project_Title : string;
+    Project_Title! : string;
 
     @IsString()
     @IsNotEmpty()
-    Project_Description: string;
-
+    Project_Description!: string;
+  
     @IsArray()
     @IsOptional()
     Project_Images?: string[];
@@ -33,15 +33,15 @@ export class ProjectDTO {
 
     @IsString()
     @IsNotEmpty()
-    Location: string;
+    Location!: string;
 
     @IsString()
     @IsNotEmpty()
-    Client_Name: string;
+    Client_Name!: string;
 
     @IsEmail()
     @IsNotEmpty()
-    Client_Email: string;
+    Client_Email!: string;
 
     @IsString()
     @IsOptional()
@@ -53,11 +53,11 @@ export class ProjectDTO {
 
     @IsDate()
     @IsOptional()
-    @Type(() => Date) 
+    @Type(() => Date)
     Project_FinishedDate?: Date;
 
     @IsNumber()
     @IsNotEmpty()
-    Budget: number;
+    Budget!: number;
 
 }

@@ -6,8 +6,16 @@ import {
   Req,
   Get,
 } from '@nestjs/common';
+import { Request } from 'express';
 import { NotificationService } from './Notification.service';
 import { AdminAuthGuard } from '../Authentication/Authentication.AdminAuthgurd';
+
+//  Define user type
+interface AuthenticatedRequest extends Request {
+  user: {
+    email: string;
+  };
+}
 
 @Controller('Notification')
 export class NotificationController {
@@ -15,8 +23,9 @@ export class NotificationController {
 
   @UseGuards(AdminAuthGuard)
   @Get('getalerts')
-  async getNotifications(@Req() req) {
+  async getNotifications(@Req() req: AuthenticatedRequest) {
     const Adminemail = req.user.email;
+
     return this.notificationService.getNotifications(Adminemail);
   }
 
@@ -24,9 +33,10 @@ export class NotificationController {
   @Post('markAsRead')
   async readtNotifications(
     @Query('NotificationsID') NotificationsID: string,
-    @Req() req,
+    @Req() req: AuthenticatedRequest,
   ) {
     const Adminemail = req.user.email;
+
     return this.notificationService.markAsRead(
       Adminemail,
       parseInt(NotificationsID, 10),

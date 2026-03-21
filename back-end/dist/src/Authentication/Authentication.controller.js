@@ -38,7 +38,7 @@ let AuthenticationController = class AuthenticationController {
         return this.authService.passwordReset(req.user.email, newPassword);
     }
     async passwordReset_Loginuser(Adminemail) {
-        return this.authService.passwordRset_Login(Adminemail);
+        return this.authService.passwordReset_Login(Adminemail);
     }
     async getAllAdmins() {
         return this.authService.GetallAdmins();

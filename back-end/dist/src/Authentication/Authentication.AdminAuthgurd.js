@@ -16,6 +16,9 @@ let AdminAuthGuard = class AdminAuthGuard extends (0, passport_1.AuthGuard)('jwt
             return false;
         const request = context.switchToHttp().getRequest();
         const user = request.user;
+        if (!user) {
+            throw new common_1.UnauthorizedException('User not found');
+        }
         if (user.role !== 'Admin') {
             throw new common_1.UnauthorizedException('Only admins can access this route');
         }

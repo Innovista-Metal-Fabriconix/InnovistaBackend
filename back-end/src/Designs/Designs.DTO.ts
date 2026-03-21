@@ -17,31 +17,31 @@ export class DesignDTO {
 
     @IsString()
     @IsNotEmpty()
-    public Design_Name: string;
+    public Design_Name!: string;
 
     @IsArray()
     @ArrayNotEmpty()
-    public Design_Image: string[];
+    public Design_Image!: string[];
 
     @IsString()
     @IsNotEmpty()
-    public Design_Description: string;
+    public Design_Description!: string;
 
     @IsArray()
     @ArrayNotEmpty()
-    public Categories: string[];
+    public Categories!: string[];
 
     @IsArray()
     @ArrayNotEmpty()
-    public Design_Colors: string[];
+    public Design_Colors!: string[];
 
     @IsArray()
     @ArrayNotEmpty()
-    public Design_BlogPosts: string[];
+    public Design_BlogPosts!: string[];
 
     @IsArray()
     @ArrayNotEmpty()
-    public Design_Sizes: string[];
+    public Design_Sizes!: string[];
 
     @IsOptional()
     @IsDate()

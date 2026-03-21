@@ -47,11 +47,6 @@ export class CustomerController {
     );
   }
 
-  // @Get('getAllCustomers')
-  // async getAllCustomers() {
-  //   return this.customerService.getAllCustomers();
-  // }
-
   @Post('verifyCustomer')
   async verifyCustomer(@Query('customerId') customerId: string) {
     return this.customerService.verifyCustomerEmail(parseInt(customerId, 10));

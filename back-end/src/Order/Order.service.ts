@@ -5,6 +5,7 @@ import { EmailService } from '../Emails/Email.service';
 import { EmailTemplate } from '../Emails/Email.DTO';
 import { NotificationService } from 'src/Notification/Notification.service';
 
+
 @Injectable()
 export class OrderService {
   constructor(
@@ -19,23 +20,24 @@ export class OrderService {
         where: { Cus_Email: orderDto.Client_Email },
       });
 
-      const orderData: Parameters<typeof this.prisma.order.create>[0]['data'] = {
-        Order_Status: orderDto.Order_Status,
-        Order_Date: orderDto.Order_Date ?? new Date(),
-        Client_Name: orderDto.Client_Name,
-        Client_Email: orderDto.Client_Email,
-        Client_Number: orderDto.Client_Number,
-        CustomerId: findCustomer ? findCustomer.CustomerId : null,
+      const orderData: Parameters<typeof this.prisma.order.create>[0]['data'] =
+        {
+          Order_Status: orderDto.Order_Status,
+          Order_Date: orderDto.Order_Date ?? new Date(),
+          Client_Name: orderDto.Client_Name,
+          Client_Email: orderDto.Client_Email,
+          Client_Number: orderDto.Client_Number,
+          CustomerId: findCustomer ? findCustomer.CustomerId : null,
 
-        Designs: {
-          create:
-            orderDto.Designs?.map((d) => ({
-              Design: {
-                connect: { DesignID: d.DesignID },
-              },
-            })) || [],
-        },
-      };
+          Designs: {
+            create:
+              orderDto.Designs?.map((d) => ({
+                Design: {
+                  connect: { DesignID: d.DesignID },
+                },
+              })) || [],
+          },
+        };
 
       const order = await this.prisma.order.create({
         data: orderData,
@@ -60,35 +62,22 @@ export class OrderService {
         to: order.Client_Email ?? '',
         template: EmailTemplate.ORDER_CONFIRMATION,
         context: {
-          order: order,
+          name: order.Client_Name ?? 'Customer',
+          order: [
+            order.Order_Date.toDateString(),
+            order.Client_Name,
+            order.Client_Email,
+            order.Client_Number,
+            ...order.Designs.map((d) => d.Design.Design_Name),
+          ].join('\n'),
         },
       });
-
       return { message: 'Order created successfully', order };
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
       throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
-
-  // async getAllOrders() {
-  //   try {
-  //     const orders = await this.prisma.order.findMany({
-  //       include: {
-  //         Customer: true,
-  //         Designs: {
-  //           include: {
-  //             Design: true,
-  //           },
-  //         },
-  //       },
-  //     });
-  //     return orders;
-  //  } catch (error: unknown) {
-  //     const message = error instanceof Error ? error.message : String(error);
-  //     throw new BadRequestException('Error retrieving projects: ' + message);
-  //   }
-  // }
 
   async getAllOrders(page: number, limit: number) {
     try {
@@ -123,7 +112,6 @@ export class OrderService {
       throw new BadRequestException('Error retrieving projects: ' + message);
     }
   }
-
 
   async chagetheStates(orderId: number, Status: string) {
     try {
@@ -187,7 +175,14 @@ export class OrderService {
         to: order.Client_Email ?? '',
         template: EmailTemplate.ORDER_CONFIRMATION,
         context: {
-          order: order,
+          name: order.Client_Name ?? 'Customer',
+          order: [
+            order.Order_Date.toDateString(),
+            order.Client_Name,
+            order.Client_Email,
+            order.Client_Number,
+            ...order.Designs.map((d) => d.Design.Design_Name),
+          ].join('\n'),
         },
       });
 

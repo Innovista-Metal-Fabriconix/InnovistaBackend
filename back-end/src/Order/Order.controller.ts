@@ -13,10 +13,6 @@ export class OrderController {
     return this.orderService.createOrder(orderDto);
   }
 
-  // @Get("getAllOrders")
-  // async getAllOrders() {
-  //   return this.orderService.getAllOrders();
-  // }
 
   @Get("getAllOrders")
   async getAllOrders(

@@ -10,21 +10,21 @@ export class FeedbackDTO {
 
   @IsNotEmpty()
   @IsString()
-  public Feed_back_comment: string;
+  public Feed_back_comment!: string;
 
   @IsOptional()
   @IsArray()
-  public Feed_Back_Images: string[];
+  public Feed_Back_Images!: string[];
 
   @IsNotEmpty()
   @IsNumber()
-  public Rating: number;
+  public Rating!: number;
 
   @IsNotEmpty()
   @IsNumber()
-  public CustomerId: number;
+  public CustomerId!: number;
 
   @IsNotEmpty()
   @IsNumber()
-  public DesignID: number;
+  public DesignID!: number;
 }

@@ -65,7 +65,14 @@ let OrderService = class OrderService {
                 to: order.Client_Email ?? '',
                 template: Email_DTO_1.EmailTemplate.ORDER_CONFIRMATION,
                 context: {
-                    order: order,
+                    name: order.Client_Name ?? 'Customer',
+                    order: [
+                        order.Order_Date.toDateString(),
+                        order.Client_Name,
+                        order.Client_Email,
+                        order.Client_Number,
+                        ...order.Designs.map((d) => d.Design.Design_Name),
+                    ].join('\n'),
                 },
             });
             return { message: 'Order created successfully', order };
@@ -166,7 +173,14 @@ let OrderService = class OrderService {
                 to: order.Client_Email ?? '',
                 template: Email_DTO_1.EmailTemplate.ORDER_CONFIRMATION,
                 context: {
-                    order: order,
+                    name: order.Client_Name ?? 'Customer',
+                    order: [
+                        order.Order_Date.toDateString(),
+                        order.Client_Name,
+                        order.Client_Email,
+                        order.Client_Number,
+                        ...order.Designs.map((d) => d.Design.Design_Name),
+                    ].join('\n'),
                 },
             });
             return order;

@@ -1,5 +1,5 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import jwt from 'jsonwebtoken';
+import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class TokenCreate {
@@ -11,17 +11,22 @@ export class TokenCreate {
         'JWT_PRIVATE_KEY environment variable is not set',
       );
     }
-
     this.privateKey = process.env.JWT_PRIVATE_KEY;
   }
 
-  createTokens(admin: any) {
+  createTokens(admin: {
+    AdminId: string | number;
+    Admin_Email: string;
+    Admin_Name: string;
+    Admin_Phone?: string;
+    Admin_Profile?: string;
+  }) {
     const payload = {
       sub: admin.AdminId,
       email: admin.Admin_Email,
       name: admin.Admin_Name,
-      phone: admin.Admin_Phone,
-      profile: admin.Admin_Profile,
+      phone: admin.Admin_Phone || null,
+      profile: admin.Admin_Profile || null,
       role: 'Admin',
     };
 
@@ -39,6 +44,10 @@ export class TokenCreate {
   }
 
   verifyToken(token: string) {
-    return jwt.verify(token, this.privateKey);
+    try {
+      return jwt.verify(token, this.privateKey);
+    } catch (err) {
+      throw new InternalServerErrorException('Invalid token' + err);
+    }
   }
 }

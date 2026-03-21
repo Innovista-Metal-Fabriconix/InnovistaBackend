@@ -28,15 +28,6 @@ export class ProjectsService {
       throw new BadRequestException('Error creating project: ' + message);
     }
   }
-  // async getAllProjects() {
-  //   try {
-  //     const projects = await this.prisma.project.findMany();
-  //     return { message: 'Projects retrieved successfully', projects };
-  //   } catch (error: unknown) {
-  //     const message = error instanceof Error ? error.message : String(error);
-  //     throw new BadRequestException('Error retrieving projects: ' + message);
-  //   }
-  // }
 
   async getAllProjects(page: number = 1, limit: number = 10) {
     try {
