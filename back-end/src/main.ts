@@ -44,5 +44,5 @@ export default async function handler(req: Request, res: Response) {
     server = await bootstrap();
   }
 
-  await server(req, res); 
+  await server(req, res);
 }
