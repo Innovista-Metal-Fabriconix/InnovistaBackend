@@ -81,7 +81,13 @@ let AuthenticationService = class AuthenticationService {
                     password: rawPassword,
                 },
             });
-            const tokens = this.tokenCreate.createTokens(admin);
+            const tokens = this.tokenCreate.createTokens({
+                AdminId: admin.AdminId,
+                Admin_Email: admin.Admin_Email,
+                Admin_Name: admin.Admin_Name,
+                Admin_Phone: admin.Admin_Phone ?? undefined,
+                Admin_Profile: admin.Admin_Profile ?? undefined,
+            });
             await this.prisma.refreshToken.upsert({
                 where: { adminId: admin.AdminId },
                 update: {
@@ -115,7 +121,13 @@ let AuthenticationService = class AuthenticationService {
             if (!passwordMatch) {
                 throw new common_1.UnauthorizedException('Invalid credentials');
             }
-            const tokens = this.tokenCreate.createTokens(admin);
+            const tokens = this.tokenCreate.createTokens({
+                AdminId: admin.AdminId,
+                Admin_Email: admin.Admin_Email,
+                Admin_Name: admin.Admin_Name,
+                Admin_Phone: admin.Admin_Phone ?? undefined,
+                Admin_Profile: admin.Admin_Profile ?? undefined,
+            });
             await this.prisma.refreshToken.upsert({
                 where: { adminId: admin.AdminId },
                 update: {
@@ -154,13 +166,19 @@ let AuthenticationService = class AuthenticationService {
             }
             const admin = await this.prisma.admin.findUnique({
                 where: {
-                    AdminId: payload.sub
+                    AdminId: payload.sub,
                 },
             });
             if (!admin) {
                 throw new common_1.UnauthorizedException('Admin not found');
             }
-            const tokens = this.tokenCreate.createTokens(admin);
+            const tokens = this.tokenCreate.createTokens({
+                AdminId: admin.AdminId,
+                Admin_Email: admin.Admin_Email,
+                Admin_Name: admin.Admin_Name,
+                Admin_Phone: admin.Admin_Phone ?? undefined,
+                Admin_Profile: admin.Admin_Profile ?? undefined,
+            });
             await this.prisma.refreshToken.update({
                 where: { adminId: admin.AdminId },
                 data: {

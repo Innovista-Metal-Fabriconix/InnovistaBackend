@@ -3,7 +3,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { OrderDTO } from './Order.DTO';
 import { EmailService } from '../Emails/Email.service';
 import { EmailTemplate } from '../Emails/Email.DTO';
-import { NotificationService } from 'src/Notification/Notification.service';
+import { NotificationService } from '../Notification/Notification.service';
 
 
 @Injectable()
