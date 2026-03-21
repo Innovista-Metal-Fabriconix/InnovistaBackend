@@ -3,19 +3,8 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
 
-import serverlessExpress from '@vendia/serverless-express';
-import { ExpressAdapter } from '@nestjs/platform-express';
-import express, { Request, Response } from 'express';
-
-let server: (req: Request, res: Response) => Promise<void>;
-
 async function bootstrap() {
-  const expressApp = express();
-
-  const app = await NestFactory.create(
-    AppModule,
-    new ExpressAdapter(expressApp),
-  );
+  const app = await NestFactory.create(AppModule);
 
   // Enable CORS
   app.enableCors({
@@ -31,18 +20,8 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
-
   app.use(cookieParser());
 
-  await app.init();
-
-  return serverlessExpress({ app: expressApp });
+  await app.listen(4000);
 }
-
-export default async function handler(req: Request, res: Response) {
-  if (!server) {
-    server = await bootstrap();
-  }
-
-  await server(req, res);
-}
+bootstrap();

@@ -12,14 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateCustomer = exports.CustomerDTO = void 0;
 const class_validator_1 = require("class-validator");
 class CustomerDTO {
-    CustomerId;
-    Cus_Name;
-    Cus_Email;
-    Cus_PhoneNumber;
-    Cus_CompanyName;
-    Cus_Logo;
-    Cus_Password;
-    Purchase_Goods;
 }
 exports.CustomerDTO = CustomerDTO;
 __decorate([
@@ -63,15 +55,6 @@ __decorate([
     __metadata("design:type", Array)
 ], CustomerDTO.prototype, "Purchase_Goods", void 0);
 class UpdateCustomer {
-    CustomerId;
-    Cus_Name;
-    Cus_Email;
-    Cus_PhoneNumber;
-    Cus_CompanyName;
-    Cus_Logo;
-    Cus_Password;
-    Verify_State;
-    Purchase_Goods;
 }
 exports.UpdateCustomer = UpdateCustomer;
 __decorate([

@@ -13,18 +13,6 @@ exports.ProjectDTO = void 0;
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
 class ProjectDTO {
-    ProjectID;
-    Project_Title;
-    Project_Description;
-    Project_Images;
-    Project_CreatedAt;
-    Location;
-    Client_Name;
-    Client_Email;
-    Client_Number;
-    Client_Company;
-    Project_FinishedDate;
-    Budget;
 }
 exports.ProjectDTO = ProjectDTO;
 __decorate([

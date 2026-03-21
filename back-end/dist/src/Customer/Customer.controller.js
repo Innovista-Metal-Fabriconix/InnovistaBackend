@@ -18,7 +18,6 @@ const Customer_DTO_1 = require("./Customer.DTO");
 const Customer_service_1 = require("./Customer.service");
 const Authentication_AdminAuthgurd_1 = require("../Authentication/Authentication.AdminAuthgurd");
 let CustomerController = class CustomerController {
-    customerService;
     constructor(customerService) {
         this.customerService = customerService;
     }

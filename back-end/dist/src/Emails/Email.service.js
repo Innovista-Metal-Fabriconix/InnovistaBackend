@@ -14,7 +14,6 @@ const common_1 = require("@nestjs/common");
 const mailer_1 = require("@nestjs-modules/mailer");
 const Email_EmailFactory_1 = require("./Email.EmailFactory");
 let EmailService = class EmailService {
-    mailerService;
     constructor(mailerService) {
         this.mailerService = mailerService;
     }

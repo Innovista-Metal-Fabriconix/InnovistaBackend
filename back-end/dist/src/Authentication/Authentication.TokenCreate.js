@@ -46,7 +46,6 @@ exports.TokenCreate = void 0;
 const common_1 = require("@nestjs/common");
 const jwt = __importStar(require("jsonwebtoken"));
 let TokenCreate = class TokenCreate {
-    privateKey;
     constructor() {
         if (!process.env.JWT_PRIVATE_KEY) {
             throw new common_1.InternalServerErrorException('JWT_PRIVATE_KEY environment variable is not set');

@@ -18,7 +18,6 @@ const Designs_service_1 = require("./Designs.service");
 const Designs_DTO_1 = require("./Designs.DTO");
 const Authentication_AdminAuthgurd_1 = require("../Authentication/Authentication.AdminAuthgurd");
 let DesignsController = class DesignsController {
-    designsService;
     constructor(designsService) {
         this.designsService = designsService;
     }

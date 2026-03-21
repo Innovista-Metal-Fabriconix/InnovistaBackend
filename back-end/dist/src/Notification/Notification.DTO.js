@@ -12,13 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.NotificationDTO = void 0;
 const class_validator_1 = require("class-validator");
 class NotificationDTO {
-    NotificationsID;
-    Date_Timestamp;
-    SenderEmail;
-    Recevied_Emails;
-    View_List;
-    Notifications_Body;
-    Notifications_Title;
 }
 exports.NotificationDTO = NotificationDTO;
 __decorate([

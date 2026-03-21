@@ -17,7 +17,6 @@ const common_1 = require("@nestjs/common");
 const Notification_service_1 = require("./Notification.service");
 const Authentication_AdminAuthgurd_1 = require("../Authentication/Authentication.AdminAuthgurd");
 let NotificationController = class NotificationController {
-    notificationService;
     constructor(notificationService) {
         this.notificationService = notificationService;
     }

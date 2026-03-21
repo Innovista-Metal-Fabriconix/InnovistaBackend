@@ -16,9 +16,6 @@ const Email_service_1 = require("../Emails/Email.service");
 const Email_DTO_1 = require("../Emails/Email.DTO");
 const Notification_service_1 = require("../Notification/Notification.service");
 let OrderService = class OrderService {
-    prisma;
-    emailService;
-    notificationService;
     constructor(prisma, emailService, notificationService) {
         this.prisma = prisma;
         this.emailService = emailService;

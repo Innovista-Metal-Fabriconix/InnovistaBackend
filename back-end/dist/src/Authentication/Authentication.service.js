@@ -50,9 +50,6 @@ const Email_service_1 = require("../Emails/Email.service");
 const Email_DTO_1 = require("../Emails/Email.DTO");
 const Authentication_TokenCreate_1 = require("./Authentication.TokenCreate");
 let AuthenticationService = class AuthenticationService {
-    prisma;
-    emailService;
-    tokenCreate;
     constructor(prisma, emailService, tokenCreate) {
         this.prisma = prisma;
         this.emailService = emailService;

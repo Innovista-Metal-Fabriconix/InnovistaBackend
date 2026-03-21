@@ -12,10 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ChangepasswordDTO = exports.AuthDTO = void 0;
 const class_validator_1 = require("class-validator");
 class AuthDTO {
-    Admin_Name;
-    Admin_Email;
-    Admin_Phone;
-    Admin_Profile;
 }
 exports.AuthDTO = AuthDTO;
 __decorate([
@@ -39,8 +35,6 @@ __decorate([
     __metadata("design:type", String)
 ], AuthDTO.prototype, "Admin_Profile", void 0);
 class ChangepasswordDTO {
-    Admin_Password;
-    Admin_Email;
 }
 exports.ChangepasswordDTO = ChangepasswordDTO;
 __decorate([

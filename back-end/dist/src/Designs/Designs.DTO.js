@@ -12,15 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DesignDTO = void 0;
 const class_validator_1 = require("class-validator");
 class DesignDTO {
-    DesignID;
-    Design_Name;
-    Design_Image;
-    Design_Description;
-    Categories;
-    Design_Colors;
-    Design_BlogPosts;
-    Design_Sizes;
-    Design_CreatedAt;
 }
 exports.DesignDTO = DesignDTO;
 __decorate([
