@@ -37,7 +37,6 @@ async function bootstrap() {
       }),
     );
 
-    // ✅ Register the global exception filter
     app.useGlobalFilters(new AllExceptionsFilter());
 
     await app.init();
@@ -48,7 +47,6 @@ async function bootstrap() {
 }
 
 export default async function handler(req: any, res: any) {
-  // ✅ Try/catch so bootstrap errors return 500 instead of silent 404
   try {
     const app = await bootstrap();
     return app(req, res);
