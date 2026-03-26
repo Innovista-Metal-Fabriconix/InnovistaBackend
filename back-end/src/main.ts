@@ -7,10 +7,7 @@ async function bootstrap() {
   // CORS FIX — allow requests from your Netlify frontend
   app.enableCors({
     origin: [
-      'https://innovistafrontend.netlify.app',
-      'https://innovista-front-end-git-stablebranch-janodabesekaras-projects.vercel.app',
-      'http://localhost:5173',   // Vite dev server  
-    ],
+      'https://innovistafrontend.netlify.app'],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
     credentials: true, // required for cookies / session tokens
