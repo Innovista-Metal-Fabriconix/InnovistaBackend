@@ -10,7 +10,11 @@ async function bootstrap() {
 
   // Enable CORS
   app.enableCors({
-    origin: ['https://innovista-frontend.netlify.app' || 'http://localhost:5173', process.env.FRONTEND_URL || ''],
+     origin: [
+    'https://innovista-frontend.netlify.app',
+    'http://localhost:5173',
+    process.env.FRONTEND_URL,
+  ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
