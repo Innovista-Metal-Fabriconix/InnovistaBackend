@@ -9,6 +9,24 @@
   "routes": [
     {
       "src": "/(.*)",
+      "methods": ["OPTIONS"],
+      "headers": {
+        "Access-Control-Allow-Origin": "https://innovistafrontend.netlify.app",
+        "Access-Control-Allow-Methods": "GET,HEAD,POST,PUT,PATCH,DELETE,OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization, Accept, X-Requested-With, X-CSRF-Token",
+        "Access-Control-Allow-Credentials": "true"
+      },
+      "status": 204,
+      "dest": "api/index.ts"
+    },
+    {
+      "src": "/(.*)",
+      "headers": {
+        "Access-Control-Allow-Origin": "https://innovistafrontend.netlify.app",
+        "Access-Control-Allow-Methods": "GET,HEAD,POST,PUT,PATCH,DELETE,OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization, Accept, X-Requested-With, X-CSRF-Token",
+        "Access-Control-Allow-Credentials": "true"
+      },
       "dest": "api/index.ts"
     }
   ]
