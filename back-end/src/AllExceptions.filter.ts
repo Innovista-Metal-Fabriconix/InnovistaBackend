@@ -26,7 +26,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
     // This is critical when the standard CORS middleware is bypassed or errors happen early
     const origin = (request.headers as any).origin;
-    const allowedOrigins = ['https://innovistafrontend.netlify.app'];
+    const allowedOrigins = ['https://innovistafrontend.netlify.app',
+      'http://localhost:5173'
+    ];
 
     if (origin && allowedOrigins.includes(origin)) {
       response.setHeader('Access-Control-Allow-Origin', origin);
