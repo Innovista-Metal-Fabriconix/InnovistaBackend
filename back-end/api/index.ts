@@ -12,6 +12,11 @@ async function bootstrap() {
   if (!cachedServer) {
     const expressApp = express();
 
+    // TEST ROUTE
+    expressApp.get('/', (req, res) => {
+      res.send('API WORKING ✅');
+    });
+
     const app = await NestFactory.create(
       AppModule,
       new ExpressAdapter(expressApp),
