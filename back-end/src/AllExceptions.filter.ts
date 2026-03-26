@@ -5,7 +5,7 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
-import { Response } from 'express';
+import { Response, Request } from 'express';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -24,7 +24,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
         ? exception.getResponse()
         : { message: (exception as Error).message, statusCode: status };
 
-    // MANUALLY ADD CORS HEADERS TO ERROR RESPONSES
     // This is critical when the standard CORS middleware is bypassed or errors happen early
     const origin = (request.headers as any).origin;
     const allowedOrigins = ['https://innovista-frontend.netlify.app', 'http://localhost:5173'];
