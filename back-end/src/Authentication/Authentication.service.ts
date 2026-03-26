@@ -77,7 +77,7 @@ export class AuthenticationService {
       return { message: 'Admin registered successfully', admin, tokens };
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
-      throw new BadRequestException('Error retrieving projects: ' + message);
+      throw new BadRequestException('Error during registration: ' + message);
     }
   }
 
@@ -125,7 +125,7 @@ export class AuthenticationService {
       return { message: 'Login successful', admin, tokens };
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
-      throw new BadRequestException('Error retrieving projects: ' + message);
+      throw new BadRequestException('Error during login: ' + message);
     }
   }
 
@@ -184,7 +184,7 @@ export class AuthenticationService {
       };
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
-      throw new BadRequestException('Error retrieving projects: ' + message);
+      throw new BadRequestException('Error refreshing access token: ' + message);
     }
   }
 
@@ -196,7 +196,7 @@ export class AuthenticationService {
       return { message: 'Logout successful' };
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
-      throw new BadRequestException('Error retrieving projects: ' + message);
+      throw new BadRequestException('Error during logout: ' + message);
     }
   }
 
@@ -233,7 +233,7 @@ export class AuthenticationService {
       return { message: 'Password Reset Successfully Check Your email' };
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
-      throw new BadRequestException('Error retrieving projects: ' + message);
+      throw new BadRequestException('Error during password reset request: ' + message);
     }
   }
 
@@ -254,7 +254,7 @@ export class AuthenticationService {
       return { message: 'Password reset successful' };
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
-      throw new BadRequestException('Error retrieving projects: ' + message);
+      throw new BadRequestException('Error during password reset: ' + message);
     }
   }
 
