@@ -53,7 +53,7 @@ export class CustomerService {
         template: EmailTemplate.CUSTOMER_WELCOME,
         context: {
           name: customerDto.Cus_Name,
-          Link: `http://localhost:5173/CustomerVerify?customerId=${customer.CustomerId}`,
+          Link: `https://innovista-front-end.vercel.app/CustomerVerify?customerId=${customer.CustomerId}`,
         },
       });
 
