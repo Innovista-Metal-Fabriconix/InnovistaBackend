@@ -41,13 +41,6 @@ export default async function handler(req: any, res: any) {
   try {
     const server = await bootstrap();
 
-    // Vercel rewrites might mutate the req.url to point to the serverless function file
-    if (req.url === '/api/index' || req.url === '/api/index/') {
-      req.url = '/';
-    } else if (req.url.startsWith('/api/index/')) {
-      req.url = req.url.replace('/api/index', '');
-    }
-
     server(req, res);
   } catch (err) {
     console.error('Bootstrap error:', err);
