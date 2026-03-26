@@ -11,7 +11,7 @@ export default async function handler(req: any, res: any) {
       const app = await NestFactory.create(AppModule);
 
       app.enableCors({
-        origin: 'https://innovista-frontend.netlify.app',
+        origin: 'https://innovista-frontend.netlify.app/#/',
         credentials: true,
       });
 

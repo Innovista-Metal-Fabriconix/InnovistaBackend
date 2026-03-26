@@ -9,7 +9,7 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'http://localhost:5173',
-      'https://innovista-frontend.netlify.app'
+      'https://innovista-frontend.netlify.app/#/'
     ],
     credentials: true,
   });
