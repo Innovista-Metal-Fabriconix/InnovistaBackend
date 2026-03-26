@@ -5,15 +5,17 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   // CORS FIX — allow requests from your Netlify frontend
-  app.enableCors({
-    origin: [
-      'https://innovista-front-end.vercel.app',
-      'http://localhost:5173',   // Vite dev server  
-    ],
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
-    credentials: true, // required for cookies / session tokens
-  });
+  // app.enableCors({
+  //   origin: [
+  //     'https://innovista-front-end.vercel.app',
+  //     'http://localhost:5173',   // Vite dev server  
+  //   ],
+  //   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  //   allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  //   credentials: true, // required for cookies / session tokens
+  // });
+
+  app.enableCors();
 
   const port = process.env.PORT ?? 3000;
   await app.listen(port);
