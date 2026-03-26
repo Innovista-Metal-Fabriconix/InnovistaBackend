@@ -7,7 +7,7 @@ async function bootstrap() {
   // CORS FIX — allow requests from your Netlify frontend
   app.enableCors({
     origin: [
-      'https://innovistafrontend.netlify.app',
+     
       "http://localhost:5173"
     ],
     methods: ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
