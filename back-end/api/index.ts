@@ -1,40 +1,50 @@
 import { NestFactory } from '@nestjs/core';
+import { ExpressAdapter } from '@nestjs/platform-express';
+import express from 'express';
 import { AppModule } from '../src/app.module';
 import { ValidationPipe } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
 
-let cachedServer: any;
+const server = express();
+
+let cachedApp: any;
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { logger: false });
+  if (!cachedApp) {
+    const app = await NestFactory.create(
+      AppModule,
+      new ExpressAdapter(server),
+      { logger: false }
+    );
 
-  app.enableCors({
-    origin: [
-      'https://innovistafrontend.netlify.app',
-      'http://localhost:5173', // for local dev
-    ],
-    credentials: true,
-    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Accept', 'Authorization', 'X-Requested-With'],
-  });
+    app.enableCors({
+      origin: [
+        'https://innovistafrontend.netlify.app',
+        'http://localhost:5173',
+      ],
+      credentials: true,
+      methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Accept', 'Authorization'],
+    });
 
-  app.useGlobalPipes(
-    new ValidationPipe({
-      transform: true,
-      whitelist: true,
-      forbidNonWhitelisted: true,
-    }),
-  );
+    app.use(cookieParser());
 
-  app.use(cookieParser());
-  await app.init();
+    app.useGlobalPipes(
+      new ValidationPipe({
+        transform: true,
+        whitelist: true,
+        forbidNonWhitelisted: true,
+      }),
+    );
 
-  return app.getHttpAdapter().getInstance();
+    await app.init();
+    cachedApp = server;
+  }
+
+  return cachedApp;
 }
 
 export default async function handler(req: any, res: any) {
-  if (!cachedServer) {
-    cachedServer = await bootstrap();
-  }
-  return cachedServer(req, res);
+  const app = await bootstrap();
+  return app(req, res);
 }
