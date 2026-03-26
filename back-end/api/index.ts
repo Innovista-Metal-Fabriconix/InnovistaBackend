@@ -1,21 +1,15 @@
 import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import { AppModule } from '../src/app.module';
-import serverlessExpress from '@vendia/serverless-express';
-import express from 'express';
+import express, { Express } from 'express';
 import cookieParser from 'cookie-parser';
 import { ValidationPipe } from '@nestjs/common';
 
-let cachedServer: any;
+let cachedServer: Express;
 
-async function bootstrap() {
+async function bootstrap(): Promise<Express> {
   if (!cachedServer) {
     const expressApp = express();
-
-    // TEST ROUTE
-    expressApp.get('/', (req, res) => {
-      res.send('API WORKING ✅');
-    });
 
     const app = await NestFactory.create(
       AppModule,
@@ -35,7 +29,7 @@ async function bootstrap() {
 
     await app.init();
 
-    cachedServer = serverlessExpress({ app: expressApp });
+    cachedServer = expressApp;
   }
 
   return cachedServer;
@@ -44,7 +38,7 @@ async function bootstrap() {
 export default async function handler(req: any, res: any) {
   try {
     const server = await bootstrap();
-    return server(req, res);
+    server(req, res);
   } catch (err) {
     console.error('Bootstrap error:', err);
     res.status(500).json({
