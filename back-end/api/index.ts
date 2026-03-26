@@ -6,39 +6,37 @@ import cookieParser from 'cookie-parser';
 let cachedServer: any;
 
 export default async function handler(req: any, res: any) {
+  try {
+    if (!cachedServer) {
+      const app = await NestFactory.create(AppModule);
 
-  //  FORCE CORS HEADERS (CRITICAL FIX)
-  res.setHeader('Access-Control-Allow-Origin', 'https://innovista-frontend.netlify.app');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
+      app.enableCors({
+        origin: 'https://innovista-frontend.netlify.app',
+        credentials: true,
+      });
 
-  //  Handle preflight request
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
+      app.useGlobalPipes(
+        new ValidationPipe({
+          transform: true,
+          whitelist: true,
+          forbidNonWhitelisted: true,
+        }),
+      );
 
-  if (!cachedServer) {
-    const app = await NestFactory.create(AppModule);
+      app.use(cookieParser());
 
-    app.enableCors({
-      origin: 'https://innovista-frontend.netlify.app',
-      credentials: true,
+      await app.init();
+      cachedServer = app.getHttpAdapter().getInstance();
+    }
+
+    return cachedServer(req, res);
+  } catch (error: any) {
+    console.error('[Backend Init Error]', error);
+    return res.status(500).json({
+      statusCode: 500,
+      message: 'Backend initialization failed',
+      error: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
     });
-
-    app.useGlobalPipes(
-      new ValidationPipe({
-        transform: true,
-        whitelist: true,
-        forbidNonWhitelisted: true,
-      }),
-    );
-
-    app.use(cookieParser());
-
-    await app.init();
-    cachedServer = app.getHttpAdapter().getInstance();
   }
-
-  return cachedServer(req, res);
 }
