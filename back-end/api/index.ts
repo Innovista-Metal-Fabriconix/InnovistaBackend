@@ -20,7 +20,8 @@ export default async function handler(req: any, res: any) {
       app.enableCors({
         origin: (requestOrigin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
           const allowed = !requestOrigin ||
-            ['https://innovista-front-end-git-stablebranch-janodabesekaras-projects.vercel.app',
+            [ 'https://innovistafrontend.netlify.app',
+              'https://innovista-front-end-git-stablebranch-janodabesekaras-projects.vercel.app',
               'http://localhost:5173'
             ].includes(requestOrigin);
           console.log(`[CORS DEBUG] Origin ${requestOrigin} allowed: ${allowed}`);

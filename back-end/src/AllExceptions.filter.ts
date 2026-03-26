@@ -26,7 +26,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
     // This is critical when the standard CORS middleware is bypassed or errors happen early
     const origin = (request.headers as any).origin;
-    const allowedOrigins = ['https://innovista-front-end.vercel.app',
+    const allowedOrigins = [
+       'https://innovistafrontend.netlify.app',
+      'https://innovista-front-end-git-stablebranch-janodabesekaras-projects.vercel.app',
       'http://localhost:5173'];
 
     if (origin && allowedOrigins.includes(origin)) {
