@@ -7,6 +7,7 @@ import { FeedbackModule } from './Feedback/Feedback.module';
 import { OrderModule } from './Order/Order.module';
 import { NotificationModule } from './Notification/Notification.module';
 import { ProjectsModule } from './Projects/Projects.module';
+import { DebugController } from './Debug.controller';
 
 @Module({
   imports: [
@@ -19,5 +20,6 @@ import { ProjectsModule } from './Projects/Projects.module';
     NotificationModule,
     ProjectsModule
   ],
+  controllers: [DebugController],
 })
 export class AppModule {}
