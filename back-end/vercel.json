@@ -11,7 +11,7 @@
       "src": "/(.*)",
       "methods": ["OPTIONS"],
       "headers": {
-        "Access-Control-Allow-Origin": "https://innovista-front-end.vercel.app",
+        "Access-Control-Allow-Origin": "https://innovista-front-end-git-stablebranch-janodabesekaras-projects.vercel.app",
         "Access-Control-Allow-Methods": "GET,POST,PUT,PATCH,DELETE,OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type, Authorization, Accept",
         "Access-Control-Allow-Credentials": "true"
@@ -22,7 +22,7 @@
     {
       "src": "/(.*)",
       "headers": {
-        "Access-Control-Allow-Origin": "https://innovista-front-end.vercel.app",
+        "Access-Control-Allow-Origin": "https://innovista-front-end-git-stablebranch-janodabesekaras-projects.vercel.app",
         "Access-Control-Allow-Methods": "GET,POST,PUT,PATCH,DELETE,OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type, Authorization, Accept",
         "Access-Control-Allow-Credentials": "true"
