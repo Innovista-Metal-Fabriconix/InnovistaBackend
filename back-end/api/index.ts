@@ -1,55 +1,75 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from '../src/app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { ExpressAdapter } from '@nestjs/platform-express';
+import { AllExceptionsFilter } from '../src/AllExceptions.filter';
 import cookieParser from 'cookie-parser';
+import express from 'express';
+import serverlessExpress from '@vendia/serverless-express';
 
-let cachedServer: any;
+let cachedHandler: any;
+
+const ALLOWED_ORIGINS = [
+  'https://innovista-frontend.netlify.app',
+  'http://localhost:5173',
+  'http://localhost:3000',
+];
+
+async function bootstrap() {
+  const expressApp = express();
+
+  const app = await NestFactory.create(
+    AppModule,
+    new ExpressAdapter(expressApp),
+    { logger: ['error', 'warn', 'log'] },
+  );
+
+  //  CORS — must be before everything else
+  app.enableCors({
+    origin: (
+      origin: string | undefined,
+      callback: (err: Error | null, allow?: boolean) => void,
+    ) => {
+      // Allow requests with no origin (mobile apps, curl, Postman)
+      if (!origin) return callback(null, true);
+      if (ALLOWED_ORIGINS.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error(`CORS blocked for origin: ${origin}`), false);
+    },
+    credentials: true,
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+    allowedHeaders: [
+      'Content-Type',
+      'Accept',
+      'Authorization',
+      'X-Requested-With',
+      'X-CSRF-Token',
+    ],
+    // Respond to preflight with 200
+    optionsSuccessStatus: 200,
+  });
+
+  app.use(cookieParser());
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  );
+
+  app.useGlobalFilters(new AllExceptionsFilter(ALLOWED_ORIGINS));
+
+  await app.init();
+
+  return serverlessExpress({ app: expressApp });
+}
 
 export default async function handler(req: any, res: any) {
-  // 1. Manually set CORS headers for EVERY request (including preflight and errors)
-  const origin = 'https://innovista-frontend.netlify.app';
-  res.setHeader('Access-Control-Allow-Origin', origin);
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Accept,Authorization,X-Requested-With,X-CSRF-Token');
-
-  // 2. Handle preflight early
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
+  if (!cachedHandler) {
+    cachedHandler = await bootstrap();
   }
-
-  try {
-    if (!cachedServer) {
-      const app = await NestFactory.create(AppModule);
-
-      app.enableCors({
-        origin: origin,
-        credentials: true,
-        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-        allowedHeaders: 'Content-Type,Accept,Authorization,X-Requested-With,X-CSRF-Token',
-      });
-
-      app.useGlobalPipes(
-        new ValidationPipe({
-          transform: true,
-          whitelist: true,
-          forbidNonWhitelisted: true,
-        }),
-      );
-
-      app.use(cookieParser());
-
-      await app.init();
-      cachedServer = app.getHttpAdapter().getInstance();
-    }
-
-    return cachedServer(req, res);
-  } catch (error: any) {
-    console.error('[CORS Overhaul] Init Error:', error);
-    return res.status(500).json({
-      statusCode: 500,
-      message: 'Backend initialization failed',
-      error: error.message,
-    });
-  }
+  return cachedHandler(req, res);
 }
