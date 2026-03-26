@@ -25,6 +25,8 @@ async function bootstrap(): Promise<Express> {
         'https://innovista-front-end.vercel.app'
       ],
       credentials: true,
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+      allowedHeaders: 'Content-Type, Accept, Authorization',
     });
 
     await app.init();
