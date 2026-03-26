@@ -16,6 +16,10 @@ const Feedback_module_1 = require("./Feedback/Feedback.module");
 const Order_module_1 = require("./Order/Order.module");
 const Notification_module_1 = require("./Notification/Notification.module");
 const Projects_module_1 = require("./Projects/Projects.module");
+const app_controller_1 = require("./app.controller");
+const Debug_controller_1 = require("./Debug.controller");
+const core_1 = require("@nestjs/core");
+const AllExceptions_filter_1 = require("./AllExceptions.filter");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -30,6 +34,13 @@ exports.AppModule = AppModule = __decorate([
             Order_module_1.OrderModule,
             Notification_module_1.NotificationModule,
             Projects_module_1.ProjectsModule
+        ],
+        controllers: [app_controller_1.AppController, Debug_controller_1.DebugController],
+        providers: [
+            {
+                provide: core_1.APP_FILTER,
+                useClass: AllExceptions_filter_1.AllExceptionsFilter,
+            },
         ],
     })
 ], AppModule);

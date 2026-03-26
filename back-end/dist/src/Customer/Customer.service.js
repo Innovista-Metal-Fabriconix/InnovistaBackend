@@ -85,7 +85,7 @@ let CustomerService = class CustomerService {
                 template: Email_DTO_1.EmailTemplate.CUSTOMER_WELCOME,
                 context: {
                     name: customerDto.Cus_Name,
-                    Link: `http://localhost:5173/CustomerVerify?customerId=${customer.CustomerId}`,
+                    Link: `https://innovista-front-end.vercel.app/CustomerVerify?customerId=${customer.CustomerId}`,
                 },
             });
             return {
