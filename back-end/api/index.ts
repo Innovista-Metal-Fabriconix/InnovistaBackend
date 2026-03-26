@@ -17,19 +17,21 @@ export default async function handler(req: any, res: any) {
       console.log('[CORS DEBUG] Initializing NestJS App...');
       const app = await NestFactory.create(AppModule);
 
-      app.enableCors({
-        origin: (requestOrigin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
-          const allowed = !requestOrigin ||
-            ['https://innovista-front-end.vercel.app',
-              'http://localhost:5173'
-            ].includes(requestOrigin);
-          console.log(`[CORS DEBUG] Origin ${requestOrigin} allowed: ${allowed}`);
-          callback(null, allowed);
-        },
-        credentials: true,
-        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-        allowedHeaders: 'Content-Type,Accept,Authorization,X-Requested-With,X-CSRF-Token',
-      });
+      // app.enableCors({
+      //   origin: (requestOrigin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+      //     const allowed = !requestOrigin ||
+      //       ['https://innovista-front-end.vercel.app',
+      //         'http://localhost:5173'
+      //       ].includes(requestOrigin);
+      //     console.log(`[CORS DEBUG] Origin ${requestOrigin} allowed: ${allowed}`);
+      //     callback(null, allowed);
+      //   },
+      //   credentials: true,
+      //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+      //   allowedHeaders: 'Content-Type,Accept,Authorization,X-Requested-With,X-CSRF-Token',
+      // });
+
+      app.enableCors();
 
       app.useGlobalPipes(
         new ValidationPipe({
