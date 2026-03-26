@@ -1,22 +1,15 @@
 import { NestFactory } from '@nestjs/core';
-import { ExpressAdapter } from '@nestjs/platform-express';
-import express from 'express';
 import { AppModule } from '../src/app.module';
 import { ValidationPipe } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
 
-const server = express();
-
-let cachedApp: any;
+let cachedServer: any;
 
 async function bootstrap() {
   try {
-    if (!cachedApp) {
+    if (!cachedServer) {
       console.log('[CORS DEBUG] Initializing NestJS App...');
-      const app = await NestFactory.create(
-        AppModule,
-        new ExpressAdapter(server),
-      );
+      const app = await NestFactory.create(AppModule);
 
       app.useGlobalPipes(new ValidationPipe());
       app.use(cookieParser());
@@ -32,10 +25,10 @@ async function bootstrap() {
       });
 
       await app.init();
-      cachedApp = server;
+      cachedServer = app.getHttpAdapter().getInstance();
       console.log('[CORS DEBUG] NestJS App Initialized.');
     }
-    return cachedApp;
+    return cachedServer;
   } catch (error: any) {
     console.error('[CORS DEBUG] CRITICAL INIT ERROR:', error);
     throw error;
