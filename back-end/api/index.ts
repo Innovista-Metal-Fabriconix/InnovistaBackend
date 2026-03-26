@@ -42,6 +42,15 @@ async function bootstrap() {
 }
 
 export default async function handler(req: any, res: any) {
-  const server = await bootstrap();
-  return server(req, res);
+  try {
+    const server = await bootstrap();
+    return server(req, res);
+  } catch (err) {
+    console.error('Bootstrap error:', err);
+    res.status(500).json({
+      error: 'Server failed to initialize',
+      message: (err as Error).message,
+      stack: (err as Error).stack,
+    });
+  }
 }
