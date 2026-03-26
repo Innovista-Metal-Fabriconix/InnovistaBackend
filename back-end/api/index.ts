@@ -14,27 +14,18 @@ async function bootstrap() {
     const app = await NestFactory.create(
       AppModule,
       new ExpressAdapter(server),
-      { logger: false }
     );
+
+    app.useGlobalPipes(new ValidationPipe());
+    app.use(cookieParser());
 
     app.enableCors({
       origin: [
-        'https://innovistafrontend.netlify.app'
+        'http://localhost:5173',
+        'https://your-frontend-domain.com',
       ],
       credentials: true,
-      methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Accept', 'Authorization'],
     });
-
-    app.use(cookieParser());
-
-    app.useGlobalPipes(
-      new ValidationPipe({
-        transform: true,
-        whitelist: true,
-        forbidNonWhitelisted: true,
-      }),
-    );
 
     await app.init();
     cachedApp = server;
