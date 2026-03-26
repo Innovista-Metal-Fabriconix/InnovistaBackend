@@ -4,7 +4,7 @@
     "target": "ES2020",
     "ignoreDeprecations": "5.0",
     "outDir": "./dist",
-    "rootDir": "./",
+    "rootDir": "./",      
     "declaration": true,
     "sourceMap": true,
     "removeComments": true,
@@ -19,7 +19,8 @@
     "resolveJsonModule": true
   },
   "include": [
-    "src"
+    "src",
+    "api"        // ← ADD THIS
   ],
   "exclude": [
     "node_modules",
