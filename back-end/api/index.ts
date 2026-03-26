@@ -5,44 +5,40 @@ import cookieParser from 'cookie-parser';
 
 let cachedServer: any;
 
-export default async function (req: any, res: any) {
-  // Diagnostic logging for CORS issues
-  console.log(`[CORS Diagnostic] Method: ${req.method}, Origin: ${req.headers.origin}, Path: ${req.url}`);
+export default async function handler(req: any, res: any) {
+
+  //  FORCE CORS HEADERS (CRITICAL FIX)
+  res.setHeader('Access-Control-Allow-Origin', 'https://innovista-frontend.netlify.app');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+
+  //  Handle preflight request
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
 
   if (!cachedServer) {
     const app = await NestFactory.create(AppModule);
-    
-    app.enableCors({
-        origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
-            const allowedOrigins = [
-                'https://innovista-frontend.netlify.app',
-                'http://localhost:5173',
-                process.env.FRONTEND_URL
-            ].filter(Boolean);
 
-            if (!origin || allowedOrigins.includes(origin)) {
-                callback(null, true);
-            } else {
-                console.log(`[CORS Denied] Origin ${origin} not in allowed list:`, allowedOrigins);
-                callback(new Error('Not allowed by CORS'));
-            }
-        },
-        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-        credentials: true,
-        allowedHeaders: 'Content-Type,Accept,Authorization,X-Requested-With',
+    app.enableCors({
+      origin: 'https://innovista-frontend.netlify.app',
+      credentials: true,
     });
 
     app.useGlobalPipes(
-        new ValidationPipe({
-            transform: true,
-            whitelist: true,
-            forbidNonWhitelisted: true,
-        }),
+      new ValidationPipe({
+        transform: true,
+        whitelist: true,
+        forbidNonWhitelisted: true,
+      }),
     );
+
     app.use(cookieParser());
 
     await app.init();
     cachedServer = app.getHttpAdapter().getInstance();
   }
+
   return cachedServer(req, res);
 }

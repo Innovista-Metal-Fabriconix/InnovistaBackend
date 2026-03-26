@@ -3,19 +3,14 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
 
-let cachedServer: any;
-
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Enable CORS
   app.enableCors({
-     origin: [
-    'https://innovista-frontend.netlify.app',
-    'http://localhost:5173',
-    process.env.FRONTEND_URL,
-  ],
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    origin: [
+      'http://localhost:5173',
+      'https://innovista-frontend.netlify.app'
+    ],
     credentials: true,
   });
 
@@ -26,8 +21,9 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
+
   app.use(cookieParser());
 
-  await app.listen(process.env.PORT ?? 4000);
+  await app.listen(4000);
 }
 bootstrap();
