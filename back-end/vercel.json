@@ -2,32 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "back-end/src/main.ts",
+      "src": "back-end/api/index.ts",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "methods": ["OPTIONS"],
-      "headers": {
-        "Access-Control-Allow-Origin": "https://innovistafrontend.netlify.app",
-        "Access-Control-Allow-Methods": "GET,POST,PUT,PATCH,DELETE,OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization, Accept",
-        "Access-Control-Allow-Credentials": "true"
-      },
-      "status": 204,
-      "dest": "back-end/src/main.ts"
-    },
-    {
-      "src": "/(.*)",
-      "headers": {
-        "Access-Control-Allow-Origin": "https://innovistafrontend.netlify.app",
-        "Access-Control-Allow-Methods": "GET,POST,PUT,PATCH,DELETE,OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization, Accept",
-        "Access-Control-Allow-Credentials": "true"
-      },
-      "dest": "back-end/src/main.ts"
+      "dest": "back-end/api/index.ts"
     }
   ]
 }
