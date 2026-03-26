@@ -6,23 +6,24 @@ import cookieParser from 'cookie-parser';
 let cachedServer: any;
 
 export default async function handler(req: any, res: any) {
-  // VERBOSE LOGGING FOR CORS DEBUGGING
-  const origin = req.headers.origin;
-  const method = req.method;
-  const url = req.url;
-  console.log(`[CORS DEBUG] Request: ${method} ${url} | Origin: ${origin}`);
-  
+  // 1. Manually set CORS headers for EVERY request (including preflight and errors)
+  const origin = 'https://innovista-frontend.netlify.app';
+  res.setHeader('Access-Control-Allow-Origin', origin);
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Accept,Authorization,X-Requested-With,X-CSRF-Token');
+
+  // 2. Handle preflight early
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   try {
     if (!cachedServer) {
-      console.log('[CORS DEBUG] Initializing NestJS App...');
       const app = await NestFactory.create(AppModule);
 
       app.enableCors({
-        origin: (requestOrigin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
-          const allowed = !requestOrigin || ['https://innovista-frontend.netlify.app', 'http://localhost:5173'].includes(requestOrigin);
-          console.log(`[CORS DEBUG] Origin ${requestOrigin} allowed: ${allowed}`);
-          callback(null, allowed);
-        },
+        origin: origin,
         credentials: true,
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
         allowedHeaders: 'Content-Type,Accept,Authorization,X-Requested-With,X-CSRF-Token',
@@ -40,17 +41,15 @@ export default async function handler(req: any, res: any) {
 
       await app.init();
       cachedServer = app.getHttpAdapter().getInstance();
-      console.log('[CORS DEBUG] NestJS App Initialized.');
     }
 
     return cachedServer(req, res);
   } catch (error: any) {
-    console.error('[CORS DEBUG] CRITICAL INIT ERROR:', error);
+    console.error('[CORS Overhaul] Init Error:', error);
     return res.status(500).json({
       statusCode: 500,
       message: 'Backend initialization failed',
       error: error.message,
-      origin: origin, // Echo origin to help debug
     });
   }
 }

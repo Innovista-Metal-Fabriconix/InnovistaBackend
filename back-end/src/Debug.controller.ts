@@ -10,4 +10,15 @@ export class DebugController {
       message: 'If you can see this, the basic CORS configuration is correct for this route.'
     };
   }
+
+  @Get('env')
+  checkEnv() {
+    return {
+      JWT_PRIVATE_KEY: process.env.JWT_PRIVATE_KEY ? 'Defined (Length: ' + process.env.JWT_PRIVATE_KEY.length + ')' : 'UNDEFINED',
+      DATABASE_URL: process.env.DATABASE_URL ? 'Defined' : 'UNDEFINED',
+      FRONTEND_URL: process.env.FRONTEND_URL || 'UNDEFINED',
+      NODE_ENV: process.env.NODE_ENV || 'UNDEFINED',
+      PORT: process.env.PORT || 'UNDEFINED',
+    };
+  }
 }

@@ -8,6 +8,8 @@ import { OrderModule } from './Order/Order.module';
 import { NotificationModule } from './Notification/Notification.module';
 import { ProjectsModule } from './Projects/Projects.module';
 import { DebugController } from './Debug.controller';
+import { APP_FILTER } from '@nestjs/core';
+import { AllExceptionsFilter } from './AllExceptions.filter';
 
 @Module({
   imports: [
@@ -21,5 +23,11 @@ import { DebugController } from './Debug.controller';
     ProjectsModule
   ],
   controllers: [DebugController],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: AllExceptionsFilter,
+    },
+  ],
 })
 export class AppModule {}
