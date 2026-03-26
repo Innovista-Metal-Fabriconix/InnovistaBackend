@@ -11,7 +11,7 @@ export default async function handler(req: any, res: any) {
   const method = req.method;
   const url = req.url;
   console.log(`[CORS DEBUG] Request: ${method} ${url} | Origin: ${origin}`);
-  
+
   try {
     if (!cachedServer) {
       console.log('[CORS DEBUG] Initializing NestJS App...');
@@ -19,7 +19,10 @@ export default async function handler(req: any, res: any) {
 
       app.enableCors({
         origin: (requestOrigin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
-          const allowed = !requestOrigin || ['https://innovista-frontend.netlify.app', 'http://localhost:5173'].includes(requestOrigin);
+          const allowed = !requestOrigin ||
+            ['https://innovista-front-end.vercel.app',
+              'http://localhost:5173'
+            ].includes(requestOrigin);
           console.log(`[CORS DEBUG] Origin ${requestOrigin} allowed: ${allowed}`);
           callback(null, allowed);
         },
