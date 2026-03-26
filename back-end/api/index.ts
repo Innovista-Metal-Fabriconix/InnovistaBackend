@@ -1,56 +1,42 @@
 import { NestFactory } from '@nestjs/core';
+import { ExpressAdapter } from '@nestjs/platform-express';
 import { AppModule } from '../src/app.module';
-import { ValidationPipe } from '@nestjs/common';
+import serverlessExpress from '@vendia/serverless-express';
+import express from 'express';
 import cookieParser from 'cookie-parser';
+import { ValidationPipe } from '@nestjs/common';
 
 let cachedServer: any;
 
 async function bootstrap() {
-  try {
-    if (!cachedServer) {
-      console.log('[CORS DEBUG] Initializing NestJS App...');
-      const app = await NestFactory.create(AppModule);
+  if (!cachedServer) {
+    const expressApp = express();
 
-      app.useGlobalPipes(new ValidationPipe());
-      app.use(cookieParser());
+    const app = await NestFactory.create(
+      AppModule,
+      new ExpressAdapter(expressApp),
+    );
 
-      app.enableCors({
-        origin: [
-          'http://localhost:5173'
-        ],
-        credentials: true,
-        methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
-        allowedHeaders: ['Content-Type', 'Accept', 'Authorization', 'X-Requested-With', 'X-CSRF-Token'],
-      });
+    app.useGlobalPipes(new ValidationPipe());
+    app.use(cookieParser());
 
-      await app.init();
-      cachedServer = app.getHttpAdapter().getInstance();
-      console.log('[CORS DEBUG] NestJS App Initialized.');
-    }
-    return cachedServer;
-  } catch (error: any) {
-    console.error('[CORS DEBUG] CRITICAL INIT ERROR:', error);
-    throw error;
+    app.enableCors({
+      origin: [
+        'http://localhost:5173',
+        'https://innovista-front-end.vercel.app'
+      ],
+      credentials: true,
+    });
+
+    await app.init();
+
+    cachedServer = serverlessExpress({ app: expressApp });
   }
+
+  return cachedServer;
 }
 
 export default async function handler(req: any, res: any) {
-  // VERBOSE LOGGING FOR CORS/ROUTING DEBUGGING
-  const origin = req.headers.origin;
-  const method = req.method;
-  const url = req.url;
-  console.log(`[Vercel Handler] Request: ${method} ${url} | Origin: ${origin}`);
-
-  try {
-    const app = await bootstrap();
-    return app(req, res);
-  } catch (error: any) {
-    return res.status(500).json({
-      statusCode: 500,
-      message: 'Backend initialization failed',
-      error: error.message,
-      stack: error.stack,
-      url: url,
-    });
-  }
+  const server = await bootstrap();
+  return server(req, res);
 }

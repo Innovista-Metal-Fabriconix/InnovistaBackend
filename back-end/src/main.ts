@@ -4,19 +4,14 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // CORS FIX — allow requests from your Netlify frontend
   app.enableCors({
     origin: [
-     
-      "http://localhost:5173"
+      'http://localhost:5173',
+      'https://innovista-front-end.vercel.app'
     ],
-    methods: ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Requested-With', 'X-CSRF-Token'],
-    credentials: true, // required for cookies / session tokens
+    credentials: true,
   });
 
-  const port = process.env.PORT ?? 3000;
-  await app.listen(port);
-  console.log(` Application is running on port ${port}`);
+  await app.listen(3000);
 }
 bootstrap();

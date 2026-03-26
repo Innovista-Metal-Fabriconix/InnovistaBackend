@@ -27,16 +27,14 @@ export class AllExceptionsFilter implements ExceptionFilter {
     // This is critical when the standard CORS middleware is bypassed or errors happen early
     const origin = (request.headers as any).origin;
     const allowedOrigins = [
-      'http://localhost:5173'
+      'http://localhost:5173',
+      'https://innovista-front-end.vercel.app'
     ];
 
     if (origin && allowedOrigins.includes(origin)) {
-      response.setHeader('Access-Control-Allow-Origin', origin);
-      response.setHeader('Access-Control-Allow-Credentials', 'true');
-      response.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
-      response.setHeader('Access-Control-Allow-Headers', 'Content-Type,Accept,Authorization,X-Requested-With');
+      response.header('Access-Control-Allow-Origin', origin);
+      response.header('Access-Control-Allow-Credentials', 'true');
     }
-
     response.status(status).json({
       ...(typeof message === 'object' ? message : { message }),
       timestamp: new Date().toISOString(),
