@@ -16,7 +16,7 @@ async function createApp() {
     const app = await NestFactory.create(
       AppModule,
       new ExpressAdapter(server),
-      { logger: ['error', 'warn', 'log'] }, // ensure logs appear in Vercel
+      { logger: ['error', 'warn', 'log'] },
     );
 
     app.use(cookieParser());
@@ -33,10 +33,11 @@ async function createApp() {
 
     await app.init();
     isReady = true;
+    console.log('[Vercel] NestJS initialized successfully');
     return server;
   } catch (err) {
     initError = err as Error;
-    console.error('[Vercel] NestJS bootstrap failed:', err);
+    console.error('[Vercel] Bootstrap failed:', err);
     throw err;
   }
 }
@@ -48,7 +49,7 @@ export default async (req: express.Request, res: express.Response) => {
   } catch (err) {
     console.error('[Vercel] Handler error:', err);
     res.status(500).json({
-      message: 'Internal server error during bootstrap',
+      message: 'Bootstrap failed',
       error: (err as Error).message,
     });
   }
