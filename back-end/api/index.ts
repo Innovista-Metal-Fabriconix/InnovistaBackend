@@ -1,23 +1,20 @@
+import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
-import { ExpressAdapter } from '@nestjs/platform-express';
 import { AppModule } from '../src/app.module';
-import express from 'express';
 import cookieParser from 'cookie-parser';
+import type { IncomingMessage, ServerResponse } from 'http';
 
-const server = express();
-let isReady = false;
+let handler: ((req: IncomingMessage, res: ServerResponse) => void) | null = null;
 let initError: Error | null = null;
 
-async function createApp() {
-  if (isReady) return server;
+async function bootstrap() {
+  if (handler) return handler;
   if (initError) throw initError;
 
   try {
-    const app = await NestFactory.create(
-      AppModule,
-      new ExpressAdapter(server),
-      { logger: ['error', 'warn', 'log'] },
-    );
+    const app = await NestFactory.create(AppModule, {
+      logger: ['error', 'warn', 'log'],
+    });
 
     app.use(cookieParser());
 
@@ -32,25 +29,30 @@ async function createApp() {
     });
 
     await app.init();
-    isReady = true;
-    console.log('[Vercel] NestJS initialized successfully');
-    return server;
+    handler = app.getHttpAdapter().getInstance();
+    console.log('[Vercel] Bootstrap success');
+    return handler;
   } catch (err) {
     initError = err as Error;
-    console.error('[Vercel] Bootstrap failed:', err);
+    console.error('[Vercel] Bootstrap FAILED:', err);
     throw err;
   }
 }
 
-export default async (req: express.Request, res: express.Response) => {
+export default async (req: IncomingMessage, res: ServerResponse) => {
   try {
-    const app = await createApp();
-    app(req, res);
+    const h = await bootstrap();
+    if (h) {
+      h(req, res);
+    } else {
+      throw new Error('Handler not available after bootstrap');
+    }
   } catch (err) {
     console.error('[Vercel] Handler error:', err);
-    res.status(500).json({
+    (res as ServerResponse).writeHead(500, { 'Content-Type': 'application/json' });
+    (res as ServerResponse).end(JSON.stringify({
       message: 'Bootstrap failed',
       error: (err as Error).message,
-    });
+    }));
   }
 };
