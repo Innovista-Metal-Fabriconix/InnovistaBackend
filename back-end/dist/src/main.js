@@ -9,9 +9,13 @@ async function bootstrap() {
             'http://localhost:5173',
             'https://innovista-front-end.vercel.app'
         ],
+        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
         credentials: true,
     });
-    await app.listen(3000);
+    const port = process.env.PORT ?? 3000;
+    await app.listen(port);
+    console.log(` Application is running on port ${port}`);
 }
 bootstrap();
 //# sourceMappingURL=main.js.map
