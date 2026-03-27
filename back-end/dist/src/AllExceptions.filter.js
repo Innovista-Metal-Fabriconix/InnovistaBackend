@@ -22,8 +22,9 @@ let AllExceptionsFilter = class AllExceptionsFilter {
         const origin = request.headers.origin;
         const allowedOrigins = [
             'http://localhost:5173',
-            'https://innovista-front-end.vercel.app'
-        ];
+            'https://innovista-front-end.vercel.app',
+            process.env.FRONTEND_URL
+        ].filter(Boolean);
         if (origin && allowedOrigins.includes(origin)) {
             response.setHeader('Access-Control-Allow-Origin', origin);
             response.setHeader('Access-Control-Allow-Credentials', 'true');
