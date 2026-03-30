@@ -1,7 +1,7 @@
 import { PrismaService } from '../../prisma/prisma.service';
 import { OrderDTO } from './Order.DTO';
 import { EmailService } from '../Emails/Email.service';
-import { NotificationService } from 'src/Notification/Notification.service';
+import { NotificationService } from '../Notification/Notification.service';
 export declare class OrderService {
     private prisma;
     private emailService;

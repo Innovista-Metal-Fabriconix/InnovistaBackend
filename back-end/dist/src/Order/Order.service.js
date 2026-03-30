@@ -29,23 +29,22 @@ let OrderService = class OrderService {
             const findCustomer = await this.prisma.customer.findUnique({
                 where: { Cus_Email: orderDto.Client_Email },
             });
-            const orderData = {
-                Order_Status: orderDto.Order_Status,
-                Order_Date: orderDto.Order_Date ?? new Date(),
-                Client_Name: orderDto.Client_Name,
-                Client_Email: orderDto.Client_Email,
-                Client_Number: orderDto.Client_Number,
-                CustomerId: findCustomer ? findCustomer.CustomerId : null,
-                Designs: {
-                    create: orderDto.Designs?.map((d) => ({
-                        Design: {
-                            connect: { DesignID: d.DesignID },
-                        },
-                    })) || [],
-                },
-            };
             const order = await this.prisma.order.create({
-                data: orderData,
+                data: {
+                    Order_Status: orderDto.Order_Status,
+                    Order_Date: orderDto.Order_Date ?? new Date(),
+                    Client_Name: orderDto.Client_Name,
+                    Client_Email: orderDto.Client_Email,
+                    Client_Number: orderDto.Client_Number,
+                    CustomerId: findCustomer ? findCustomer.CustomerId : null,
+                    Designs: {
+                        create: orderDto.Designs?.map((d) => ({
+                            Design: {
+                                connect: { DesignID: d.DesignID },
+                            },
+                        })) || [],
+                    },
+                },
                 include: {
                     Customer: true,
                     Designs: {
@@ -65,7 +64,14 @@ let OrderService = class OrderService {
                 to: order.Client_Email ?? '',
                 template: Email_DTO_1.EmailTemplate.ORDER_CONFIRMATION,
                 context: {
-                    order: order,
+                    name: order.Client_Name ?? 'Customer',
+                    order: [
+                        order.Order_Date.toDateString(),
+                        order.Client_Name,
+                        order.Client_Email,
+                        order.Client_Number,
+                        ...order.Designs.map((d) => d.Design.Design_Name),
+                    ].join('\n'),
                 },
             });
             return { message: 'Order created successfully', order };
@@ -82,15 +88,11 @@ let OrderService = class OrderService {
                 this.prisma.order.findMany({
                     skip,
                     take: limit,
-                    orderBy: {
-                        OrderID: 'desc',
-                    },
+                    orderBy: { OrderID: 'desc' },
                     include: {
                         Customer: true,
                         Designs: {
-                            include: {
-                                Design: true,
-                            },
+                            include: { Design: true },
                         },
                     },
                 }),
@@ -134,16 +136,15 @@ let OrderService = class OrderService {
                 where: { Client_Email: Client_Email },
                 include: {
                     Designs: {
-                        include: {
-                            Design: true,
-                        },
+                        include: { Design: true },
                     },
                 },
             });
             return findOrders;
         }
         catch (error) {
-            throw new common_1.BadRequestException(error);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new common_1.BadRequestException('Error retrieving orders: ' + message);
         }
     }
     async getOrderById(orderId) {
@@ -153,9 +154,7 @@ let OrderService = class OrderService {
                 include: {
                     Customer: true,
                     Designs: {
-                        include: {
-                            Design: true,
-                        },
+                        include: { Design: true },
                     },
                 },
             });
@@ -166,7 +165,14 @@ let OrderService = class OrderService {
                 to: order.Client_Email ?? '',
                 template: Email_DTO_1.EmailTemplate.ORDER_CONFIRMATION,
                 context: {
-                    order: order,
+                    name: order.Client_Name ?? 'Customer',
+                    order: [
+                        order.Order_Date.toDateString(),
+                        order.Client_Name,
+                        order.Client_Email,
+                        order.Client_Number,
+                        ...order.Designs.map((d) => d.Design.Design_Name),
+                    ].join('\n'),
                 },
             });
             return order;

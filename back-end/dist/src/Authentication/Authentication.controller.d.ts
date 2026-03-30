@@ -1,5 +1,11 @@
 import { AuthenticationService } from './Authentication.service';
 import { AuthDTO } from './DTO/Authentication.DTO';
+import { Request } from 'express';
+interface AuthRequest extends Request {
+    user: {
+        email: string;
+    };
+}
 export declare class AuthenticationController {
     private authService;
     constructor(authService: AuthenticationService);
@@ -40,7 +46,7 @@ export declare class AuthenticationController {
     logout(adminId: string): Promise<{
         message: string;
     }>;
-    forgotPassword(req: any, newPassword: string): Promise<{
+    forgotPassword(req: AuthRequest, newPassword: string): Promise<{
         message: string;
     }>;
     passwordReset_Loginuser(Adminemail: string): Promise<{
@@ -58,3 +64,4 @@ export declare class AuthenticationController {
         message: string;
     }>;
 }
+export {};
