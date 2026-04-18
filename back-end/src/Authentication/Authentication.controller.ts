@@ -24,7 +24,7 @@ interface AuthRequest extends Request {
 export class AuthenticationController {
   constructor(private authService: AuthenticationService) {}
 
-  @UseGuards(AdminAuthGuard)
+  // @UseGuards(AdminAuthGuard)
   @Post('register')
   async register(@Body() authDto: AuthDTO) {
     return this.authService.register(authDto);
