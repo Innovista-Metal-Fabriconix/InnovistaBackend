@@ -22,7 +22,6 @@ export class ProjectsController {
   }
 
 
-
   @Get('getAllProjects')
   async getAllProjects(
     @Query('page') page: string,  

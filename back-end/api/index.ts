@@ -1,50 +1,58 @@
+import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
-import { ExpressAdapter } from '@nestjs/platform-express';
-import express from 'express';
 import { AppModule } from '../src/app.module';
-import { ValidationPipe } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
+import type { IncomingMessage, ServerResponse } from 'http';
 
-const server = express();
-
-let cachedApp: any;
+let handler: ((req: IncomingMessage, res: ServerResponse) => void) | null = null;
+let initError: Error | null = null;
 
 async function bootstrap() {
-  if (!cachedApp) {
-    const app = await NestFactory.create(
-      AppModule,
-      new ExpressAdapter(server),
-      { logger: false }
-    );
+  if (handler) return handler;
+  if (initError) throw initError;
 
-    app.enableCors({
-      origin: [
-        'https://innovistafrontend.netlify.app',
-        'http://localhost:5173',
-      ],
-      credentials: true,
-      methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Accept', 'Authorization'],
+  try {
+    const app = await NestFactory.create(AppModule, {
+      logger: ['error', 'warn', 'log'],
     });
 
     app.use(cookieParser());
 
-    app.useGlobalPipes(
-      new ValidationPipe({
-        transform: true,
-        whitelist: true,
-        forbidNonWhitelisted: true,
-      }),
-    );
+    app.enableCors({
+      origin: [
+        'http://localhost:5173',
+        'https://innovista-front-end.vercel.app',
+      ],
+      methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+      credentials: true,
+    });
 
     await app.init();
-    cachedApp = server;
+    handler = app.getHttpAdapter().getInstance();
+    console.log('[Vercel] Bootstrap success');
+    return handler;
+  } catch (err) {
+    initError = err as Error;
+    console.error('[Vercel] Bootstrap FAILED:', err);
+    throw err;
   }
-
-  return cachedApp;
 }
 
-export default async function handler(req: any, res: any) {
-  const app = await bootstrap();
-  return app(req, res);
-}
+export default async (req: IncomingMessage, res: ServerResponse) => {
+  try {
+    const h = await bootstrap();
+    if (h) {
+      h(req, res);
+    } else {
+      throw new Error('Handler not available after bootstrap');
+    }
+  } catch (err) {
+    console.error('[Vercel] Handler error:', err);
+    (res as ServerResponse).writeHead(500, { 'Content-Type': 'application/json' });
+    (res as ServerResponse).end(JSON.stringify({
+      message: 'Bootstrap failed',
+      error: (err as Error).message,
+    }));
+  }
+};

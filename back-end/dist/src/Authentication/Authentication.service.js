@@ -103,7 +103,7 @@ let AuthenticationService = class AuthenticationService {
         }
         catch (error) {
             const message = error instanceof Error ? error.message : String(error);
-            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
+            throw new common_1.BadRequestException('Error during registration: ' + message);
         }
     }
     async login(email, password) {
@@ -143,7 +143,7 @@ let AuthenticationService = class AuthenticationService {
         }
         catch (error) {
             const message = error instanceof Error ? error.message : String(error);
-            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
+            throw new common_1.BadRequestException('Error during login: ' + message);
         }
     }
     async refreshAccessToken(refreshToken) {
@@ -191,7 +191,7 @@ let AuthenticationService = class AuthenticationService {
         }
         catch (error) {
             const message = error instanceof Error ? error.message : String(error);
-            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
+            throw new common_1.BadRequestException('Error refreshing access token: ' + message);
         }
     }
     async logout(adminId) {
@@ -203,7 +203,7 @@ let AuthenticationService = class AuthenticationService {
         }
         catch (error) {
             const message = error instanceof Error ? error.message : String(error);
-            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
+            throw new common_1.BadRequestException('Error during logout: ' + message);
         }
     }
     async passwordReset_Login(email) {
@@ -234,7 +234,7 @@ let AuthenticationService = class AuthenticationService {
         }
         catch (error) {
             const message = error instanceof Error ? error.message : String(error);
-            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
+            throw new common_1.BadRequestException('Error during password reset request: ' + message);
         }
     }
     async passwordReset(email, newPassword) {
@@ -254,7 +254,7 @@ let AuthenticationService = class AuthenticationService {
         }
         catch (error) {
             const message = error instanceof Error ? error.message : String(error);
-            throw new common_1.BadRequestException('Error retrieving projects: ' + message);
+            throw new common_1.BadRequestException('Error during password reset: ' + message);
         }
     }
     async GetallAdmins() {

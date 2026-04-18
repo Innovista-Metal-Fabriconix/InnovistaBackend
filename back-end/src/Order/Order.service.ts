@@ -6,6 +6,12 @@ import { EmailTemplate } from '../Emails/Email.DTO';
 import { NotificationService } from '../Notification/Notification.service';
 
 
+interface DesignOnOrder {
+  Design: {
+    Design_Name: string;
+  };
+}
+
 @Injectable()
 export class OrderService {
   constructor(
@@ -20,15 +26,15 @@ export class OrderService {
         where: { Cus_Email: orderDto.Client_Email },
       });
 
-      const orderData: Parameters<typeof this.prisma.order.create>[0]['data'] =
-        {
+     
+      const order = await this.prisma.order.create({
+        data: {
           Order_Status: orderDto.Order_Status,
           Order_Date: orderDto.Order_Date ?? new Date(),
           Client_Name: orderDto.Client_Name,
           Client_Email: orderDto.Client_Email,
           Client_Number: orderDto.Client_Number,
           CustomerId: findCustomer ? findCustomer.CustomerId : null,
-
           Designs: {
             create:
               orderDto.Designs?.map((d) => ({
@@ -37,10 +43,7 @@ export class OrderService {
                 },
               })) || [],
           },
-        };
-
-      const order = await this.prisma.order.create({
-        data: orderData,
+        },
         include: {
           Customer: true,
           Designs: {
@@ -68,10 +71,11 @@ export class OrderService {
             order.Client_Name,
             order.Client_Email,
             order.Client_Number,
-            ...order.Designs.map((d) => d.Design.Design_Name),
+            ...order.Designs.map((d: DesignOnOrder) => d.Design.Design_Name),
           ].join('\n'),
         },
       });
+
       return { message: 'Order created successfully', order };
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
@@ -86,20 +90,17 @@ export class OrderService {
         this.prisma.order.findMany({
           skip,
           take: limit,
-          orderBy: {
-            OrderID: 'desc',
-          },
+          orderBy: { OrderID: 'desc' },
           include: {
             Customer: true,
             Designs: {
-              include: {
-                Design: true,
-              },
+              include: { Design: true },
             },
           },
         }),
         this.prisma.order.count(),
       ]);
+
       return {
         page,
         limit,
@@ -118,6 +119,7 @@ export class OrderService {
       const findOrder = await this.prisma.order.findUnique({
         where: { OrderID: orderId },
       });
+
       if (!findOrder) {
         throw new BadRequestException("Order details can't find");
       }
@@ -140,16 +142,15 @@ export class OrderService {
         where: { Client_Email: Client_Email },
         include: {
           Designs: {
-            include: {
-              Design: true,
-            },
+            include: { Design: true },
           },
         },
       });
 
       return findOrders;
-    } catch (error) {
-      throw new BadRequestException(error);
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException('Error retrieving orders: ' + message);
     }
   }
 
@@ -160,9 +161,7 @@ export class OrderService {
         include: {
           Customer: true,
           Designs: {
-            include: {
-              Design: true,
-            },
+            include: { Design: true },
           },
         },
       });
@@ -181,7 +180,7 @@ export class OrderService {
             order.Client_Name,
             order.Client_Email,
             order.Client_Number,
-            ...order.Designs.map((d) => d.Design.Design_Name),
+            ...order.Designs.map((d: DesignOnOrder) => d.Design.Design_Name),
           ].join('\n'),
         },
       });

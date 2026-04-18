@@ -10,6 +10,7 @@
     "removeComments": true,
     "incremental": true,
     "strict": true,
+    "noImplicitAny": false,    
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
@@ -19,7 +20,8 @@
     "resolveJsonModule": true
   },
   "include": [
-    "src"
+    "src",
+    "api"
   ],
   "exclude": [
     "node_modules",
