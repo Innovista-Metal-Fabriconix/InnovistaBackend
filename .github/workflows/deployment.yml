@@ -43,5 +43,8 @@ jobs:
             # 6. Safe Database Migration (Use 'migrate deploy' to protect your data)
             npx prisma migrate deploy
             
-            # 7. Restart the application with PM2
+            # 7. Automated Admin Creation (Seeds the database)
+            npx prisma db seed
+            
+            # 8. Restart the application with PM2
             pm2 restart innovista-backend || pm2 start dist/src/main.js --name innovista-backend
