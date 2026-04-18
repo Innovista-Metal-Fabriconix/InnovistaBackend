@@ -18,6 +18,11 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           envs: ENV_FILE_CONTENT
           script: |
+            # 0. Source NVM to load Node and NPM
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            nvm use 24 || echo "NVM use failed, proceeding with default path"
+            
             # 1. Navigate to the project folder
             cd ${{ secrets.EC2_PATH }} || exit
             
