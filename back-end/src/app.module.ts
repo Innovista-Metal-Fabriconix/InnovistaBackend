@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { AuthenticationModule } from './Authentication/Authentication.module';
 import { EmailModule } from './Emails/Email.module';
 import { DesignsModule } from './Designs/Designs.module';
@@ -14,6 +15,9 @@ import { AllExceptionsFilter } from './AllExceptions.filter';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     AuthenticationModule,
     EmailModule,
     DesignsModule,
@@ -31,4 +35,4 @@ import { AllExceptionsFilter } from './AllExceptions.filter';
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }
