@@ -44,4 +44,4 @@ jobs:
             npx prisma migrate deploy
             
             # 7. Restart the application with PM2
-            pm2 restart innovista-backend || pm2 start dist/main.js --name innovista-backend
+            pm2 restart innovista-backend || pm2 start dist/src/main.js --name innovista-backend
