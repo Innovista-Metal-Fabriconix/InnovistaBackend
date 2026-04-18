@@ -1,4 +1,3 @@
-// mail.module.ts
 import { Module } from '@nestjs/common';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { EmailService } from './Email.service';
@@ -9,13 +8,17 @@ import { EmailService } from './Email.service';
       transport: {
         host: process.env.MAIL_HOST,
         port: parseInt(process.env.MAIL_PORT || '587'),
+        secure: false,
         auth: {
           user: process.env.MAIL_USER,
           pass: process.env.MAIL_PASS,
         },
+        tls: {
+          rejectUnauthorized: false,
+        },
       },
       defaults: {
-        from: `"Your App" <${process.env.MAIL_FROM}>`,
+        from: `"Innovista" <${process.env.MAIL_FROM}>`,
       },
     }),
   ],

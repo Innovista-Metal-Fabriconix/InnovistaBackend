@@ -1,0 +1,6 @@
+name: Deploy the final production in to AWS Ec2 and ECR
+
+on:
+    workflow_dispatch:
+    push:
+        branches:
