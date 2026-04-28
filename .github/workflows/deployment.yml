@@ -41,10 +41,10 @@ jobs:
             # 5. Create .env file safely
             echo "🔐 Creating .env file..."
             echo "$ENV_FILE_CONTENT" > .env
-            echo "✅ .env file created"
+            echo ".env file created"
 
             # 6. Wait for PostgreSQL to be ready
-            echo "⏳ Waiting for PostgreSQL..."
+            echo " Waiting for PostgreSQL..."
             until pg_isready -h localhost -p 5432; do
               sleep 2
             done
@@ -81,4 +81,4 @@ jobs:
             # 14. Save PM2 state
             pm2 save
 
-            echo "✅ Deployment completed successfully!"
+            echo "✅ Deployment completed successfully!"
