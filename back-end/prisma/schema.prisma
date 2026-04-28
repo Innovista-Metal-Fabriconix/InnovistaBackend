@@ -116,3 +116,11 @@ model OrderDesign {
 
   @@unique([orderId, designId])
 }
+
+
+
+ ## $2a$12$np7Kjt2Su9tkl2hL8O0MVORSu8SZvYkYlRFcJoLw23E/DOil.VCDK
+
+ UPDATE "Admin"
+SET "Admin_Password" = '$2a$12$np7Kjt2Su9tkl2hL8O0MVORSu8SZvYkYlRFcJoLw23E/DOil.VCDK'
+WHERE "AdminId" = 1;
