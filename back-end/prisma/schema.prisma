@@ -117,10 +117,60 @@ model OrderDesign {
   @@unique([orderId, designId])
 }
 
+model QuoteSubmission {
+  id                     String    @id @default(uuid())
+  createdAt              DateTime  @default(now())
+  clientName             String
+  contactPerson          String?
+  email                  String
+  phone                  String
+  clientWebsite          String?
+  projectTitle           String
+  location               String
+  projectType            String
+  projectReferenceNumber String?
+  projectDescription     String
+  installationConditions String?
+  siteConstraints        String?
+  standards              String?
+  qualityExpectations    String?
+  materialBrand          String?
+  colorCode              String?
+  additionalFeatures     String?
+  interiorStyle          String?
+  paymentConditions      String?
+  budget                 String?
+  latestDeliveryDate     String?
+  proposedVisitDates     String?
+  siteAddress            String?
+  googleMapsLink         String?
+  files                  QuoteFile[]
 
+  @@index([email, createdAt])
+}
 
- ## $2a$12$np7Kjt2Su9tkl2hL8O0MVORSu8SZvYkYlRFcJoLw23E/DOil.VCDK
+model QuoteFile {
+  id           String          @id @default(uuid())
+  originalName String
+  mimeType     String
+  sizeBytes    Int
+  driveFileId  String
+  driveViewUrl String
+  submissionId String
+  submission   QuoteSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
 
- UPDATE "Admin"
-SET "Admin_Password" = '$2a$12$np7Kjt2Su9tkl2hL8O0MVORSu8SZvYkYlRFcJoLw23E/DOil.VCDK'
-WHERE "AdminId" = 1;
+  @@index([submissionId])
+}
+
+model QuoteOtpSession {
+  id                         String    @id @default(uuid())
+  email                      String    @unique
+  otpHash                    String?
+  otpExpiresAt               DateTime?
+  otpAttempts                Int       @default(0)
+  verifiedAt                 DateTime?
+  verificationTokenHash      String?
+  verificationTokenExpiresAt DateTime?
+  updatedAt                  DateTime  @updatedAt
+  createdAt                  DateTime  @default(now())
+}

@@ -13,6 +13,8 @@ export enum EmailTemplate {
   CUSTOMER_WELCOME = 'CUSTOMER_WELCOME',
   CUSTOMER_REMOVE = 'CUSTOMER_REMOVE',
   REQUEST_NEWPASSWORD = 'REQUEST_NEWPASSWORD',
+  QUOTE_OTP = 'QUOTE_OTP',
+  QUOTE_NOTIFICATION = 'QUOTE_NOTIFICATION',
 }
 
 // ✅ Strong typing instead of `any`
@@ -22,7 +24,16 @@ export type EmailContext =
   | { name: string; resetCode: string }
   | { name: string; order: string }
   | { name: string; Link: string }
-  | { name: string };
+  | { name: string }
+  | { name: string; otpCode: string }
+  | {
+      name: string;
+      quoteId: string;
+      email: string;
+      phone: string;
+      projectTitle: string;
+      fileLinks: string[];
+    };
 
 export class EmailDTO {
   @IsString()

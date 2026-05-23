@@ -15,7 +15,7 @@ import { EmailService } from './Email.service';
         },
       },
       defaults: {
-        from: `"Your App" <${process.env.MAIL_FROM}>`,
+        from: `${process.env.MAIL_FROM}`,
       },
     }),
   ],
