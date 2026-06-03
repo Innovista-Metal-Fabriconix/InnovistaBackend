@@ -20,6 +20,23 @@ rad.json
 *.flf
 #Test results file
 TestResults.xml
+
+# Environment files
 .env
 .env.*
+
+# Editor / IDE
+.idea/
+.vscode/
+
+# Accidental root-level Node files
+/package.json
+/package-lock.json
+
+# Generated backend build output is managed by back-end/.gitignore, but keep it ignored here too.
+/back-end/dist/
+
+# Node dependencies
 node_modules/
+
+# (Removed dist/ and build/ at repo root; ignore them in the relevant subproject instead if needed)

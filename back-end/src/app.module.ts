@@ -12,12 +12,21 @@ import { DebugController } from './Debug.controller';
 import { AppController } from './app.controller';
 import { APP_FILTER } from '@nestjs/core';
 import { AllExceptionsFilter } from './AllExceptions.filter';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { QuoteModule } from './Quote/Quote.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    ThrottlerModule.forRoot([
+      {
+        name: 'default',
+        ttl: 60_000,
+        limit: 60,
+      },
+    ]),
     AuthenticationModule,
     EmailModule,
     DesignsModule,
@@ -25,7 +34,8 @@ import { AllExceptionsFilter } from './AllExceptions.filter';
     FeedbackModule,
     OrderModule,
     NotificationModule,
-    ProjectsModule
+    ProjectsModule,
+    QuoteModule,
   ],
   controllers: [AppController, DebugController],
   providers: [
@@ -35,4 +45,4 @@ import { AllExceptionsFilter } from './AllExceptions.filter';
     },
   ],
 })
-export class AppModule { }
+export class AppModule {}

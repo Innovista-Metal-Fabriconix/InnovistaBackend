@@ -151,6 +151,65 @@ Support Team`,
         };
       }
 
+      case EmailTemplate.QUOTE_OTP: {
+        const ctx = context as { name?: string; otpCode: string };
+        const displayName = ctx.name?.trim();
+        const greeting = displayName ? `Hi ${displayName},` : 'Hello,';
+
+        return {
+          subject: 'Innovista Quote Request OTP',
+          template: 'quote-otp',
+          context,
+          bodyText: `${greeting}
+
+Use this one-time code to verify your email and continue your quote request:
+
+OTP: ${ctx.otpCode}
+
+This code expires in 10 minutes. If you did not request this, you can ignore this email.
+
+Best regards,
+Innovista Team`,
+        };
+      }
+
+      case EmailTemplate.QUOTE_NOTIFICATION: {
+        const ctx = context as {
+          name: string;
+          quoteId: string;
+          email: string;
+          phone: string;
+          projectTitle: string;
+          fileLinks: string[];
+        };
+
+        const linksText =
+          ctx.fileLinks.length > 0
+            ? ctx.fileLinks
+                .map((link, index) => `${index + 1}. ${link}`)
+                .join('\n')
+            : 'No files uploaded';
+
+        return {
+          subject: `New Quote Submission - ${ctx.projectTitle}`,
+          template: 'quote-notification',
+          context,
+          bodyText: `A new quote request has been received.
+
+Quote ID: ${ctx.quoteId}
+Client Name: ${ctx.name}
+Client Email: ${ctx.email}
+Client Phone: ${ctx.phone}
+Project Title: ${ctx.projectTitle}
+
+Files:
+${linksText}
+
+Please review the submission in the admin panel.
+`,
+        };
+      }
+
       default:
         throw new Error(`Unknown email template`);
     }
