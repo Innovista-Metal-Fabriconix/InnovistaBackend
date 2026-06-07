@@ -17,7 +17,7 @@ export enum EmailTemplate {
   QUOTE_NOTIFICATION = 'QUOTE_NOTIFICATION',
 }
 
-// ✅ Strong typing instead of `any`
+
 export type EmailContext =
   | { name: string; password: string }
   | { name: string; newPassword: string }
