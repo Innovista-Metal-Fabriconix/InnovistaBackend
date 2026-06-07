@@ -72,10 +72,10 @@ jobs:
 
             # 12. Seed (safe fallback)
             echo "🌱 Seeding database..."
-            npx prisma db seed || echo "⚠️ Seed skipped"
+            npx prisma db seed || echo " Seed skipped"
 
             # 13. Restart app using PM2
-            echo "🔄 Restarting application..."
+            echo "Restarting application..."
             pm2 restart innovista-backend || pm2 start dist/src/main.js --name innovista-backend
 
             # 14. Save PM2 state
