@@ -11,7 +11,7 @@ export class EmailService {
 async sendEmail(emailDto: EmailDTO): Promise<void> {
   const result = EmailTemplateFactory.create(
     emailDto.template,
-    emailDto.context as any, // or better validation before calling
+    emailDto.context as any, 
   );
 
   const { subject, template, context, bodyText, bodyHtml } = result;

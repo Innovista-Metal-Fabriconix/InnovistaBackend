@@ -17,7 +17,6 @@ export enum EmailTemplate {
   QUOTE_NOTIFICATION = 'QUOTE_NOTIFICATION',
 }
 
-
 export type EmailContext =
   | { name: string; password: string }
   | { name: string; newPassword: string }
