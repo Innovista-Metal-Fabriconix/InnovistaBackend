@@ -10,7 +10,7 @@ import { Request } from 'express';
 import { NotificationService } from './Notification.service';
 import { AdminAuthGuard } from '../Authentication/Authentication.AdminAuthgurd';
 
-//  Define user type
+
 interface AuthenticatedRequest extends Request {
   user: {
     email: string;
