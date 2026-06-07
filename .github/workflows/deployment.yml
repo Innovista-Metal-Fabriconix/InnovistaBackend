@@ -16,10 +16,13 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 22   # ✅ match EC2
 
       - name: Install dependencies
         run: npm install --legacy-peer-deps
+
+      - name: Generate Prisma Client
+        run: npx prisma generate
 
       - name: Build project
         run: NODE_OPTIONS="--max-old-space-size=2048" npm run build
@@ -47,17 +50,21 @@ jobs:
 
             cd ${{ secrets.EC2_PATH }}/back-end
 
-            echo "🔐 Creating .env file..."
+            echo "🔐 Writing .env file..."
             printf "%s" "$ENV_FILE_CONTENT" > .env
 
-            echo "📦 Installing production dependencies only..."
-            npm install --production --legacy-peer-deps
+            echo "📦 Installing production dependencies..."
+            npm install --omit=dev --legacy-peer-deps
 
-            echo "⚙️ Running Prisma migrate..."
+            echo "⚙️ Generating Prisma client..."
+            npx prisma generate
+
+            echo "🗄️ Running migrations..."
             npx prisma migrate deploy
 
-            echo "🔄 Restarting PM2..."
-            pm2 restart innovista-backend || pm2 start dist/src/main.js --name innovista-backend
+            echo "🚀 Restarting PM2..."
+            pm2 delete innovista-backend || true
+            pm2 start dist/src/main.js --name innovista-backend
             pm2 save
 
             echo "🎉 Deployment successful!"
