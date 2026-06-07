@@ -24,7 +24,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
         ? exception.getResponse()
         : { message: (exception as Error).message, statusCode: status };
 
-    // This is critical when the standard CORS middleware is bypassed or errors happen early
+
     const origin = (request.headers as any).origin;
     const allowedOrigins = [
       'http://localhost:5173',
