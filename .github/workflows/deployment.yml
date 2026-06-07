@@ -9,24 +9,30 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: back-end
+
     steps:
+      # 1. Checkout repo
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # 2. Setup Node
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 22   # ✅ match EC2
+          node-version: 24
 
+      # 3. Install dependencies (BUILD ON GITHUB, NOT EC2)
       - name: Install dependencies
         run: npm install --legacy-peer-deps
 
-      - name: Generate Prisma Client
-        run: npx prisma generate
-
+      # 4. Build project (FIX MEMORY ISSUE)
       - name: Build project
         run: NODE_OPTIONS="--max-old-space-size=2048" npm run build
 
+      # 5. Copy build to EC2
       - name: Copy files to EC2
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -34,9 +40,10 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           source: "dist,package.json,package-lock.json,prisma"
-          target: ${{ secrets.EC2_PATH }}/back-end
+          target: "${{ secrets.EC2_PATH }}/back-end"
 
-      - name: Deploy via SSH
+      # 6. Deploy on EC2 (ONLY RUN, NO BUILD)
+      - name: Deploy on EC2
         uses: appleboy/ssh-action@v1.0.3
         env:
           ENV_FILE_CONTENT: ${{ secrets.ENV_FILE_CONTENT }}
@@ -48,23 +55,25 @@ jobs:
           script: |
             set -e
 
+            echo "🚀 Starting deployment..."
+
             cd ${{ secrets.EC2_PATH }}/back-end
 
-            echo "🔐 Writing .env file..."
+            # Create env file
+            echo "🔐 Creating .env file..."
             printf "%s" "$ENV_FILE_CONTENT" > .env
 
+            # Install ONLY production deps
             echo "📦 Installing production dependencies..."
-            npm install --omit=dev --legacy-peer-deps
+            npm install --production --legacy-peer-deps
 
-            echo "⚙️ Generating Prisma client..."
-            npx prisma generate
-
-            echo "🗄️ Running migrations..."
+            # Prisma migrations
+            echo "🛠️ Running Prisma migrations..."
             npx prisma migrate deploy
 
-            echo "🚀 Restarting PM2..."
-            pm2 delete innovista-backend || true
-            pm2 start dist/src/main.js --name innovista-backend
+            # Restart PM2
+            echo "🔄 Restarting application..."
+            pm2 restart innovista-backend || pm2 start dist/src/main.js --name innovista-backend
             pm2 save
 
             echo "🎉 Deployment successful!"
