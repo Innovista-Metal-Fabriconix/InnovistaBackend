@@ -10,7 +10,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy to EC2 via SSH
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Build project
+        run: NODE_OPTIONS="--max-old-space-size=2048" npm run build
+
+      - name: Copy files to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "dist,package.json,package-lock.json,prisma"
+          target: ${{ secrets.EC2_PATH }}/back-end
+
+      - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         env:
           ENV_FILE_CONTENT: ${{ secrets.ENV_FILE_CONTENT }}
@@ -22,73 +45,19 @@ jobs:
           script: |
             set -e
 
-            echo "🚀 Starting deployment..."
+            cd ${{ secrets.EC2_PATH }}/back-end
 
-            # 1. Load NVM (Node)
-            export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-            nvm use 24 || echo "⚠️ NVM not found, using system node"
-
-            # 2. Go to project directory
-            cd ${{ secrets.EC2_PATH }} || { echo "❌ Path not found"; exit 1; }
-
-            # 3. Pull latest code
-            echo "📥 Pulling latest code..."
-            git fetch origin
-            git reset --hard origin/Deployment_Product
-
-            # 4. Go to backend
-            cd back-end || { echo "❌ Backend folder missing"; exit 1; }
-
-            # 5. Create .env file safely
             echo "🔐 Creating .env file..."
-
-            if [ -z "$ENV_FILE_CONTENT" ]; then
-              echo "❌ ENV_FILE_CONTENT is empty!"
-              exit 1
-            fi
-
             printf "%s" "$ENV_FILE_CONTENT" > .env
 
-            echo "✅ .env file created"
-            ls -lh .env
+            echo "📦 Installing production dependencies only..."
+            npm install --production --legacy-peer-deps
 
-            # 6. Wait for PostgreSQL
-            echo "⏳ Waiting for PostgreSQL..."
-            until pg_isready -h localhost -p 5432; do
-              sleep 2
-            done
-            echo "✅ PostgreSQL is ready!"
-
-            # 7. Backup database (safe)
-            echo "💾 Taking DB backup..."
-            pg_dump -U innovista_user InnovistaDB > "backup_$(date +%F_%H-%M-%S).sql" || echo "⚠️ Backup skipped"
-
-            # 8. Install dependencies
-            echo "📦 Installing dependencies..."
-            npm install
-
-            # 9. Prisma generate
-            echo "⚙️ Generating Prisma client..."
-            npx prisma generate
-
-            # 10. Build project
-            echo "🏗️ Building project..."
-            npm run build
-
-            # 11. Run migrations safely
-            echo "🛠️ Running migrations..."
+            echo "⚙️ Running Prisma migrate..."
             npx prisma migrate deploy
 
-            # 12. Seed database (optional safe fallback)
-            echo "🌱 Seeding database..."
-            npx prisma db seed || echo "⚠️ Seed skipped"
-
-            # 13. Restart app using PM2
-            echo "🔄 Restarting application..."
+            echo "🔄 Restarting PM2..."
             pm2 restart innovista-backend || pm2 start dist/src/main.js --name innovista-backend
-
-            # 14. Save PM2 state
             pm2 save
 
-            echo "🎉 Deployment completed successfully!"
+            echo "🎉 Deployment successful!"
