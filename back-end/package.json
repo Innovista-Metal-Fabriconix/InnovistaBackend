@@ -9,6 +9,8 @@
     "build": "nest build",
     "vercel-build": "npx prisma generate && nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "postinstall": "npx prisma generate",
+    "prestart": "npx prisma generate",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",

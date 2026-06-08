@@ -8,11 +8,14 @@ import { EmailTemplateFactory } from './Email.EmailFactory';
 export class EmailService {
   constructor(private readonly mailerService: MailerService) {}
 
-async sendEmail(emailDto: EmailDTO): Promise<void> {
-  const result = EmailTemplateFactory.create(
-    emailDto.template,
-    emailDto.context as any, 
-  );
+  async sendEmail(emailDto: EmailDTO): Promise<void> {
+    if (!emailDto.context) {
+      throw new Error('Email context is required for rendering template');
+    }
+    const result = EmailTemplateFactory.create(
+      emailDto.template,
+      emailDto.context,
+    );
 
   const { subject, template, context, bodyText, bodyHtml } = result;
 

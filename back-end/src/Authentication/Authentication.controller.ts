@@ -26,8 +26,8 @@ export class AuthenticationController {
 
   // @UseGuards(AdminAuthGuard)
   @Post('register')
-  async register(@Body() authDto: AuthDTO) {
-    return this.authService.register(authDto);
+  async register(@Body() authDto: AuthDTO): Promise<unknown> {
+    return await this.authService.register(authDto);
   }
 
   @Post('login')
@@ -35,17 +35,17 @@ export class AuthenticationController {
     @Query('email') email: string,
     @Query('password') password: string,
   ) {
-    return this.authService.login(email, password);
+    return await this.authService.login(email, password);
   }
 
   @Post('refresh')
-  async refresh(@Query('refreshToken') refreshToken: string) {
-    return this.authService.refreshAccessToken(refreshToken);
+  async refresh(@Query('refreshToken') refreshToken: string): Promise<unknown> {
+    return await this.authService.refreshAccessToken(refreshToken);
   }
 
   @Post('logout')
-  async logout(@Query('adminId') adminId: string) {
-    return this.authService.logout(Number(adminId));
+  async logout(@Query('adminId') adminId: string): Promise<unknown> {
+    return await this.authService.logout(Number(adminId));
   }
 
  
@@ -54,24 +54,24 @@ export class AuthenticationController {
   async forgotPassword(
     @Req() req: AuthRequest,
     @Query('newPassword') newPassword: string,
-  ) {
-    return this.authService.passwordReset(req.user.email, newPassword);
+  ): Promise<unknown> {
+    return await this.authService.passwordReset(req.user.email, newPassword);
   }
 
   @Post('ResetPassword')
-  async passwordReset_Loginuser(@Query('email') Adminemail: string) {
-    return this.authService.passwordReset_Login(Adminemail);
+  async passwordReset_Loginuser(@Query('email') Adminemail: string): Promise<unknown> {
+    return await this.authService.passwordReset_Login(Adminemail);
   }
 
   @UseGuards(AdminAuthGuard)
   @Get('getAllAdmins')
-  async getAllAdmins() {
-    return this.authService.GetallAdmins();
+  async getAllAdmins(): Promise<unknown> {
+    return await this.authService.GetallAdmins();
   }
 
   @UseGuards(AdminAuthGuard)
   @Delete('RemoveAdmin')
-  async removeAdmin(@Query('adminId') adminId: string) {
-    return this.authService.RemoveAdmin(parseInt(adminId, 10));
+  async removeAdmin(@Query('adminId') adminId: string): Promise<unknown> {
+    return await this.authService.RemoveAdmin(parseInt(adminId, 10));
   }
 }

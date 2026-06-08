@@ -2,6 +2,12 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
+interface JwtPayload {
+  sub: string | number;
+  email?: string;
+  role?: string;
+}
+
 @Injectable()
 export class TokenValidationStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor() {
@@ -12,7 +18,7 @@ export class TokenValidationStrategy extends PassportStrategy(Strategy, 'jwt') {
     });
   }
 
-  async validate(payload: any) {
+  validate(payload: JwtPayload) {
     if (!payload || !payload.sub) {
       throw new UnauthorizedException('Invalid token');
     }

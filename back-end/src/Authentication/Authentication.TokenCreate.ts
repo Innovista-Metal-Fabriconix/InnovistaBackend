@@ -47,7 +47,8 @@ export class TokenCreate {
     try {
       return jwt.verify(token, this.privateKey);
     } catch (err) {
-      throw new InternalServerErrorException('Invalid token' + err);
+      const message = err instanceof Error ? err.message : String(err);
+      throw new InternalServerErrorException('Invalid token: ' + message);
     }
   }
 }

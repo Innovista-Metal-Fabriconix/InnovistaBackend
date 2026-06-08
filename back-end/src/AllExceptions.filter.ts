@@ -25,14 +25,14 @@ export class AllExceptionsFilter implements ExceptionFilter {
         : { message: (exception as Error).message, statusCode: status };
 
 
-    const origin = (request.headers as any).origin;
+    const origin = request.headers.origin;
     const allowedOrigins = [
       'http://localhost:5173',
       'https://innovista-front-end.vercel.app',
-      process.env.FRONTEND_URL
-    ].filter(Boolean);
+      process.env.FRONTEND_URL,
+    ].filter(Boolean) as string[];
 
-    if (origin && allowedOrigins.includes(origin)) {
+    if (origin && typeof origin === 'string' && allowedOrigins.includes(origin)) {
       response.setHeader('Access-Control-Allow-Origin', origin);
       response.setHeader('Access-Control-Allow-Credentials', 'true');
       response.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');

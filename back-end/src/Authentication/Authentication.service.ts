@@ -75,7 +75,10 @@ export class AuthenticationService {
       });
 
       return { message: 'Admin registered successfully', admin, tokens };
-    } catch (error: unknown) {
+    } catch (error: any) {
+      if (error.code === 'P2002') {
+        throw new BadRequestException('An account with this email already exists.');
+      }
       const message = error instanceof Error ? error.message : String(error);
       throw new BadRequestException('Error during registration: ' + message);
     }

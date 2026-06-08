@@ -23,7 +23,7 @@ export class NotificationController {
 
   @UseGuards(AdminAuthGuard)
   @Get('getalerts')
-  async getNotifications(@Req() req: AuthenticatedRequest) {
+  async getNotifications(@Req() req: AuthenticatedRequest): Promise<any> {
     const Adminemail = req.user.email;
 
     return this.notificationService.getNotifications(Adminemail);
