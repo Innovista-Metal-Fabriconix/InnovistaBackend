@@ -8,41 +8,38 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: back-end
-
     steps:
-      # 1. Checkout repo
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Setup Node
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 22.22.2
+          node-version: 24
 
-      # 3. Install dependencies (BUILD ON GITHUB, NOT EC2)
       - name: Install dependencies
+        working-directory: back-end
         run: npm install --legacy-peer-deps
 
-      # 4. Build project (FIX MEMORY ISSUE)
-      - name: Build project
-        run: NODE_OPTIONS="--max-old-space-size=2048" npm run build
+      - name: Generate Prisma Client
+        working-directory: back-end
+        run: npx prisma generate
 
-      # 5. Copy build to EC2
+      - name: Build NestJS
+        working-directory: back-end
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
+        run: npm run build
+
       - name: Copy files to EC2
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: "dist,package.json,package-lock.json,prisma"
+          source: "back-end/dist,back-end/package.json,back-end/package-lock.json,back-end/prisma"
           target: "${{ secrets.EC2_PATH }}/back-end"
 
-      # 6. Deploy on EC2 (ONLY RUN, NO BUILD)
       - name: Deploy on EC2
         uses: appleboy/ssh-action@v1.0.3
         env:
@@ -59,21 +56,24 @@ jobs:
 
             cd ${{ secrets.EC2_PATH }}/back-end
 
-            # Create env file
-            echo "🔐 Creating .env file..."
+            echo "🔐 Creating .env"
             printf "%s" "$ENV_FILE_CONTENT" > .env
 
-            # Install ONLY production deps
-            echo "📦 Installing production dependencies..."
-            npm install --production --legacy-peer-deps
+            echo "📦 Installing dependencies"
+            npm install --legacy-peer-deps
 
-            # Prisma migrations
-            echo "🛠️ Running Prisma migrations..."
+            echo "🛠️ Running migrations"
             npx prisma migrate deploy
 
-            # Restart PM2
-            echo "🔄 Restarting application..."
-            pm2 restart innovista-backend || pm2 start dist/src/main.js --name innovista-backend
+            echo "🔍 Verifying build"
+            find dist -name main.js
+
+            echo "🔄 Restarting PM2"
+            pm2 delete innovista-backend || true
+            pm2 start dist/src/main.js \
+              --name innovista-backend \
+              --node-args="--max-old-space-size=1024"
+
             pm2 save
 
-            echo "🎉 Deployment successful!"
+            echo "✅ Deployment successful"
