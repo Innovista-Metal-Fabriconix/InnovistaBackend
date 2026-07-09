@@ -15,6 +15,11 @@ jobs:
     environment: production
 
 
+    defaults:
+      run:
+        working-directory: back-end
+
+
     steps:
 
 
@@ -24,58 +29,31 @@ jobs:
 
 
       - name: Setup Node.js
-
         uses: actions/setup-node@v4
-
         with:
-
           node-version: 22
-
-          cache: npm
-
-          cache-dependency-path: package-lock.json
-
 
 
 
       - name: Install Dependencies
-
-        run: |
-
-          npm ci --legacy-peer-deps
-
-
+        run: npm ci --legacy-peer-deps
 
 
 
       - name: Generate Prisma Client
-
-        run: |
-
-          npx prisma generate
-
-
+        run: npx prisma generate
 
 
 
       - name: Build NestJS Application
-
         env:
-
           NODE_OPTIONS: --max-old-space-size=4096
-
           NODE_ENV: production
-
-        run: |
-
-          npm run build
-
-
+        run: npm run build
 
 
 
       - name: Verify Build
-
         run: |
 
           echo "Checking build output"
@@ -85,19 +63,19 @@ jobs:
 
           if [ -f dist/src/main.js ]; then
 
-              echo "Found dist/src/main.js"
+            echo "Found dist/src/main.js"
 
 
           elif [ -f dist/main.js ]; then
 
-              echo "Found dist/main.js"
+            echo "Found dist/main.js"
 
 
           else
 
-              echo "Build failed"
+            echo "Build failed"
 
-              exit 1
+            exit 1
 
           fi
 
@@ -106,9 +84,7 @@ jobs:
 
 
       - name: Copy Build Files To EC2
-
         uses: appleboy/scp-action@v0.1.7
-
 
         with:
 
@@ -121,18 +97,20 @@ jobs:
 
           source: |
 
-            dist
+            back-end/dist
 
-            package.json
+            back-end/package.json
 
-            package-lock.json
+            back-end/package-lock.json
 
-            prisma
+            back-end/prisma
 
 
           target: ${{ secrets.EC2_PATH }}
 
           overwrite: true
+
+          strip_components: 1
 
 
 
@@ -175,18 +153,20 @@ jobs:
 
 
 
-            cd ${{ secrets.EC2_PATH }}
+            cd "${{ secrets.EC2_PATH }}"
 
 
 
             echo "Creating .env"
+
 
             printf "%s" "$ENV_FILE_CONTENT" > .env
 
 
 
 
-            echo "Installing production packages"
+
+            echo "Installing production dependencies"
 
 
             npm ci --omit=dev --legacy-peer-deps
@@ -204,7 +184,7 @@ jobs:
 
 
 
-            echo "Running migrations"
+            echo "Running Prisma migration"
 
 
             npx prisma migrate deploy
@@ -213,7 +193,7 @@ jobs:
 
 
 
-            echo "Checking application file"
+            echo "Finding application file"
 
 
 
@@ -229,11 +209,17 @@ jobs:
 
             else
 
-                echo "Application file missing"
+                echo "Application file not found"
+
+                echo "Current directory:"
 
                 pwd
 
+                echo "Files:"
+
                 ls -la
+
+                echo "Dist:"
 
                 ls -la dist || true
 
@@ -245,7 +231,9 @@ jobs:
 
 
 
-            echo "Starting application"
+            echo "Starting application: $APP_FILE"
+
+
 
 
 
@@ -253,14 +241,21 @@ jobs:
 
             then
 
+                echo "Restarting PM2"
+
                 pm2 restart innovista-backend
 
 
             else
 
-                pm2 start $APP_FILE --name innovista-backend
+                echo "Starting PM2"
+
+                pm2 start "$APP_FILE" --name innovista-backend
+
 
             fi
+
+
 
 
 
@@ -268,4 +263,8 @@ jobs:
 
 
 
-            echo "Deployment completed successfully"
+            echo "================================"
+
+            echo "Deployment Completed Successfully"
+
+            echo "================================"
