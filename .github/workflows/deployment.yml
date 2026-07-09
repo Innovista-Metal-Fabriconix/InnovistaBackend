@@ -24,6 +24,7 @@ jobs:
 
 
       - name: Setup Node.js
+
         uses: actions/setup-node@v4
 
         with:
@@ -54,16 +55,14 @@ jobs:
         working-directory: back-end
 
         env:
-
           NODE_OPTIONS: --max-old-space-size=4096
-
           NODE_ENV: production
 
         run: npm run build
 
 
 
-      - name: Verify Build
+      - name: Verify Build Output
 
         working-directory: back-end
 
@@ -74,17 +73,19 @@ jobs:
           ls -la dist
 
 
-          if [ -f dist/src/main.js ] || [ -f dist/main.js ]
+          if [ -f dist/src/main.js ]; then
 
-          then
+              echo "Found dist/src/main.js"
 
-            echo "Build successful"
+          elif [ -f dist/main.js ]; then
+
+              echo "Found dist/main.js"
 
           else
 
-            echo "main.js not found"
+              echo "Build output missing"
 
-            exit 1
+              exit 1
 
           fi
 
@@ -114,8 +115,7 @@ jobs:
 
 
 
-
-      - name: Deploy Application
+      - name: Deploy Application On EC2
 
         uses: appleboy/ssh-action@v1.2.0
 
@@ -123,6 +123,7 @@ jobs:
         env:
 
           ENV_FILE_CONTENT: ${{ secrets.ENV_FILE_CONTENT }}
+
 
 
         with:
@@ -143,54 +144,74 @@ jobs:
 
 
 
+            echo "================================"
+
+            echo "Starting EC2 Deployment"
+
+            echo "================================"
+
+
+
             cd "${{ secrets.EC2_PATH }}"
 
 
 
-            echo "Creating .env"
+            echo "Current directory"
+
+            pwd
+
+            ls -la
+
+
+
+            echo "Creating environment file"
+
 
             printf "%s" "$ENV_FILE_CONTENT" > .env
 
 
 
-
-            echo "Installing production dependencies"
-
-            npm ci --omit=dev --legacy-peer-deps
+            echo "Installing dependencies"
 
 
-
-
-            echo "Generating Prisma Client"
-
-            npx prisma generate
+            npm ci --legacy-peer-deps
 
 
 
+            echo "Running Prisma migration"
 
-            echo "Running migrations"
 
             npx prisma migrate deploy
 
 
 
+            echo "Finding application entry file"
 
-            if [ -f dist/src/main.js ]
 
-            then
 
-              APP_FILE="dist/src/main.js"
+            if [ -f dist/src/main.js ]; then
+
+                APP_FILE="dist/src/main.js"
+
+            elif [ -f dist/main.js ]; then
+
+                APP_FILE="dist/main.js"
 
             else
 
-              APP_FILE="dist/main.js"
+                echo "Application file not found"
+
+                exit 1
 
             fi
 
 
 
+            echo "Application file: $APP_FILE"
 
-            echo "Starting application"
+
+
+            echo "Starting PM2"
 
 
 
@@ -198,14 +219,18 @@ jobs:
 
             then
 
-              pm2 restart innovista-backend
+                echo "Restarting existing application"
+
+                pm2 restart innovista-backend
 
             else
 
-              pm2 start "$APP_FILE" --name innovista-backend
+                echo "Starting new application"
+
+                pm2 start "$APP_FILE" \
+                  --name innovista-backend
 
             fi
-
 
 
 
@@ -213,4 +238,8 @@ jobs:
 
 
 
-            echo "Deployment completed successfully"
+            echo "================================"
+
+            echo "Deployment Successful"
+
+            echo "================================"
