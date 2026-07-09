@@ -24,11 +24,12 @@ interface AuthRequest extends Request {
 export class AuthenticationController {
   constructor(private authService: AuthenticationService) {}
 
-
+  @UseGuards(AdminAuthGuard)
   @Post('register')
   async register(@Body() authDto: AuthDTO): Promise<unknown> {
     return await this.authService.register(authDto);
   }
+
 
   @Post('login')
   async login(
