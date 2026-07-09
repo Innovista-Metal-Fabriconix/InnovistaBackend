@@ -13,65 +13,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-          cache-dependency-path: back-end/package-lock.json
-
-      - name: Install Dependencies
-        working-directory: back-end
-        run: npm ci --legacy-peer-deps
-
-      - name: Generate Prisma Client
-        working-directory: back-end
-        run: npx prisma generate
-
-      - name: Build NestJS
-        working-directory: back-end
-        env:
-          NODE_OPTIONS: --max-old-space-size=4096
-          NODE_ENV: production
-        run: npm run build
-
-      - name: Verify Build Output
-        working-directory: back-end
-        run: |
-          echo "Checking build..."
-
-          ls -la
-
-          if [ -f dist/src/main.js ]; then
-              echo "Found dist/src/main.js"
-          elif [ -f dist/main.js ]; then
-              echo "Found dist/main.js"
-          else
-              echo "Build output missing"
-              exit 1
-          fi
-
-      - name: Copy Build to EC2
-        uses: appleboy/scp-action@v0.1.7
-
-        with:
-          host: ${{ secrets.EC2_HOST }}
-
-          username: ${{ secrets.EC2_USER }}
-
-          key: ${{ secrets.EC2_SSH_KEY }}
-
-          source: |
-            back-end/dist
-            back-end/package.json
-            back-end/package-lock.json
-            back-end/prisma
-
-          target: ${{ secrets.EC2_PATH }}
-
-          overwrite: true
-
-      - name: Deploy Application
+      - name: Deploy to EC2
 
         uses: appleboy/ssh-action@v1.2.0
 
@@ -89,70 +31,150 @@ jobs:
 
           script: |
 
+
             set -e
 
 
-            echo "Starting deployment"
+
+            echo "================================"
+
+            echo "Starting Deployment"
+
+            echo "================================"
+
 
 
             cd ${{ secrets.EC2_PATH }}
 
 
+
+            echo "Pulling latest code"
+
+
+
+            git fetch origin
+
+
+
+            git checkout Deployment_Product
+
+
+
+            git pull origin Deployment_Product
+
+
+
             echo "Creating environment file"
+
+
 
             printf "%s" "$ENV_FILE_CONTENT" > .env
 
 
 
-            export NODE_ENV=production
+
+            echo "Installing dependencies"
 
 
 
-            echo "Installing production dependencies"
+            npm ci --legacy-peer-deps
 
-            npm ci --omit=dev --legacy-peer-deps
-            echo "Generating Prisma client"
+
+
+
+            echo "Generating Prisma Client"
+
+
 
             npx prisma generate
 
 
 
-            echo "Running database migration"
+
+            echo "Running database migrations"
+
+
 
             npx prisma migrate deploy
-            echo "Finding application entry"
 
 
-            if [ -f dist/src/main.js ]; then
-
-                APP_FILE="dist/src/main.js"
 
 
-            elif [ -f dist/main.js ]; then
+            echo "Building NestJS"
 
-                APP_FILE="dist/main.js"
-            else
 
-                echo "main.js not found"
 
-                exit 1
+            export NODE_OPTIONS=--max-old-space-size=2048
+
+            npm run build
+
+
+
+
+            echo "Checking build"
+
+
+
+            if [ ! -f dist/src/main.js ] && [ ! -f dist/main.js ]
+
+            then
+
+              echo "Build failed"
+
+              exit 1
 
             fi
-            echo "Starting application: $APP_FILE"
+
+
+
+
+            if [ -f dist/src/main.js ]
+
+            then
+
+              APP_FILE="dist/src/main.js"
+
+            else
+
+              APP_FILE="dist/main.js"
+
+            fi
+
+
+
+
+            echo "Starting application $APP_FILE"
+
+
+
+
             if pm2 describe innovista-backend > /dev/null
 
             then
 
-                echo "Restarting existing application"
+                echo "Restarting PM2"
 
                 pm2 restart innovista-backend
 
             else
 
-                echo "Starting new application"
+                echo "Starting PM2"
 
                 pm2 start $APP_FILE \
-                  --name innovista-backend
+                --name innovista-backend
+
             fi
+
+
+
+
             pm2 save
-            echo "Deployment completed"
+
+
+
+
+            echo "================================"
+
+            echo "Deployment Completed"
+
+            echo "================================"
