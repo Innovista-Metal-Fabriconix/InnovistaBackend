@@ -24,37 +24,53 @@ jobs:
 
 
       - name: Setup Node.js
+
         uses: actions/setup-node@v4
 
         with:
+
           node-version: 22
+
           cache: npm
+
           cache-dependency-path: package-lock.json
+
 
 
 
       - name: Install Dependencies
 
         run: |
+
           npm ci --legacy-peer-deps
+
+
 
 
 
       - name: Generate Prisma Client
 
         run: |
+
           npx prisma generate
+
+
 
 
 
       - name: Build NestJS Application
 
         env:
+
           NODE_OPTIONS: --max-old-space-size=4096
+
           NODE_ENV: production
 
         run: |
+
           npm run build
+
+
 
 
 
@@ -69,19 +85,19 @@ jobs:
 
           if [ -f dist/src/main.js ]; then
 
-            echo "Found dist/src/main.js"
+              echo "Found dist/src/main.js"
 
 
           elif [ -f dist/main.js ]; then
 
-            echo "Found dist/main.js"
+              echo "Found dist/main.js"
 
 
           else
 
-            echo "Build failed"
+              echo "Build failed"
 
-            exit 1
+              exit 1
 
           fi
 
@@ -104,9 +120,13 @@ jobs:
 
 
           source: |
+
             dist
+
             package.json
+
             package-lock.json
+
             prisma
 
 
@@ -142,34 +162,35 @@ jobs:
 
           script: |
 
+
             set -e
 
 
 
             echo "================================"
 
-            echo "Starting EC2 Deployment"
+            echo "Starting Deployment"
 
             echo "================================"
 
 
 
-            cd "${{ secrets.EC2_PATH }}"
+            cd ${{ secrets.EC2_PATH }}
 
 
 
-            echo "Creating Environment File"
-
+            echo "Creating .env"
 
             printf "%s" "$ENV_FILE_CONTENT" > .env
 
 
 
 
-            echo "Installing Production Dependencies"
+            echo "Installing production packages"
 
 
             npm ci --omit=dev --legacy-peer-deps
+
 
 
 
@@ -182,7 +203,8 @@ jobs:
 
 
 
-            echo "Running Prisma Migration"
+
+            echo "Running migrations"
 
 
             npx prisma migrate deploy
@@ -190,58 +212,40 @@ jobs:
 
 
 
-            echo "Checking Application File"
+
+            echo "Checking application file"
 
 
 
             if [ -f dist/src/main.js ]; then
 
-
-              APP_FILE="dist/src/main.js"
-
+                APP_FILE="dist/src/main.js"
 
 
             elif [ -f dist/main.js ]; then
 
-
-              APP_FILE="dist/main.js"
-
+                APP_FILE="dist/main.js"
 
 
             else
 
+                echo "Application file missing"
 
-              echo "Application file not found"
+                pwd
 
+                ls -la
 
-              echo "Current directory:"
+                ls -la dist || true
 
-
-              pwd
-
-
-              echo "Files:"
-
-
-              ls -la
-
-
-              echo "Dist:"
-
-
-              ls -R dist || true
-
-
-              exit 1
-
+                exit 1
 
             fi
 
 
 
 
-            echo "Starting Application: $APP_FILE"
 
+            echo "Starting application"
 
 
 
@@ -249,21 +253,14 @@ jobs:
 
             then
 
-              echo "Restarting PM2"
-
-              pm2 restart innovista-backend
+                pm2 restart innovista-backend
 
 
             else
 
-              echo "Starting PM2"
-
-              pm2 start "$APP_FILE" \
-                --name innovista-backend
-
+                pm2 start $APP_FILE --name innovista-backend
 
             fi
-
 
 
 
@@ -271,8 +268,4 @@ jobs:
 
 
 
-            echo "================================"
-
-            echo "Deployment Completed Successfully"
-
-            echo "================================"
+            echo "Deployment completed successfully"
