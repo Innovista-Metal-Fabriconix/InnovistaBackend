@@ -29,12 +29,11 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: back-end/package-lock.json
+          cache-dependency-path: package-lock.json
 
 
 
       - name: Install Dependencies
-        working-directory: back-end
 
         run: |
           npm ci --legacy-peer-deps
@@ -42,7 +41,6 @@ jobs:
 
 
       - name: Generate Prisma Client
-        working-directory: back-end
 
         run: |
           npx prisma generate
@@ -51,12 +49,8 @@ jobs:
 
       - name: Build NestJS Application
 
-        working-directory: back-end
-
         env:
-
           NODE_OPTIONS: --max-old-space-size=4096
-
           NODE_ENV: production
 
         run: |
@@ -64,10 +58,7 @@ jobs:
 
 
 
-
       - name: Verify Build
-
-        working-directory: back-end
 
         run: |
 
@@ -113,28 +104,21 @@ jobs:
 
 
           source: |
-
-            back-end/dist
-
-            back-end/package.json
-
-            back-end/package-lock.json
-
-            back-end/prisma
+            dist
+            package.json
+            package-lock.json
+            prisma
 
 
           target: ${{ secrets.EC2_PATH }}
 
           overwrite: true
 
-          strip_components: 1
-
 
 
 
 
       - name: Deploy Application On EC2
-
 
         uses: appleboy/ssh-action@v1.2.0
 
@@ -158,7 +142,6 @@ jobs:
 
           script: |
 
-
             set -e
 
 
@@ -171,9 +154,7 @@ jobs:
 
 
 
-
             cd "${{ secrets.EC2_PATH }}"
-
 
 
 
@@ -181,7 +162,6 @@ jobs:
 
 
             printf "%s" "$ENV_FILE_CONTENT" > .env
-
 
 
 
@@ -194,12 +174,10 @@ jobs:
 
 
 
-
             echo "Generating Prisma Client"
 
 
             npx prisma generate
-
 
 
 
@@ -212,56 +190,52 @@ jobs:
 
 
 
-
-
             echo "Checking Application File"
-
 
 
 
             if [ -f dist/src/main.js ]; then
 
 
-                APP_FILE="dist/src/main.js"
+              APP_FILE="dist/src/main.js"
 
 
 
             elif [ -f dist/main.js ]; then
 
 
-                APP_FILE="dist/main.js"
+              APP_FILE="dist/main.js"
 
 
 
             else
 
 
-                echo "Application file not found"
+              echo "Application file not found"
 
 
-                echo "Current directory:"
-
-                pwd
+              echo "Current directory:"
 
 
-                echo "Files:"
+              pwd
 
 
-                ls -la
+              echo "Files:"
 
 
-                echo "Dist folder:"
+              ls -la
 
 
-                ls -R dist || true
+              echo "Dist:"
 
 
-                exit 1
+              ls -R dist || true
+
+
+              exit 1
 
 
             fi
-
-
 
 
 
@@ -271,29 +245,21 @@ jobs:
 
 
 
-
-
             if pm2 describe innovista-backend > /dev/null 2>&1
 
             then
 
+              echo "Restarting PM2"
 
-                echo "Restarting PM2"
-
-
-                pm2 restart innovista-backend
-
+              pm2 restart innovista-backend
 
 
             else
 
+              echo "Starting PM2"
 
-                echo "Starting PM2"
-
-
-                pm2 start "$APP_FILE" \
-                  --name innovista-backend
-
+              pm2 start "$APP_FILE" \
+                --name innovista-backend
 
 
             fi
@@ -301,10 +267,7 @@ jobs:
 
 
 
-
             pm2 save
-
-
 
 
 
