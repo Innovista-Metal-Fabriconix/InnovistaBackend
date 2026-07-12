@@ -28,6 +28,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const origin = request.headers.origin;
     const allowedOrigins = [
       'http://localhost:5173',
+      'https://innovistametalfabriconix.com',
       'https://innovista-front-end.vercel.app',
       process.env.FRONTEND_URL,
     ].filter(Boolean) as string[];
