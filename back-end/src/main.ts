@@ -7,6 +7,7 @@ async function bootstrap() {
     origin: [
       'http://localhost:5173',
       'https://innovistametalfabriconix.com',
+      'https://www.innovistametalfabriconix.com',
     ],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: '*',
